@@ -1,0 +1,399 @@
+# 
+# ===============================================================================
+#                               Allegro PCB Router                               
+# Copyright 1990-2010 Cadence Design Systems, Inc.  All Rights Reserved.
+# ===============================================================================
+# 
+# Software licensed for sale by Cadence Design Systems, Inc.
+# Current time = Fri Jan 08 14:19:56 2016
+# 
+# Allegro PCB Router v16-6-112 made 2012/09/12 at 23:00:45
+# Running on: jiangs-pc, OS Version: WindowsNT 6.1.7601, Architecture: Intel Pentium II, III, or 4
+# Licensing: The program will not obey any unlicensed rules
+# No graphics will be displayed.
+# Design Name E:/projects/ET4207/ET4207_demoboard\ET4207DeMO.dsn
+# Batch File Name: pasde.do
+# Did File Name: E:/projects/ET4207/ET4207_demoboard/specctra.did
+# Current time = Fri Jan 08 14:19:56 2016
+# PCB E:/projects/ET4207/ET4207_demoboard
+# Master Unit set up as: MIL 10000
+# PCB Limits xlo=-4174.2400 ylo=-8017.0510 xhi=14810.7720 yhi=13841.9800
+# Total 8 Images Consolidated.
+# Via PAD82CIR_82CIR z=1, 2 xlo=-36.0000 ylo=-36.0000 xhi= 36.0000 yhi= 36.0000
+# Via VIA32_16_SM0 z=1, 2 xlo=-16.0000 ylo=-16.0000 xhi= 16.0000 yhi= 16.0000
+# Via VIA40_20_SM0 z=1, 2 xlo=-20.0000 ylo=-20.0000 xhi= 20.0000 yhi= 20.0000
+# Via VIA40_20_SM50 z=1, 2 xlo=-20.0000 ylo=-20.0000 xhi= 20.0000 yhi= 20.0000
+# Via VIA50_28_SM60 z=1, 2 xlo=-25.0000 ylo=-25.0000 xhi= 25.0000 yhi= 25.0000
+# 
+#    VIA        TOP        BOTTOM   
+# 
+#    TOP  ------------  VIA32_16_SM0
+# BOTTOM  VIA32_16_SM0  ------------
+# 
+# <<WARNING:>> Place: Pin 16 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 7 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 6 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 15 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 8 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 5 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 14 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 13 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 12 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 11 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 10 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 9 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 3 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 2 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 1 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Place: Pin 4 of logical_part STM32F103C8_3_SOP16_ET4207 can not be found in component U2.
+# <<WARNING:>> Net RMT Component U2 Pin 15 is missing in Image '_-_SOP16'
+# <<ERROR:>> Pin U2-15 not found in net RMT
+# <<WARNING:>> Net PWMIN Component U2 Pin 5 is missing in Image '_-_SOP16'
+# <<ERROR:>> Pin U2-5 not found in net PWMIN
+# <<WARNING:>> Net PWMOUT Component U2 Pin 8 is missing in Image '_-_SOP16'
+# <<ERROR:>> Pin U2-8 not found in net PWMOUT
+# <<WARNING:>> Net VDD_3V3 Component U2 Pin 16 is missing in Image '_-_SOP16'
+# <<ERROR:>> Pin U2-16 not found in net VDD_3V3
+# <<WARNING:>> Net BUSY Component U2 Pin 4 is missing in Image '_-_SOP16'
+# <<ERROR:>> Pin U2-4 not found in net BUSY
+# <<WARNING:>> Net SDA Component U2 Pin 6 is missing in Image '_-_SOP16'
+# <<ERROR:>> Pin U2-6 not found in net SDA
+# <<WARNING:>> Net SCL Component U2 Pin 7 is missing in Image '_-_SOP16'
+# <<ERROR:>> Pin U2-7 not found in net SCL
+# <<WARNING:>> Net GND Component U2 Pin 1 is missing in Image '_-_SOP16'
+# <<ERROR:>> Pin U2-1 not found in net GND
+# Wires Processed 0, Vias Processed 0
+# Using colormap in design file.
+# Layers Processed: Signal Layers 2
+# Components Placed 17, Images Processed 27, Padstacks Processed 220
+# Nets Processed 14, Net Terminals 46
+# PCB Area=413035755.779  EIC=3  Area/EIC=137678585.260  SMDs=13
+# Total Pin Count: 46
+# Signal Connections Created 32
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0010 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# Layer BOTTOM Vert Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# 
+# Wiring Statistics ----------------- E:/projects/ET4207/ET4207_demoboard\ET4207DeMO.dsn
+# Nets 14 Connections 32 Unroutes 32
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 0, at vias 0 Total Vias 0
+# Percent Connected    0.00
+# Manhattan Length 10809.7090 Horizontal 3984.0041 Vertical 6825.7049
+# Routed Length   0.0000 Horizontal   0.0000 Vertical   0.0000
+# Ratio Actual / Manhattan   0.0000
+# Unconnected Length 10809.7090 Horizontal 3303.6460 Vertical 7506.0630
+# Total Conflicts: 0 (Cross: 0, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:03
+# Loading Do File pasde.do ...
+# Loading Do File E:/projects/ET4207/ET4207_demoboard\ET4207DeMO_rules.do ...
+# Colormap Written to File _notify.std
+# Enter command <# Loading Do File C:/Users/jiangs/AppData/Local/Temp/#Taaaaal09608.tmp ...
+# All Components Unselected.
+# All Nets Unselected.
+set route_diagonal 0
+grid wire 0.001000 (direction x) (offset 0.000000)
+grid wire 0.001000 (direction y) (offset 0.000000)
+grid via 0.001000 (direction x) (offset 0.000000)
+grid via 0.001000 (direction y) (offset 0.000000)
+protect all wires
+# All Wires Protected.
+direction TOP horizontal
+select layer TOP
+unprotect layer_wires TOP
+# Wires on layer TOP were Unprotected.
+direction BOTTOM vertical
+select layer BOTTOM
+unprotect layer_wires BOTTOM
+# Wires on layer BOTTOM were Unprotected.
+cost via -1
+# System default cost will be used.
+set turbo_stagger off
+limit outside -1
+rule pcb (patterns_allowed  trombone accordion)
+set pattern_stacking on
+rule pcb (sawtooth_amplitude -1 -1)
+rule pcb (sawtooth_gap -1)
+rule pcb (accordion_amplitude -1 -1)
+rule pcb (accordion_gap -1)
+rule pcb (trombone_run_length -1)
+rule pcb (trombone_gap -1)
+unprotect selected
+# All Selected Wires Unprotected.
+smart_route (auto_fanout off) (auto_testpoint off) (auto_miter off)
+# Smart Route: Executing bus diagonal.
+# Diagonal wire corners are preferred.
+# Current time = Fri Jan 08 14:20:01 2016
+# 
+#    VIA        TOP        BOTTOM   
+# 
+#    TOP  ------------  VIA32_16_SM0
+# BOTTOM  VIA32_16_SM0  ------------
+# 
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0010 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# Layer BOTTOM Vert Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# 
+# Wiring Statistics ----------------- E:/projects/ET4207/ET4207_demoboard\ET4207DeMO.dsn
+# Nets 14 Connections 32 Unroutes 32
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 0, at vias 0 Total Vias 0
+# Percent Connected    0.00
+# Manhattan Length 10809.7090 Horizontal 3984.0041 Vertical 6825.7049
+# Routed Length   0.0000 Horizontal   0.0000 Vertical   0.0000
+# Ratio Actual / Manhattan   0.0000
+# Unconnected Length 10809.7090 Horizontal 3303.6460 Vertical 7506.0630
+# Attempts 0 Successes 0 Failures 0 Vias 0
+# 90 degree wire corners are preferred.
+# Total Conflicts: 0 (Cross: 0, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# 
+# Wiring Statistics ----------------- E:/projects/ET4207/ET4207_demoboard\ET4207DeMO.dsn
+# Nets 14 Connections 32 Unroutes 32
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 0, at vias 0 Total Vias 0
+# Percent Connected    0.00
+# Manhattan Length 10809.7090 Horizontal 3984.0041 Vertical 6825.7049
+# Routed Length   0.0000 Horizontal   0.0000 Vertical   0.0000
+# Ratio Actual / Manhattan   0.0000
+# Unconnected Length 10809.7090 Horizontal 3303.6460 Vertical 7506.0630
+# 90 degree wire corners are preferred.
+# Smart Route: Executing 25 route passes.
+# Current time = Fri Jan 08 14:20:01 2016
+# 
+#    VIA        TOP        BOTTOM   
+# 
+#    TOP  ------------  VIA32_16_SM0
+# BOTTOM  VIA32_16_SM0  ------------
+# 
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0010 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# Layer BOTTOM Vert Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# 
+# Wiring Statistics ----------------- E:/projects/ET4207/ET4207_demoboard\ET4207DeMO.dsn
+# Nets 14 Connections 32 Unroutes 32
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 0, at vias 0 Total Vias 0
+# Percent Connected    0.00
+# Manhattan Length 10809.7090 Horizontal 3984.0041 Vertical 6825.7049
+# Routed Length   0.0000 Horizontal   0.0000 Vertical   0.0000
+# Ratio Actual / Manhattan   0.0000
+# Unconnected Length 10809.7090 Horizontal 3303.6460 Vertical 7506.0630
+# Start Route Pass 1 of 25
+# Routing 32 wires.
+# Total Conflicts: 1 (Cross: 1, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 0
+# Attempts 32 Successes 32 Failures 0 Vias 5
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# End Pass 1 of 25
+# 4 bend points have been removed.
+# 0 bend points have been removed.
+# 5 bend points have been removed.
+# Wiring Written to File E:/projects/ET4207/ET4207_demoboard\bestsave.w
+# Smart Route: Smart_route progressing normally after 1 passes.
+# Start Route Pass 2 of 25
+# Routing 7 wires.
+# 1 bend points have been removed.
+# 0 bend points have been removed.
+# 1 bend points have been removed.
+# Total Conflicts: 0 (Cross: 0, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 0
+# Attempts 7 Successes 7 Failures 0 Vias 6
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# End Pass 2 of 25
+# Wiring Written to File E:/projects/ET4207/ET4207_demoboard\bestsave.w
+# Smart Route: Smart_route progressing normally after 2 passes.
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:01
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0010 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# Layer BOTTOM Vert Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# ROUTING HISTORY ================================================================
+#     Pass     |   Conflicts |    |     |     |     |    |Red|      CPU Time     |
+#   Name   |No.| Cross| Clear|Fail|Unrte| Vias|XTalk|Len.| % |  Pass   |  Total  |
+#----------+---+------+------+----+-----+-----+-----+----+---+---------+---------|
+# Bus      |  0|     0|     0|   0|   32|    0|    0|   0|   |  0:00:00|  0:00:00|
+# Route    |  1|     1|     0|   0|    0|    5|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    |  2|     0|     0|   0|    0|    6|    0|   0|100|  0:00:00|  0:00:00|
+# Conflicts between polygon wires and fixed objects:   0
+# Stub Violations:   0
+# Net Order Violations:   0
+# Diffpair Uncoupled Length Violations:   0
+# Diffpair Phase Tolerance  Violations:   0
+# Total layerset violations:   0
+# Total layerset violations (exclude Fanout/Stagger/XNet Short side):   0
+# Overall Routing Time: 0:00:00
+# 
+# Wiring Statistics ----------------- E:/projects/ET4207/ET4207_demoboard\ET4207DeMO.dsn
+# Nets 14 Connections 32 Unroutes 0
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 8, at vias 1 Total Vias 6
+# Percent Connected  100.00
+# Manhattan Length 10809.7090 Horizontal 4031.8674 Vertical 6777.8416
+# Routed Length 11982.4870 Horizontal 3998.0080 Vertical 7984.4790
+# Ratio Actual / Manhattan   1.1085
+# Unconnected Length   0.0000 Horizontal   0.0000 Vertical   0.0000
+# Smart Route: Executing 2 clean passes.
+# Current time = Fri Jan 08 14:20:02 2016
+# 
+#    VIA        TOP        BOTTOM   
+# 
+#    TOP  ------------  VIA32_16_SM0
+# BOTTOM  VIA32_16_SM0  ------------
+# 
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0010 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# Layer BOTTOM Vert Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# 
+# Wiring Statistics ----------------- E:/projects/ET4207/ET4207_demoboard\ET4207DeMO.dsn
+# Nets 14 Connections 32 Unroutes 0
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 8, at vias 1 Total Vias 6
+# Percent Connected  100.00
+# Manhattan Length 10809.7090 Horizontal 4031.8674 Vertical 6777.8416
+# Routed Length 11982.4870 Horizontal 3998.0080 Vertical 7984.4790
+# Ratio Actual / Manhattan   1.1085
+# Unconnected Length   0.0000 Horizontal   0.0000 Vertical   0.0000
+# Start Clean Pass 1 of 2
+# Routing 45 wires.
+# Total Conflicts: 0 (Cross: 0, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 0
+# Attempts 38 Successes 38 Failures 0 Vias 3
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# End Pass 1 of 2
+# Wiring Written to File E:/projects/ET4207/ET4207_demoboard\bestsave.w
+# Start Clean Pass 2 of 2
+# Routing 50 wires.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 5 bend points have been removed.
+# Total Conflicts: 0 (Cross: 0, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 0
+# Attempts 41 Successes 41 Failures 0 Vias 3
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# End Pass 2 of 2
+# Wiring Written to File E:/projects/ET4207/ET4207_demoboard\bestsave.w
+# Cpu Time = 0:00:01  Elapsed Time = 0:00:01
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0010 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# Layer BOTTOM Vert Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# ROUTING HISTORY ================================================================
+#     Pass     |   Conflicts |    |     |     |     |    |Red|      CPU Time     |
+#   Name   |No.| Cross| Clear|Fail|Unrte| Vias|XTalk|Len.| % |  Pass   |  Total  |
+#----------+---+------+------+----+-----+-----+-----+----+---+---------+---------|
+# Bus      |  0|     0|     0|   0|   32|    0|    0|   0|   |  0:00:00|  0:00:00|
+# Route    |  1|     1|     0|   0|    0|    5|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    |  2|     0|     0|   0|    0|    6|    0|   0|100|  0:00:00|  0:00:00|
+# Clean    |  3|     0|     0|   0|    0|    3|    0|   0|   |  0:00:00|  0:00:00|
+# Clean    |  4|     0|     0|   0|    0|    3|    0|   0|   |  0:00:00|  0:00:00|
+# Conflicts between polygon wires and fixed objects:   0
+# Stub Violations:   0
+# Net Order Violations:   0
+# Diffpair Uncoupled Length Violations:   0
+# Diffpair Phase Tolerance  Violations:   0
+# Total layerset violations:   0
+# Total layerset violations (exclude Fanout/Stagger/XNet Short side):   0
+# Overall Routing Time: 0:00:00
+# 
+# Wiring Statistics ----------------- E:/projects/ET4207/ET4207_demoboard\ET4207DeMO.dsn
+# Nets 14 Connections 32 Unroutes 0
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 11, at vias 2 Total Vias 3
+# Percent Connected  100.00
+# Manhattan Length 11009.8150 Horizontal 4190.7377 Vertical 6819.0773
+# Routed Length 11812.3630 Horizontal 4238.8840 Vertical 7573.4790
+# Ratio Actual / Manhattan   1.0729
+# Unconnected Length   0.0000 Horizontal   0.0000 Vertical   0.0000
+# Smart Route: Executing 2 clean passes.
+# Current time = Fri Jan 08 14:20:03 2016
+# 
+#    VIA        TOP        BOTTOM   
+# 
+#    TOP  ------------  VIA32_16_SM0
+# BOTTOM  VIA32_16_SM0  ------------
+# 
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0010 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# Layer BOTTOM Vert Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# 
+# Wiring Statistics ----------------- E:/projects/ET4207/ET4207_demoboard\ET4207DeMO.dsn
+# Nets 14 Connections 32 Unroutes 0
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 11, at vias 2 Total Vias 3
+# Percent Connected  100.00
+# Manhattan Length 11009.8150 Horizontal 4190.7377 Vertical 6819.0773
+# Routed Length 11812.3630 Horizontal 4238.8840 Vertical 7573.4790
+# Ratio Actual / Manhattan   1.0729
+# Unconnected Length   0.0000 Horizontal   0.0000 Vertical   0.0000
+# Start Clean Pass 1 of 2
+# Routing 44 wires.
+# Total Conflicts: 0 (Cross: 0, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 0
+# Attempts 43 Successes 43 Failures 0 Vias 3
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# End Pass 1 of 2
+# Wiring Written to File E:/projects/ET4207/ET4207_demoboard\bestsave.w
+# Start Clean Pass 2 of 2
+# Routing 46 wires.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 5 bend points have been removed.
+# Total Conflicts: 0 (Cross: 0, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 0
+# Attempts 44 Successes 44 Failures 0 Vias 3
+# Cpu Time = 0:00:01  Elapsed Time = 0:00:01
+# End Pass 2 of 2
+# Wiring Written to File E:/projects/ET4207/ET4207_demoboard\bestsave.w
+# Cpu Time = 0:00:01  Elapsed Time = 0:00:01
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0010 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# Layer BOTTOM Vert Signal Wire Grid 0.0010 with offset 0.0000, Width= 8.0000, Clearance= 6.0000
+# ROUTING HISTORY ================================================================
+#     Pass     |   Conflicts |    |     |     |     |    |Red|      CPU Time     |
+#   Name   |No.| Cross| Clear|Fail|Unrte| Vias|XTalk|Len.| % |  Pass   |  Total  |
+#----------+---+------+------+----+-----+-----+-----+----+---+---------+---------|
+# Bus      |  0|     0|     0|   0|   32|    0|    0|   0|   |  0:00:00|  0:00:00|
+# Route    |  1|     1|     0|   0|    0|    5|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    |  2|     0|     0|   0|    0|    6|    0|   0|100|  0:00:00|  0:00:00|
+# Clean    |  3|     0|     0|   0|    0|    3|    0|   0|   |  0:00:00|  0:00:00|
+# Clean    |  4|     0|     0|   0|    0|    3|    0|   0|   |  0:00:00|  0:00:00|
+# Clean    |  5|     0|     0|   0|    0|    3|    0|   0|   |  0:00:00|  0:00:00|
+# Clean    |  6|     0|     0|   0|    0|    3|    0|   0|   |  0:00:01|  0:00:01|
+# Conflicts between polygon wires and fixed objects:   0
+# Stub Violations:   0
+# Net Order Violations:   0
+# Diffpair Uncoupled Length Violations:   0
+# Diffpair Phase Tolerance  Violations:   0
+# Total layerset violations:   0
+# Total layerset violations (exclude Fanout/Stagger/XNet Short side):   0
+# Overall Routing Time: 0:00:01
+# 
+# Wiring Statistics ----------------- E:/projects/ET4207/ET4207_demoboard\ET4207DeMO.dsn
+# Nets 14 Connections 32 Unroutes 0
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 12, at vias 2 Total Vias 3
+# Percent Connected  100.00
+# Manhattan Length 11024.0150 Horizontal 4196.4292 Vertical 6827.5858
+# Routed Length 11741.3670 Horizontal 4169.8880 Vertical 7571.4790
+# Ratio Actual / Manhattan   1.0651
+# Unconnected Length   0.0000 Horizontal   0.0000 Vertical   0.0000
+# Smart Route: Smart_route finished, completion rate: 100.00.
+write routes (changed_only) (reset_changed) C:/Users/jiangs/AppData/Local/Temp/#Taaaaam09608.tmp
+# Routing Written to File C:/Users/jiangs/AppData/Local/Temp/#Taaaaam09608.tmp
+quit

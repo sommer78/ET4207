@@ -1,0 +1,14 @@
+{ Using PSTWRITER 16.6.0 d001Jan-08-2016 at 13:57:44 }
+
+#1 WARNING(ORCAP-36006): Part Name "HEADER_1X2_HDR_THVT_1X2_100_M_HEADER_2" is renamed to "HEADER_1X2_HDR_THVT_1X2_100_M_H".
+#2 WARNING(ORCAP-36006): Part Name "MOSFET_I_EN_GSD_SOT_23_321_BSS138LT3G" is renamed to "MOSFET_I_EN_GSD_SOT_23_321_BSS1".
+INFO(ORCAP-36080): Scanning netlist files ...
+
+Loading... E:\PROJECTS\ET4207\ET4207_DEMOBOARD\allegro/pstchip.dat
+
+Loading... E:\PROJECTS\ET4207\ET4207_DEMOBOARD\allegro/pstchip.dat
+
+Loading... E:\PROJECTS\ET4207\ET4207_DEMOBOARD\allegro/pstxprt.dat
+
+Loading... E:\PROJECTS\ET4207\ET4207_DEMOBOARD\allegro/pstxnet.dat
+packaging the design view...

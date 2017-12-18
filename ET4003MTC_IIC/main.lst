@@ -1,0 +1,1247 @@
+===============ETEK ASSEMBLER V1.1,  WRITTEN BY XIEKJ. 2010===================
+LINE  ADDR    CODE       FLAG  INSTRUCTION
+------------------------------------------------------------------------------
+0001                       S    ;===================================
+0002                       S    ; ET4003 PROGRAM
+0003                       S    ;===================================
+0004                       S    ; WANGYF
+0005                       S    ; 2013.5.19
+0006                       S    ; ÊÖ»úÑ§Ï°ÍòÄÜÒ£¿ØÆ÷
+0007                       S    ;===================================
+0008                       S    INCLUDE ET4003.INC
+0009                       S    INCLUDE MAIN.INC
+0010                       S    
+0011                       S    
+0012                       S    
+0013                       S    
+0014                       S    BUFFER_ADDRESS		EQU		80H
+0015                       S    RAMINITIAL_ADDRESS	EQU		80H
+0016                       S    BUFFER				EQU		31H
+0017                       S    NWRITEBITCOUNT		EQU		32H
+0018                       S    NWRITEBYTECOUNT		EQU		33H
+0019                       S    
+0020                       S    
+0021                       S    
+0022                       S    
+0023                       S    
+0024                       S    
+0025                       S    _EN_InterruptTIMERA_	macro
+0026                       S    					BSF		INTE,TMAIE
+0027                       S    					endm
+0028                       S    
+0029                       S    _DIS_InterruptTIMERA_	macro
+0030                       S    					BCF		INTE,TMAIE
+0031                       S    					endm
+0032                       S    
+0033                       S    
+0034                       S    _EN_TIMERA_			macro
+0035                       S    					BSF		TCCONA,TCENA
+0036                       S    					endm
+0037                       S    
+0038                       S    _RST_TIMERA_		macro
+0039                       S    					BCF		TCCONA,TCRSTA
+0040                       S    					endm
+0041                       S    
+0042                       S    _DIS_TIMERA_		macro
+0043                       S    					BCF		TCCONA,TCENA
+0044                       S    					endm
+0045                       S    
+0046                       S    
+0047                       S    
+0048                       S    
+0049                       S    ;-----------------------------------
+0050                       S    ; MAIN PROGRAM START POINT
+0051                       S    ;-----------------------------------
+0052                       S    ORG	00H
+0053                       S    
+0054                       S    START:
+0055  0000    FFFF         S    	BTFSS 1FFH, 7
+0056  0001    FFFF         S    	BTFSS 1FFH, 7 ;FPGA TEST
+0057  0002    0000         S    	NOP
+0058  0003    A27F         S    	GOTO	MAIN
+0059                       S    	
+0060                       S    ORG	06H
+0061                       S    	;GOTO 	INTERRUPT_06H
+0062  0006    A27F         S    	GOTO	MAIN
+0063                       S    	
+0064                       S    ORG 0CH
+0065  000C    A2E7         S    	GOTO	INTERRUPT_0CH
+0066                       S    
+0067                       S    ORG	012H
+0068  0012    A27F         S    	GOTO	MAIN
+0069                       S    
+0070                       S    
+0071                       S    INCLUDE PERIPHERAL.ASM
+ M    0013    D611         S    BSF       0011H  0003H
+ M    0014    C011         S    BCF       0011H  0000H
+ M    0015    C211         S    BCF       0011H  0001H
+ M    0016    C411         S    BCF       0011H  0002H
+ M    0017    0207         S    CLRF      0007H
+ M    0018    0206         S    CLRF      0006H
+ M    0019    DE07         S    BSF       0007H  0007H
+ M    001A    0003         S    RETURN
+ M    001B    4002         S    MOVLW     0002H
+ M    001C    220E         S    MOVWF     000EH
+ M    001D    020B         S    CLRF      000BH
+ M    001E    0207         S    CLRF      0007H
+ M    001F    0206         S    CLRF      0006H
+ M    0020    C007         S    BCF       0007H  0000H
+ M    0021    CE0E         S    BCF       000EH  0007H
+ M    0022    0003         S    RETURN
+ M    0023    4030         S    MOVLW     0030H
+ M    0024    2229         S    MOVWF     0029H
+ M    0025    8029         S    CALL      0029H
+ M    0026    1629         S    DECFSZ    0029H  0001H
+ M    0027    A025         S    GOTO      0025H
+ M    0028    0003         S    RETURN
+ M    0029    4010         S    MOVLW     0010H
+ M    002A    0000         S    NOP
+ M    002B    222A         S    MOVWF     002AH
+ M    002C    162A         S    DECFSZ    002AH  0001H
+ M    002D    A02C         S    GOTO      002CH
+ M    002E    0003         S    RETURN
+ M    002F    400D         S    MOVLW     000DH
+ M    0030    222A         S    MOVWF     002AH
+ M    0031    162A         S    DECFSZ    002AH  0001H
+ M    0032    A031         S    GOTO      0031H
+ M    0033    0003         S    RETURN
+ M    0034    8039         S    CALL      0039H
+ M    0035    8039         S    CALL      0039H
+ M    0036    803C         S    CALL      003CH
+ M    0037    8047         S    CALL      0047H
+ M    0038    0003         S    RETURN
+ M    0039    803D         S    CALL      003DH
+ M    003A    803D         S    CALL      003DH
+ M    003B    803D         S    CALL      003DH
+ M    003C    803D         S    CALL      003DH
+ M    003D    8055         S    CALL      0055H
+ M    003E    8055         S    CALL      0055H
+ M    003F    8055         S    CALL      0055H
+ M    0040    8055         S    CALL      0055H
+ M    0041    8055         S    CALL      0055H
+ M    0042    8055         S    CALL      0055H
+ M    0043    8055         S    CALL      0055H
+ M    0044    8055         S    CALL      0055H
+ M    0045    8055         S    CALL      0055H
+ M    0046    8055         S    CALL      0055H
+ M    0047    8055         S    CALL      0055H
+ M    0048    8055         S    CALL      0055H
+ M    0049    8055         S    CALL      0055H
+ M    004A    8055         S    CALL      0055H
+ M    004B    8055         S    CALL      0055H
+ M    004C    8055         S    CALL      0055H
+ M    004D    8055         S    CALL      0055H
+ M    004E    8055         S    CALL      0055H
+ M    004F    8055         S    CALL      0055H
+ M    0050    8056         S    CALL      0056H
+ M    0051    A062         S    GOTO      0062H
+ M    0052    8060         S    CALL      0060H
+ M    0053    8060         S    CALL      0060H
+ M    0054    8060         S    CALL      0060H
+ M    0055    8060         S    CALL      0060H
+ M    0056    8060         S    CALL      0060H
+ M    0057    8060         S    CALL      0060H
+ M    0058    8060         S    CALL      0060H
+ M    0059    8060         S    CALL      0060H
+ M    005A    8060         S    CALL      0060H
+ M    005B    8060         S    CALL      0060H
+ M    005C    8060         S    CALL      0060H
+ M    005D    8060         S    CALL      0060H
+ M    005E    A062         S    GOTO      0062H
+ M    005F    0000         S    NOP
+ M    0060    0000         S    NOP
+ M    0061    0000         S    NOP
+ M    0062    0000         S    NOP
+ M    0063    0000         S    NOP
+ M    0064    0000         S    NOP
+ M    0065    0000         S    NOP
+ M    0066    0000         S    NOP
+ M    0067    0000         S    NOP
+ M    0068    0000         S    NOP
+ M    0069    0000         S    NOP
+ M    006A    0000         S    NOP
+ M    006B    0000         S    NOP
+ M    006C    0000         S    NOP
+ M    006D    0000         S    NOP
+ M    006E    0000         S    NOP
+ M    006F    0000         S    NOP
+ M    0070    0000         S    NOP
+ M    0071    0000         S    NOP
+ M    0072    0000         S    NOP
+ M    0073    0000         S    NOP
+ M    0074    0000         S    NOP
+ M    0075    0000         S    NOP
+ M    0076    0000         S    NOP
+ M    0077    0000         S    NOP
+ M    0078    0000         S    NOP
+ M    0079    0000         S    NOP
+ M    007A    0000         S    NOP
+ M    007B    0000         S    NOP
+ M    007C    0000         S    NOP
+ M    007D    0000         S    NOP
+ M    007E    0000         S    NOP
+ M    007F    0000         S    NOP
+ M    0080    0000         S    NOP
+ M    0081    0000         S    NOP
+ M    0082    0000         S    NOP
+ M    0083    0000         S    NOP
+ M    0084    0000         S    NOP
+ M    0085    0000         S    NOP
+ M    0086    0000         S    NOP
+ M    0087    0000         S    NOP
+ M    0088    0000         S    NOP
+ M    0089    0000         S    NOP
+ M    008A    0000         S    NOP
+ M    008B    0000         S    NOP
+ M    008C    0000         S    NOP
+ M    008D    0000         S    NOP
+ M    008E    0003         S    RETURN
+0072                       S    ;INCLUDE	LEARN_RMT.ASM
+0073                       S    ;INCLUDE	RMTOUT.ASM
+0074                       S    INCLUDE RMTOUT_CONSUMEIR.ASM
+ M    008F    201E         S    MOVFW     001EH
+ M    0090    6826         S    ANDLW     0026H
+ M    0091    222D         S    MOVWF     002DH
+ M    0092    4000         S    MOVLW     0000H
+ M    0093    182D         S    SUBWF     002DH  0000H
+ M    0094    E004         S    BTFSC     0004H  0000H
+ M    0095    A0B3         S    GOTO      00B3H
+ M    0096    4002         S    MOVLW     0002H
+ M    0097    182D         S    SUBWF     002DH  0000H
+ M    0098    E004         S    BTFSC     0004H  0000H
+ M    0099    A0B4         S    GOTO      00B4H
+ M    009A    4004         S    MOVLW     0004H
+ M    009B    182D         S    SUBWF     002DH  0000H
+ M    009C    E004         S    BTFSC     0004H  0000H
+ M    009D    A0B6         S    GOTO      00B6H
+ M    009E    4006         S    MOVLW     0006H
+ M    009F    182D         S    SUBWF     002DH  0000H
+ M    00A0    E004         S    BTFSC     0004H  0000H
+ M    00A1    A0B9         S    GOTO      00B9H
+ M    00A2    4020         S    MOVLW     0020H
+ M    00A3    182D         S    SUBWF     002DH  0000H
+ M    00A4    E004         S    BTFSC     0004H  0000H
+ M    00A5    A0BD         S    GOTO      00BDH
+ M    00A6    4022         S    MOVLW     0022H
+ M    00A7    182D         S    SUBWF     002DH  0000H
+ M    00A8    E004         S    BTFSC     0004H  0000H
+ M    00A9    A0C2         S    GOTO      00C2H
+ M    00AA    4024         S    MOVLW     0024H
+ M    00AB    182D         S    SUBWF     002DH  0000H
+ M    00AC    E004         S    BTFSC     0004H  0000H
+ M    00AD    A0C8         S    GOTO      00C8H
+ M    00AE    4026         S    MOVLW     0026H
+ M    00AF    182D         S    SUBWF     002DH  0000H
+ M    00B0    E004         S    BTFSC     0004H  0000H
+ M    00B1    A0CF         S    GOTO      00CFH
+ M    00B2    A0E2         S    GOTO      00E2H
+ M    00B3    A0D7         S    GOTO      00D7H
+ M    00B4    1284         S    DECF      0084H  0001H
+ M    00B5    A0D7         S    GOTO      00D7H
+ M    00B6    1284         S    DECF      0084H  0001H
+ M    00B7    1284         S    DECF      0084H  0001H
+ M    00B8    A0D7         S    GOTO      00D7H
+ M    00B9    1284         S    DECF      0084H  0001H
+ M    00BA    1284         S    DECF      0084H  0001H
+ M    00BB    1284         S    DECF      0084H  0001H
+ M    00BC    A0D7         S    GOTO      00D7H
+ M    00BD    1284         S    DECF      0084H  0001H
+ M    00BE    1284         S    DECF      0084H  0001H
+ M    00BF    1284         S    DECF      0084H  0001H
+ M    00C0    1284         S    DECF      0084H  0001H
+ M    00C1    A0D7         S    GOTO      00D7H
+ M    00C2    1284         S    DECF      0084H  0001H
+ M    00C3    1284         S    DECF      0084H  0001H
+ M    00C4    1284         S    DECF      0084H  0001H
+ M    00C5    1284         S    DECF      0084H  0001H
+ M    00C6    1284         S    DECF      0084H  0001H
+ M    00C7    A0D7         S    GOTO      00D7H
+ M    00C8    1284         S    DECF      0084H  0001H
+ M    00C9    1284         S    DECF      0084H  0001H
+ M    00CA    1284         S    DECF      0084H  0001H
+ M    00CB    1284         S    DECF      0084H  0001H
+ M    00CC    1284         S    DECF      0084H  0001H
+ M    00CD    1284         S    DECF      0084H  0001H
+ M    00CE    A0D7         S    GOTO      00D7H
+ M    00CF    1284         S    DECF      0084H  0001H
+ M    00D0    1284         S    DECF      0084H  0001H
+ M    00D1    1284         S    DECF      0084H  0001H
+ M    00D2    1284         S    DECF      0084H  0001H
+ M    00D3    1284         S    DECF      0084H  0001H
+ M    00D4    1284         S    DECF      0084H  0001H
+ M    00D5    1284         S    DECF      0084H  0001H
+ M    00D6    A0D7         S    GOTO      00D7H
+ M    00D7    F826         S    BTFSS     0026H  0004H
+ M    00D8    A0DB         S    GOTO      00DBH
+ M    00D9    C826         S    BCF       0026H  0004H
+ M    00DA    A0DC         S    GOTO      00DCH
+ M    00DB    D826         S    BSF       0026H  0004H
+ M    00DC    8203         S    CALL      0203H
+ M    00DD    2076         S    MOVFW     0076H
+ M    00DE    1888         S    SUBWF     0088H  0000H
+ M    00DF    F004         S    BTFSS     0004H  0000H
+ M    00E0    A0E2         S    GOTO      00E2H
+ M    00E1    80F4         S    CALL      00F4H
+ M    00E2    0234         S    CLRF      0034H
+ M    00E3    0235         S    CLRF      0035H
+ M    00E4    4100         S    SETDP     0000H
+ M    00E5    4070         S    MOVLW     0070H
+ M    00E6    80E8         S    CALL      00E8H
+ M    00E7    A296         S    GOTO      0296H
+ M    00E8    2202         S    MOVWF     0002H
+ M    00E9    0200         S    CLRF      0000H
+ M    00EA    0E02         S    INCFSZ    0002H  0001H
+ M    00EB    A0E9         S    GOTO      00E9H
+ M    00EC    4101         S    SETDP     0001H
+ M    00ED    4000         S    MOVLW     0000H
+ M    00EE    2202         S    MOVWF     0002H
+ M    00EF    0200         S    CLRF      0000H
+ M    00F0    0E02         S    INCFSZ    0002H  0001H
+ M    00F1    A0EF         S    GOTO      00EFH
+ M    00F2    4100         S    SETDP     0000H
+ M    00F3    0003         S    RETURN
+ M    00F4    D80B         S    BSF       000BH  0004H
+ M    00F5    C204         S    BCF       0004H  0001H
+ M    00F6    3C82         S    RRF       0082H  0000H
+ M    00F7    2209         S    MOVWF     0009H
+ M    00F8    2082         S    MOVFW     0082H
+ M    00F9    220A         S    MOVWF     000AH
+ M    00FA    C81E         S    BCF       001EH  0004H
+ M    00FB    D61E         S    BSF       001EH  0003H
+ M    00FC    CE0B         S    BCF       000BH  0007H
+ M    00FD    4002         S    MOVLW     0002H
+ M    00FE    220E         S    MOVWF     000EH
+ M    00FF    CE0E         S    BCF       000EH  0007H
+ M    0100    D60E         S    BSF       000EH  0003H
+ M    0101    0206         S    CLRF      0006H
+ M    0102    C807         S    BCF       0007H  0004H
+ M    0103    CE07         S    BCF       0007H  0007H
+ M    0104    2082         S    MOVFW     0082H
+ M    0105    5880         S    SUBLW     0080H
+ M    0106    222A         S    MOVWF     002AH
+ M    0107    4009         S    MOVLW     0009H
+ M    0108    062A         S    ADDWF     002AH  0001H
+ M    0109    2083         S    MOVFW     0083H
+ M    010A    2279         S    MOVWF     0079H
+ M    010B    2084         S    MOVFW     0084H
+ M    010C    227A         S    MOVWF     007AH
+ M    010D    4001         S    MOVLW     0001H
+ M    010E    1A7A         S    SUBWF     007AH  0001H
+ M    010F    4000         S    MOVLW     0000H
+ M    0110    3A79         S    SUBWFC    0079H  0001H
+ M    0111    4100         S    SETDP     0000H
+ M    0112    4040         S    MOVLW     0040H
+ M    0113    4489         S    ADDLW     0089H
+ M    0114    2202         S    MOVWF     0002H
+ M    0115    4C00         S    SWAPF     0000H  0000H
+ M    0116    680F         S    ANDLW     000FH
+ M    0117    2275         S    MOVWF     0075H
+ M    0118    C204         S    BCF       0004H  0001H
+ M    0119    3675         S    RLF       0075H  0001H
+ M    011A    C204         S    BCF       0004H  0001H
+ M    011B    3675         S    RLF       0075H  0001H
+ M    011C    2075         S    MOVFW     0075H
+ M    011D    4489         S    ADDLW     0089H
+ M    011E    2203         S    MOVWF     0003H
+ M    011F    2001         S    MOVFW     0001H
+ M    0120    2270         S    MOVWF     0070H
+ M    0121    0A03         S    INCF      0003H  0001H
+ M    0122    2001         S    MOVFW     0001H
+ M    0123    2271         S    MOVWF     0071H
+ M    0124    0A03         S    INCF      0003H  0001H
+ M    0125    2001         S    MOVFW     0001H
+ M    0126    2272         S    MOVWF     0072H
+ M    0127    0A03         S    INCF      0003H  0001H
+ M    0128    2001         S    MOVFW     0001H
+ M    0129    2273         S    MOVWF     0073H
+ M    012A    0A70         S    INCF      0070H  0001H
+ M    012B    0A72         S    INCF      0072H  0001H
+ M    012C    D60B         S    BSF       000BH  0003H
+ M    012D    816C         S    CALL      016CH
+ M    012E    1671         S    DECFSZ    0071H  0001H
+ M    012F    A12D         S    GOTO      012DH
+ M    0130    1670         S    DECFSZ    0070H  0001H
+ M    0131    A12D         S    GOTO      012DH
+ M    0132    C60B         S    BCF       000BH  0003H
+ M    0133    816C         S    CALL      016CH
+ M    0134    1673         S    DECFSZ    0073H  0001H
+ M    0135    A133         S    GOTO      0133H
+ M    0136    1672         S    DECFSZ    0072H  0001H
+ M    0137    A133         S    GOTO      0133H
+ M    0138    4001         S    MOVLW     0001H
+ M    0139    1A7A         S    SUBWF     007AH  0001H
+ M    013A    4000         S    MOVLW     0000H
+ M    013B    3A79         S    SUBWFC    0079H  0001H
+ M    013C    F204         S    BTFSS     0004H  0001H
+ M    013D    A16B         S    GOTO      016BH
+ M    013E    2000         S    MOVFW     0000H
+ M    013F    680F         S    ANDLW     000FH
+ M    0140    2275         S    MOVWF     0075H
+ M    0141    C204         S    BCF       0004H  0001H
+ M    0142    3675         S    RLF       0075H  0001H
+ M    0143    C204         S    BCF       0004H  0001H
+ M    0144    3675         S    RLF       0075H  0001H
+ M    0145    2075         S    MOVFW     0075H
+ M    0146    4489         S    ADDLW     0089H
+ M    0147    2203         S    MOVWF     0003H
+ M    0148    2001         S    MOVFW     0001H
+ M    0149    2270         S    MOVWF     0070H
+ M    014A    0A03         S    INCF      0003H  0001H
+ M    014B    2001         S    MOVFW     0001H
+ M    014C    2271         S    MOVWF     0071H
+ M    014D    0A03         S    INCF      0003H  0001H
+ M    014E    2001         S    MOVFW     0001H
+ M    014F    2272         S    MOVWF     0072H
+ M    0150    0A03         S    INCF      0003H  0001H
+ M    0151    2001         S    MOVFW     0001H
+ M    0152    2273         S    MOVWF     0073H
+ M    0153    0A70         S    INCF      0070H  0001H
+ M    0154    0A72         S    INCF      0072H  0001H
+ M    0155    D60B         S    BSF       000BH  0003H
+ M    0156    816C         S    CALL      016CH
+ M    0157    1671         S    DECFSZ    0071H  0001H
+ M    0158    A156         S    GOTO      0156H
+ M    0159    1670         S    DECFSZ    0070H  0001H
+ M    015A    A156         S    GOTO      0156H
+ M    015B    C60B         S    BCF       000BH  0003H
+ M    015C    816C         S    CALL      016CH
+ M    015D    1673         S    DECFSZ    0073H  0001H
+ M    015E    A15C         S    GOTO      015CH
+ M    015F    1672         S    DECFSZ    0072H  0001H
+ M    0160    A15C         S    GOTO      015CH
+ M    0161    4001         S    MOVLW     0001H
+ M    0162    1A7A         S    SUBWF     007AH  0001H
+ M    0163    4000         S    MOVLW     0000H
+ M    0164    3A79         S    SUBWFC    0079H  0001H
+ M    0165    F204         S    BTFSS     0004H  0001H
+ M    0166    A16B         S    GOTO      016BH
+ M    0167    0E02         S    INCFSZ    0002H  0001H
+ M    0168    A115         S    GOTO      0115H
+ M    0169    4101         S    SETDP     0001H
+ M    016A    A115         S    GOTO      0115H
+ M    016B    0003         S    RETURN
+ M    016C    202A         S    MOVFW     002AH
+ M    016D    0008         S    ADDPCW
+ M    016E    0000         S    NOP
+ M    016F    0000         S    NOP
+ M    0170    0000         S    NOP
+ M    0171    0000         S    NOP
+ M    0172    0000         S    NOP
+ M    0173    0000         S    NOP
+ M    0174    0000         S    NOP
+ M    0175    0000         S    NOP
+ M    0176    0000         S    NOP
+ M    0177    0000         S    NOP
+ M    0178    0000         S    NOP
+ M    0179    0000         S    NOP
+ M    017A    0000         S    NOP
+ M    017B    0000         S    NOP
+ M    017C    0000         S    NOP
+ M    017D    0000         S    NOP
+ M    017E    0000         S    NOP
+ M    017F    0000         S    NOP
+ M    0180    0000         S    NOP
+ M    0181    0000         S    NOP
+ M    0182    0000         S    NOP
+ M    0183    0000         S    NOP
+ M    0184    0000         S    NOP
+ M    0185    0000         S    NOP
+ M    0186    0000         S    NOP
+ M    0187    0000         S    NOP
+ M    0188    0000         S    NOP
+ M    0189    0000         S    NOP
+ M    018A    0000         S    NOP
+ M    018B    0000         S    NOP
+ M    018C    0000         S    NOP
+ M    018D    0000         S    NOP
+ M    018E    0000         S    NOP
+ M    018F    0000         S    NOP
+ M    0190    0000         S    NOP
+ M    0191    0000         S    NOP
+ M    0192    0000         S    NOP
+ M    0193    0000         S    NOP
+ M    0194    0000         S    NOP
+ M    0195    0000         S    NOP
+ M    0196    0000         S    NOP
+ M    0197    0000         S    NOP
+ M    0198    0000         S    NOP
+ M    0199    0000         S    NOP
+ M    019A    0000         S    NOP
+ M    019B    0000         S    NOP
+ M    019C    0000         S    NOP
+ M    019D    0000         S    NOP
+ M    019E    0000         S    NOP
+ M    019F    0000         S    NOP
+ M    01A0    0000         S    NOP
+ M    01A1    0000         S    NOP
+ M    01A2    0000         S    NOP
+ M    01A3    0000         S    NOP
+ M    01A4    0000         S    NOP
+ M    01A5    0000         S    NOP
+ M    01A6    0000         S    NOP
+ M    01A7    0000         S    NOP
+ M    01A8    0000         S    NOP
+ M    01A9    0000         S    NOP
+ M    01AA    0000         S    NOP
+ M    01AB    0000         S    NOP
+ M    01AC    0000         S    NOP
+ M    01AD    0000         S    NOP
+ M    01AE    0000         S    NOP
+ M    01AF    0000         S    NOP
+ M    01B0    0000         S    NOP
+ M    01B1    0000         S    NOP
+ M    01B2    0000         S    NOP
+ M    01B3    0000         S    NOP
+ M    01B4    0000         S    NOP
+ M    01B5    0000         S    NOP
+ M    01B6    0000         S    NOP
+ M    01B7    0000         S    NOP
+ M    01B8    0000         S    NOP
+ M    01B9    0000         S    NOP
+ M    01BA    0000         S    NOP
+ M    01BB    0000         S    NOP
+ M    01BC    0000         S    NOP
+ M    01BD    0000         S    NOP
+ M    01BE    0000         S    NOP
+ M    01BF    0000         S    NOP
+ M    01C0    0000         S    NOP
+ M    01C1    0000         S    NOP
+ M    01C2    0000         S    NOP
+ M    01C3    0000         S    NOP
+ M    01C4    0000         S    NOP
+ M    01C5    0000         S    NOP
+ M    01C6    0000         S    NOP
+ M    01C7    0000         S    NOP
+ M    01C8    0000         S    NOP
+ M    01C9    0000         S    NOP
+ M    01CA    0000         S    NOP
+ M    01CB    0000         S    NOP
+ M    01CC    0000         S    NOP
+ M    01CD    0000         S    NOP
+ M    01CE    0000         S    NOP
+ M    01CF    0000         S    NOP
+ M    01D0    0000         S    NOP
+ M    01D1    0000         S    NOP
+ M    01D2    0000         S    NOP
+ M    01D3    0000         S    NOP
+ M    01D4    0000         S    NOP
+ M    01D5    0000         S    NOP
+ M    01D6    0000         S    NOP
+ M    01D7    0000         S    NOP
+ M    01D8    0000         S    NOP
+ M    01D9    0000         S    NOP
+ M    01DA    0000         S    NOP
+ M    01DB    0000         S    NOP
+ M    01DC    0000         S    NOP
+ M    01DD    0000         S    NOP
+ M    01DE    0000         S    NOP
+ M    01DF    0000         S    NOP
+ M    01E0    0000         S    NOP
+ M    01E1    0000         S    NOP
+ M    01E2    0000         S    NOP
+ M    01E3    0000         S    NOP
+ M    01E4    0000         S    NOP
+ M    01E5    0000         S    NOP
+ M    01E6    0000         S    NOP
+ M    01E7    0000         S    NOP
+ M    01E8    0000         S    NOP
+ M    01E9    0000         S    NOP
+ M    01EA    0000         S    NOP
+ M    01EB    0000         S    NOP
+ M    01EC    0000         S    NOP
+ M    01ED    0000         S    NOP
+ M    01EE    0003         S    RETURN
+ M    01EF    0000         S    NOP
+ M    01F0    0000         S    NOP
+ M    01F1    0000         S    NOP
+ M    01F2    0000         S    NOP
+ M    01F3    0000         S    NOP
+ M    01F4    0000         S    NOP
+ M    01F5    0000         S    NOP
+ M    01F6    0000         S    NOP
+ M    01F7    0000         S    NOP
+ M    01F8    0000         S    NOP
+ M    01F9    0000         S    NOP
+ M    01FA    0000         S    NOP
+ M    01FB    0000         S    NOP
+ M    01FC    0000         S    NOP
+ M    01FD    0000         S    NOP
+ M    01FE    0000         S    NOP
+ M    01FF    0000         S    NOP
+ M    0200    0000         S    NOP
+ M    0201    0000         S    NOP
+ M    0202    0003         S    RETURN
+ M    0203    2080         S    MOVFW     0080H
+ M    0204    2277         S    MOVWF     0077H
+ M    0205    2081         S    MOVFW     0081H
+ M    0206    2278         S    MOVWF     0078H
+ M    0207    400A         S    MOVLW     000AH
+ M    0208    1A78         S    SUBWF     0078H  0001H
+ M    0209    4000         S    MOVLW     0000H
+ M    020A    3A77         S    SUBWFC    0077H  0001H
+ M    020B    0276         S    CLRF      0076H
+ M    020C    4100         S    SETDP     0000H
+ M    020D    4089         S    MOVLW     0089H
+ M    020E    2202         S    MOVWF     0002H
+ M    020F    2000         S    MOVFW     0000H
+ M    0210    3276         S    XORWF     0076H  0001H
+ M    0211    0E02         S    INCFSZ    0002H  0001H
+ M    0212    A214         S    GOTO      0214H
+ M    0213    4101         S    SETDP     0001H
+ M    0214    4008         S    MOVLW     0008H
+ M    0215    2274         S    MOVWF     0074H
+ M    0216    2076         S    MOVFW     0076H
+ M    0217    6801         S    ANDLW     0001H
+ M    0218    5800         S    SUBLW     0000H
+ M    0219    E004         S    BTFSC     0004H  0000H
+ M    021A    A220         S    GOTO      0220H
+ M    021B    C204         S    BCF       0004H  0001H
+ M    021C    3C76         S    RRF       0076H  0000H
+ M    021D    708C         S    XORLW     008CH
+ M    021E    2276         S    MOVWF     0076H
+ M    021F    A222         S    GOTO      0222H
+ M    0220    C204         S    BCF       0004H  0001H
+ M    0221    3E76         S    RRF       0076H  0001H
+ M    0222    1674         S    DECFSZ    0074H  0001H
+ M    0223    A216         S    GOTO      0216H
+ M    0224    4001         S    MOVLW     0001H
+ M    0225    1A78         S    SUBWF     0078H  0001H
+ M    0226    4000         S    MOVLW     0000H
+ M    0227    3A77         S    SUBWFC    0077H  0001H
+ M    0228    2077         S    MOVFW     0077H
+ M    0229    5800         S    SUBLW     0000H
+ M    022A    F004         S    BTFSS     0004H  0000H
+ M    022B    A20F         S    GOTO      020FH
+ M    022C    2078         S    MOVFW     0078H
+ M    022D    5800         S    SUBLW     0000H
+ M    022E    F004         S    BTFSS     0004H  0000H
+ M    022F    A20F         S    GOTO      020FH
+ M    0230    0003         S    RETURN
+0075                       S    INCLUDE REGCHANGE.ASM
+ M    0231    2080         S    MOVFW     0080H
+ M    0232    68F0         S    ANDLW     00F0H
+ M    0233    5800         S    SUBLW     0000H
+ M    0234    F004         S    BTFSS     0004H  0000H
+ M    0235    A27B         S    GOTO      027BH
+ M    0236    2080         S    MOVFW     0080H
+ M    0237    680F         S    ANDLW     000FH
+ M    0238    0008         S    ADDPCW
+ M    0239    A249         S    GOTO      0249H
+ M    023A    A27B         S    GOTO      027BH
+ M    023B    A27B         S    GOTO      027BH
+ M    023C    A27B         S    GOTO      027BH
+ M    023D    A27B         S    GOTO      027BH
+ M    023E    A27B         S    GOTO      027BH
+ M    023F    A27B         S    GOTO      027BH
+ M    0240    A27B         S    GOTO      027BH
+ M    0241    A27B         S    GOTO      027BH
+ M    0242    A27B         S    GOTO      027BH
+ M    0243    A27B         S    GOTO      027BH
+ M    0244    A27B         S    GOTO      027BH
+ M    0245    A27B         S    GOTO      027BH
+ M    0246    A27B         S    GOTO      027BH
+ M    0247    A27B         S    GOTO      027BH
+ M    0248    A27B         S    GOTO      027BH
+ M    0249    40D9         S    MOVLW     00D9H
+ M    024A    2A1E         S    ANDWF     001EH  0001H
+ M    024B    2081         S    MOVFW     0081H
+ M    024C    68F0         S    ANDLW     00F0H
+ M    024D    5800         S    SUBLW     0000H
+ M    024E    F004         S    BTFSS     0004H  0000H
+ M    024F    A27B         S    GOTO      027BH
+ M    0250    2081         S    MOVFW     0081H
+ M    0251    680F         S    ANDLW     000FH
+ M    0252    0008         S    ADDPCW
+ M    0253    A263         S    GOTO      0263H
+ M    0254    A266         S    GOTO      0266H
+ M    0255    A269         S    GOTO      0269H
+ M    0256    A26C         S    GOTO      026CH
+ M    0257    A26F         S    GOTO      026FH
+ M    0258    A272         S    GOTO      0272H
+ M    0259    A275         S    GOTO      0275H
+ M    025A    A278         S    GOTO      0278H
+ M    025B    A27B         S    GOTO      027BH
+ M    025C    A27B         S    GOTO      027BH
+ M    025D    A27B         S    GOTO      027BH
+ M    025E    A27B         S    GOTO      027BH
+ M    025F    A27B         S    GOTO      027BH
+ M    0260    A27B         S    GOTO      027BH
+ M    0261    A27B         S    GOTO      027BH
+ M    0262    A27B         S    GOTO      027BH
+ M    0263    4000         S    MOVLW     0000H
+ M    0264    2E1E         S    IORWF     001EH  0001H
+ M    0265    A27B         S    GOTO      027BH
+ M    0266    4002         S    MOVLW     0002H
+ M    0267    2E1E         S    IORWF     001EH  0001H
+ M    0268    A27B         S    GOTO      027BH
+ M    0269    4004         S    MOVLW     0004H
+ M    026A    2E1E         S    IORWF     001EH  0001H
+ M    026B    A27B         S    GOTO      027BH
+ M    026C    4006         S    MOVLW     0006H
+ M    026D    2E1E         S    IORWF     001EH  0001H
+ M    026E    A27B         S    GOTO      027BH
+ M    026F    4020         S    MOVLW     0020H
+ M    0270    2E1E         S    IORWF     001EH  0001H
+ M    0271    A27B         S    GOTO      027BH
+ M    0272    4022         S    MOVLW     0022H
+ M    0273    2E1E         S    IORWF     001EH  0001H
+ M    0274    A27B         S    GOTO      027BH
+ M    0275    4024         S    MOVLW     0024H
+ M    0276    2E1E         S    IORWF     001EH  0001H
+ M    0277    A27B         S    GOTO      027BH
+ M    0278    4026         S    MOVLW     0026H
+ M    0279    2E1E         S    IORWF     001EH  0001H
+ M    027A    A27B         S    GOTO      027BH
+ M    027B    027F         S    CLRF      007FH
+ M    027C    0280         S    CLRF      0080H
+ M    027D    0281         S    CLRF      0081H
+ M    027E    A296         S    GOTO      0296H
+0076                       S    ;INCLUDE RMTOUT_VERSION.ASM
+0077                       S    
+0078                       S    
+0079                       S    
+0080                       S    
+0081                       S    MAIN:
+0082  027F    0000         S    	NOP
+0083  0280    0000         S    	NOP
+0084  0281    0000         S    	NOP
+0085                       S    	;BTFSC	STATUS,TO
+0086                       S    	;GOTO	SUPER_LOOP
+0087                       S    	;MOVLW	0EH
+0088                       S    	;MOVWF	WDTCTR
+0089  0282    0006         S    	CLRWDT
+0090  0283    801B         S    	CALL	SYSINI
+0091  0284    8013         S    	CALL	INITINTP
+0092  0285    82D4         S    	CALL	RAMSCLEARALL
+0093                       S    
+0094  0286    D619         S    	BSF		PT1SEL,3
+0095  0287    D01A         S    	BSF		PT2SEL,0
+0096                       S    
+0097  0288    40D9         S    	MOVLW	11011001B
+0098  0289    2A1E         S    	ANDWF	RMTCTR,F
+0099  028A    4006         S    	MOVLW	00000110B
+0100  028B    2E1E         S    	IORWF	RMTCTR,F
+0101                       S    
+0102  028C    022D         S    	CLRF	TEMP
+0103  028D    407F         S    	MOVLW	7FH
+0104  028E    2202         S    	MOVWF	FRS0
+0105                       S    RAM_INITIAL:
+0106  028F    202D         S    	MOVFW	TEMP
+0107  0290    2200         S    	MOVWF	IND0
+0108  0291    0E02         S    	INCFSZ	FRS0,F
+0109  0292    A294         S    	GOTO	$+2
+0110  0293    4101         S    	SETDP	01H
+0111  0294    0E2D         S    	INCFSZ	TEMP,F
+0112  0295    A28F         S    	GOTO	RAM_INITIAL
+0113                       S    	
+0114                       S    	
+0115                       S    
+0116                       S    
+0117                       S    SUPER_LOOP:
+0118                       S    SLEEPMODE:
+0119  0296    804F         S    		CALL	NOP1000
+0120  0297    CE1E         S    		BCF     RMTCTR,7
+0121  0298    CC1E         S    		BCF     RMTCTR,6
+0122  0299    C81E         S    		BCF     RMTCTR,RX_EN				
+0123  029A    C61E         S    		BCF     RMTCTR,TX_EN			 ;RX_EN=0,TX_EN=0 ½ûÖ¹·¢Éä£¬½ûÖ¹½ÓÊÕ-->½µµÍ¹¦ºÄ
+0124                       S    		;BSF     RMTCTR,5
+0125                       S    
+0126  029B    DE1F         S    		BSF		I2CCON,7 ;ENABLE I2C PORT(PT1_4(SCL), PT1_3(SDA))
+0127                       S    		;BSF		INTE,1 ;ENABLE I2C INTERRPUT
+0128                       S    		
+0129                       S    		;MOVLW	06H
+0130                       S    		;MOVWF	WDTCTR
+0131                       S    		;CLRWDT
+0132  029C    022F         S    		CLRF	FLAG1
+0133  029D    4100         S    		SETDP	00H
+0134                       S    		;MOVLW	BUFFER_ADDRESS
+0135  029E    407F         S    		MOVLW	7FH
+0136  029F    2237         S    		MOVWF	PPACKPOINTER
+0137                       S    SLEEPMODE_1:
+0138  02A0    C207         S    		BCF		INTE,1 ;ENABLE I2C INTERRPUT
+0139  02A1    CE07         S    		BCF		INTE,GIE
+0140  02A2    0206         S    		CLRF	INTF
+0141  02A3    C62F         S    		BCF		FLAG1,ISFIRSTBYTE
+0142  02A4    0004         S    		SLEEP
+0143  02A5    0000         S    		NOP
+0144  02A6    0000         S    		NOP
+0145                       S    
+0146                       S    
+0147                       S    
+0148                       S    
+0149                       S    I2C:		
+0150                       S    			;MOVFW	PPACKPOINTER
+0151                       S    			;MOVWF	FRS0
+0152  02A7    D207         S    			BSF		INTE, 1 ;ENABLE I2C INTERRPUT
+0153  02A8    DE07         S    			BSF		INTE, GIE ;ENABLE GLOBLE INTERRUPT 
+0154                       S    I2CWATINGFORSTOP:
+0155  02A9    FA1F         S    			BTFSS   I2CCON, I2C_STO  ;IF I2C_STO=1, DEAL WITH DATA, OTHER WAIT
+0156  02AA    A2A9         S    			GOTO	I2CWATINGFORSTOP
+0157  02AB    C207         S    			BCF		INTE,1 ;ENABLE I2C INTERRPUT
+0158  02AC    CE07         S    			BCF		INTE,GIE
+0159                       S    
+0160                       S    			
+0161  02AD    F81F         S    			BTFSS	I2CCON, I2C_RW ;I2C DATA WRITE =0 OR READ =1
+0162  02AE    A2B4         S    			GOTO	$+6
+0163  02AF    CC1F         S    			BCF		I2CCON, I2C_READY
+0164  02B0    4001         S    			MOVLW	1
+0165  02B1    1A02         S    			SUBWF	FRS0,F
+0166  02B2    F204         S    			BTFSS	STATUS,C
+0167  02B3    4100         S    			SETDP	00H
+0168                       S    			
+0169                       S    
+0170  02B4    E42F         S    			BTFSC	FLAG1,ISLASTPACK
+0171  02B5    A2B9         S    			GOTO	HANDLEDATA
+0172  02B6    2002         S    			MOVFW	FRS0
+0173  02B7    2237         S    			MOVWF	PPACKPOINTER
+0174  02B8    A2A0         S    			GOTO	SLEEPMODE_1
+0175                       S    			
+0176                       S    
+0177                       S    
+0178                       S    
+0179                       S    HANDLEDATA:
+0180  02B9    207F         S    			MOVFW	_COMMAND
+0181  02BA    68F0         S    			ANDLW	0F0H
+0182  02BB    5850         S    			SUBLW	50H
+0183  02BC    F004         S    			BTFSS	STATUS,Z
+0184  02BD    A296         S    			GOTO	SLEEPMODE
+0185  02BE    207F         S    			MOVFW	_COMMAND
+0186  02BF    680F         S    			ANDLW	0FH
+0187  02C0    0008         S    			ADDPCW
+0188  02C1    A296         S    			GOTO	SLEEPMODE
+0189  02C2    A296         S    			GOTO	SLEEPMODE
+0190  02C3    A296         S    			GOTO	SLEEPMODE
+0191  02C4    A296         S    			GOTO	SLEEPMODE
+0192  02C5    A08F         S    			GOTO	SEND_KITKAT_IR		;0X54
+0193  02C6    A231         S    			GOTO	REGCHANGE			;0X55
+0194  02C7    A296         S    			GOTO	SLEEPMODE
+0195  02C8    A296         S    			GOTO	SLEEPMODE
+0196  02C9    A296         S    			GOTO	SLEEPMODE
+0197  02CA    A296         S    			GOTO	SLEEPMODE
+0198  02CB    A296         S    			GOTO	SLEEPMODE
+0199  02CC    A296         S    			GOTO	SLEEPMODE
+0200  02CD    A296         S    			GOTO	SLEEPMODE
+0201  02CE    A296         S    			GOTO	SLEEPMODE
+0202  02CF    A296         S    			GOTO	SLEEPMODE
+0203  02D0    A296         S    			GOTO	SLEEPMODE
+0204  02D1    0000         S    			NOP
+0205  02D2    0000         S    			NOP
+0206  02D3    A296         S    			GOTO	SLEEPMODE
+0207                       S    		
+0208                       S    
+0209                       S    
+0210                       S    
+0211                       S    
+0212                       S    
+0213                       S    ;=================================================================		
+0214                       S    ;¼Ä´æÆ÷ÇåÁã
+0215                       S    ;======================================================================
+0216                       S    RAMSCLEARALL:
+0217  02D4    4020         S    		MOVLW		20H
+0218  02D5    82D7         S    		CALL		CLEARRAMS
+0219  02D6    0003         S    		RETURN
+0220                       S    CLEARRAMS:
+0221  02D7    2202         S    		MOVWF		FRS0
+0222                       S    CLEARRAMLOOP_L:
+0223  02D8    0200         S    		CLRF		IND0
+0224  02D9    0E02         S    		INCFSZ		FRS0,F
+0225  02DA    A2D8         S    		GOTO		CLEARRAMLOOP_L
+0226                       S    
+0227  02DB    4000         S    		MOVLW		00H
+0228  02DC    2202         S    		MOVWF		FRS0
+0229  02DD    4101         S    		SETDP       01H
+0230                       S    CLEARRAMLOOP_H:
+0231  02DE    0200         S    		CLRF		IND0
+0232  02DF    0E02         S            INCFSZ		FRS0,F
+0233  02E0    A2DE         S            GOTO		CLEARRAMLOOP_H
+0234                       S    
+0235  02E1    4100         S            SETDP       00H
+0236  02E2    0003         S    		RETURN
+0237                       S    
+0238                       S    
+0239                       S              
+0240                       S    		  
+0241                       S    DELAY150MS:
+0242  02E3    8039         S    		CALL	NOP50000
+0243  02E4    8039         S    		CALL	NOP50000
+0244  02E5    8039         S    		CALL	NOP50000
+0245  02E6    0003         S    		RETURN
+0246                       S    
+0247                       S    
+0248                       S    
+0249                       S    INTERRUPT_0CH:
+0250  02E7    E81F         S    			BTFSC	I2CCON, I2C_RW ;I2C DATA WRITE OR READ?
+0251  02E8    A2EE         S    			GOTO	I2CREADDATA
+0252  02E9    FC1F         S    			BTFSS	I2CCON, I2C_READY ;I2C DATA IS READY?
+0253  02EA    A315         S    			GOTO	I2CINTERRUPTEND
+0254  02EB    F62F         S    			BTFSS	FLAG1,ISFIRSTBYTE
+0255  02EC    A302         S    			GOTO	FIRSTBYTE
+0256  02ED    A2FB         S    			GOTO	I2CWRITEDATA
+0257                       S    	I2CREADDATA:
+0258  02EE    EC1F         S    			BTFSC	I2CCON, I2C_READY ;I2C DATA IS READY?
+0259  02EF    A2F7         S    			GOTO	I2CREADDATAEND
+0260  02F0    0E02         S    			INCFSZ	FRS0,F
+0261  02F1    A2F3         S    			GOTO	$+2
+0262  02F2    4101         S    			SETDP	01H
+0263  02F3    2000         S    			MOVFW	IND0
+0264  02F4    DC1F         S    			BSF		I2CCON, I2C_READY
+0265  02F5    0206         S    			CLRF	INTF
+0266  02F6    0002         S    			RETFIE
+0267                       S    	I2CREADDATAEND:
+0268  02F7    407F         S    			MOVLW	7FH
+0269  02F8    2237         S    			MOVWF	PPACKPOINTER
+0270  02F9    0206         S    			CLRF	INTF
+0271  02FA    0002         S    			RETFIE
+0272                       S    
+0273                       S    I2CWRITEDATA:
+0274  02FB    4300         S    		MOVI2CW
+0275  02FC    2200         S    		MOVWF	IND0
+0276  02FD    0E02         S    		INCFSZ	FRS0,F
+0277  02FE    A300         S    		GOTO	$+2
+0278  02FF    4101         S    		SETDP	01H
+0279  0300    0206         S    		CLRF	INTF
+0280  0301    0002         S    		RETFIE
+0281                       S    FIRSTBYTE:
+0282  0302    4300         S    		MOVI2CW
+0283  0303    222D         S    		MOVWF	TEMP
+0284  0304    400F         S    		MOVLW	0FH
+0285  0305    282D         S    		ANDWF	TEMP,W
+0286  0306    5800         S    		SUBLW	00H
+0287  0307    F004         S    		BTFSS	STATUS,Z
+0288  0308    A30D         S    		GOTO	$+5
+0289  0309    4080         S    		MOVLW	80H
+0290  030A    2237         S    		MOVWF	PPACKPOINTER
+0291  030B    2037         S    		MOVFW	PPACKPOINTER
+0292  030C    2202         S    		MOVWF	FRS0
+0293  030D    4C2D         S    		SWAPF	TEMP,W
+0294  030E    182D         S    		SUBWF	TEMP,W
+0295  030F    E004         S    		BTFSC	STATUS,Z
+0296  0310    D42F         S    		BSF		FLAG1,ISLASTPACK
+0297  0311    D62F         S    		BSF		FLAG1,ISFIRSTBYTE
+0298  0312    2000         S    		MOVFW	IND0
+0299  0313    0206         S    		CLRF	INTF
+0300  0314    0002         S    		RETFIE
+0301                       S    I2CINTERRUPTEND:
+0302  0315    0206         S    		CLRF	INTF
+0303  0316    0002         S    		RETFIE
+0304                       S    
+0305                       S    
+0306                       S    	
+0307                       S    		END                =================== << SYMBOL TABLE LISTING >> ========================
+NAME                                    TYPE    VALUE  ATTRIBUTE   LINE
+-----------------------------------------------------------------------
+I2C                                     N NUMB  02A7H
+SLEEPMODE                               N NUMB  0296H
+C_001_200MA                             N NUMB  0266H
+_PWM_CURT                               N NUMB  0081H
+_REGISTER                               N NUMB  0080H
+_NPAIRS_H                               N NUMB  0083H
+NOP34                                   N NUMB  006FH
+NOP42                                   N NUMB  0067H
+NOP500                                  N NUMB  0055H
+NOP3500                                 N NUMB  004AH
+NOP6000                                 N NUMB  0045H
+SYSINI                                  N NUMB  001BH
+NPACKAGETOUTAL                          N NUMB  0035H
+DELAYCT2                                N NUMB  002BH
+NCUSTOMB                                N NUMB  0031H
+FLAG1                                   N NUMB  002FH
+ISCARRIEREND                            N NUMB  0003H
+ISCARRIERIN                             N NUMB  0000H
+BPT10                                   N NUMB  0000H
+TCRSTB                                  N NUMB  0007H
+DUTY_SEL1                               N NUMB  0006H
+PWMEN                                   N NUMB  0003H
+CAPIF                                   N NUMB  0002H
+FRS1                                    N NUMB  0003H
+I2CWATINGFORSTOP                        N NUMB  02A9H
+C_111_500MA                             N NUMB  0278H
+C_110_450MA                             N NUMB  0275H
+C_011_300MA                             N NUMB  026CH
+_LENGTH_H_TEMP                          N NUMB  0077H
+_CRC_TEMP                               N NUMB  0076H
+_FREQ                                   N NUMB  0082H
+NOP17                                   N NUMB  0080H
+NOP37                                   N NUMB  006CH
+NOP43                                   N NUMB  0066H
+NOP650                                  N NUMB  0052H
+NOP1000                                 N NUMB  004FH
+FREQH                                   N NUMB  007EH
+BPT11                                   N NUMB  0001H
+TCRSTA                                  N NUMB  0007H
+TMBIE                                   N NUMB  0003H
+TMAIF                                   N NUMB  0004H
+TO                                      N NUMB  0003H
+DC                                      N NUMB  0002H
+I2C_STO                                 N NUMB  0005H
+I2CCON                                  N NUMB  001FH
+TSETB                                   N NUMB  000FH
+REGCHANGEEND                            N NUMB  027BH
+XCAL_CRC_LOOP_LOOP_8TIMES_END                    N NUMB  0222H
+TEST_101_400MA                          N NUMB  00C2H
+TEST_001_200MA                          N NUMB  00B4H
+_COMMAND                                N NUMB  007FH
+NOP16                                   N NUMB  0081H
+NOP36                                   N NUMB  006DH
+NOP44                                   N NUMB  0065H
+NOP250                                  N NUMB  005AH
+PPACKPOINTER                            N NUMB  0037H
+NTEMP_L                                 N NUMB  003FH
+ISHIGHLOW                               N NUMB  0000H
+FLAG                                    N NUMB  0026H
+CAPPHA                                  N NUMB  0004H
+LVD_F                                   N NUMB  0005H
+PT1EN                                   N NUMB  0014H
+KEY_VALUE                               N NUMB  0012H
+TCOUTB                                  N NUMB  0010H
+TCOUTAH                                 N NUMB  000DH
+TSETAH                                  N NUMB  000AH
+C_100_350MA                             N NUMB  026FH
+C_010_250MA                             N NUMB  0269H
+REGCHANGE                               N NUMB  0231H
+NOP15                                   N NUMB  0082H
+NOP31                                   N NUMB  0072H
+NOP550                                  N NUMB  0054H
+NOP3000                                 N NUMB  004BH
+DELAY_40US                              N NUMB  0029H
+INITINTP                                N NUMB  0013H
+NWRITEBYTECOUNT                         N NUMB  0033H
+RAM_ADDRESS                             N NUMB  0100H
+M6_CK                                   N NUMB  0006H
+WDTEN                                   N NUMB  0003H
+PT2SEL                                  N NUMB  001AH
+PT2                                     N NUMB  0016H
+PT1PU                                   N NUMB  0015H
+INTE                                    N NUMB  0007H
+SLEEPMODE_1                             N NUMB  02A0H
+XCAL_CRC_LOOP_8TIMES_REASULT_0                    N NUMB  0220H
+_CRC                                    N NUMB  0088H
+_LENGTH_H                               N NUMB  0080H
+NOP14                                   N NUMB  0083H
+NOP22                                   N NUMB  007BH
+NOP30                                   N NUMB  0073H
+NOP46                                   N NUMB  0064H
+NOP51                                   N NUMB  005FH
+NOP150                                  N NUMB  005CH
+NOP600                                  N NUMB  0053H
+NOP2000                                 N NUMB  004DH
+NOP9000                                 N NUMB  003FH
+BUFFER                                  N NUMB  0031H
+NCUSTOM                                 N NUMB  0030H
+REPEAT                                  N NUMB  0001H
+PWM_CURT                                N NUMB  0005H
+TMAIE                                   N NUMB  0004H
+TMBIF                                   N NUMB  0003H
+PT1                                     N NUMB  0013H
+INTF                                    N NUMB  0006H
+HANDLEDATA                              N NUMB  02B9H
+RAM_INITIAL                             N NUMB  028FH
+NOP13                                   N NUMB  0084H
+NOP23                                   N NUMB  007AH
+NOP33                                   N NUMB  0070H
+NOP47                                   N NUMB  0063H
+NOP50                                   N NUMB  0060H
+NOP100                                  N NUMB  005DH
+NOP2500                                 N NUMB  004CH
+DLOOP2MS                                N NUMB  0025H
+NPACKAGECOUNT                           N NUMB  0036H
+FREQL                                   N NUMB  007FH
+FAIL                                    N NUMB  0005H
+RX_EN                                   N NUMB  0004H
+CAPDEB                                  N NUMB  0005H
+E0IE                                    N NUMB  0000H
+RST_FLAG_1                              N NUMB  0007H
+RST_FLAG_0                              N NUMB  0006H
+PT1SEL                                  N NUMB  0019H
+MCK                                     N NUMB  0008H
+WORK                                    N NUMB  0005H
+I2CINTERRUPTEND                         N NUMB  0315H
+INTERRUPT_0CH                           N NUMB  02E7H
+DELAY150MS                              N NUMB  02E3H
+SUPER_LOOP                              N NUMB  0296H
+TEST_100_350MA                          N NUMB  00BDH
+TEST_000_150MA                          N NUMB  00B3H
+NWRITEBYTECOUNT_H                       N NUMB  0034H
+NOP12                                   N NUMB  0085H
+NOP20                                   N NUMB  007DH
+NOP32                                   N NUMB  0071H
+NOP6500                                 N NUMB  0044H
+DELAY_40US_L                            N NUMB  002FH
+COUNT                                   N NUMB  0038H
+NTEMP_H                                 N NUMB  003EH
+PWM_PORT_SEL_2                          N NUMB  0002H
+PWM_PORT_SEL_1                          N NUMB  0001H
+PWM_PORT_SEL_0                          N NUMB  0000H
+PT1MR                                   N NUMB  001BH
+PT2PU                                   N NUMB  0018H
+TCOUTAL                                 N NUMB  000CH
+TSETAL                                  N NUMB  0009H
+I2CWRITEDATA                            N NUMB  02FBH
+MAIN                                    N NUMB  027FH
+TEST_110_450MA                          N NUMB  00C8H
+TEST_010_250MA                          N NUMB  00B6H
+POINTER0                                N NUMB  0089H
+NOP11                                   N NUMB  0086H
+NOP21                                   N NUMB  007CH
+NOP48                                   N NUMB  0062H
+START                                   N NUMB  0000H
+M4_CK                                   N NUMB  0004H
+TX_EN                                   N NUMB  0003H
+PWM_SEL                                 N NUMB  0007H
+SAMSUNG_DECODE_END                      N NUMB  016BH
+SEND_KITKAT_IR_LENGTH_END                    N NUMB  00D7H
+_LENGTH_L_TEMP                          N NUMB  0078H
+POINTER1                                N NUMB  0089H
+_LENGTH_L                               N NUMB  0081H
+NOP10                                   N NUMB  0087H
+NOP26                                   N NUMB  0077H
+NOP49                                   N NUMB  0061H
+NHIGHLEVEL_L                            N NUMB  003FH
+NHIGHLEVEL_H                            N NUMB  003EH
+NDATA                                   N NUMB  0032H
+ISFIRSTBYTE                             N NUMB  0003H
+SPC                                     N NUMB  0004H
+M0_CK                                   N NUMB  0000H
+TCOUTA_DIR                              N NUMB  0004H
+E0IF                                    N NUMB  0000H
+I2C_ADDR                                N NUMB  0003H
+I2C_EN                                  N NUMB  0007H
+I2CREADDATAEND                          N NUMB  02F7H
+PWMCURT                                 N NUMB  0249H
+_HIGH_H                                 N NUMB  0070H
+NOP8                                    N NUMB  0089H
+NOP27                                   N NUMB  0076H
+NOP200                                  N NUMB  005BH
+NOP1500                                 N NUMB  004EH
+NOP8000                                 N NUMB  0041H
+DLOOP1                                  N NUMB  0031H
+DELAY_2MS                               N NUMB  0023H
+COUNT_TOTAL                             N NUMB  003AH
+NDATAB                                  N NUMB  0033H
+BLEARNERR                               N NUMB  0007H
+M2_CK                                   N NUMB  0002H
+M7_CK                                   N NUMB  0007H
+CCLKB_SEL2                              N NUMB  0002H
+CCLKB_SEL1                              N NUMB  0001H
+CCLKB_SEL0                              N NUMB  0000H
+Z                                       N NUMB  0000H
+RMTCTR                                  N NUMB  001EH
+FIRSTBYTE                               N NUMB  0302H
+CLEARRAMS                               N NUMB  02D7H
+SAMSUNG_DECODELOOP                      N NUMB  0115H
+ANY_RAM_CLEAR                           N NUMB  00E8H
+TEST_111_500MA                          N NUMB  00CFH
+TEST_011_300MA                          N NUMB  00B9H
+NWRITEBYTECOUNT_L                       N NUMB  0035H
+_NPAIRS_H_TEMP                          N NUMB  0079H
+NOP9                                    N NUMB  0088H
+NOP24                                   N NUMB  0079H
+NOP8500                                 N NUMB  0040H
+NOP10000                                N NUMB  003DH
+NOP30000                                N NUMB  003BH
+DLOOP0                                  N NUMB  002CH
+ISLASTPACK                              N NUMB  0002H
+BLEARNEND                               N NUMB  0001H
+TRIG                                    N NUMB  0002H
+M5_CK                                   N NUMB  0005H
+PD                                      N NUMB  0004H
+I2C_READY                               N NUMB  0006H
+STATUS                                  N NUMB  0004H
+_LOW_L                                  N NUMB  0073H
+_FORM_H                                 N NUMB  0085H
+NOP25                                   N NUMB  0078H
+NOP5500                                 N NUMB  0046H
+NOP7500                                 N NUMB  0042H
+DELAY100MS                              N NUMB  0034H
+NLOWLEVEL_H                             N NUMB  003CH
+BPT16                                   N NUMB  0006H
+RMT_IN                                  N NUMB  0000H
+TCENA                                   N NUMB  0003H
+RAMSCLEARALL                            N NUMB  02D4H
+_INDEX                                  N NUMB  0040H
+_REPEAT                                 N NUMB  0087H
+NOP39                                   N NUMB  006AH
+NOP9500                                 N NUMB  003EH
+NOP50000                                N NUMB  0039H
+NWRITEBITCOUNT                          N NUMB  0032H
+ROM_ADDR                                N NUMB  0080H
+KERPRESSED                              N NUMB  0006H
+BPT17                                   N NUMB  0007H
+WDTCTR                                  N NUMB  001DH
+IND0                                    N NUMB  0000H
+F                                       N NUMB  0001H
+W                                       N NUMB  0000H
+CLEARRAMLOOP_H                          N NUMB  02DEH
+CLEARRAMLOOP_L                          N NUMB  02D8H
+_INDEX_1                                N NUMB  0075H
+_HIGH_L                                 N NUMB  0071H
+_NPAIRS_L                               N NUMB  0084H
+NOP4                                    N NUMB  008DH
+NOP38                                   N NUMB  006BH
+NOP400                                  N NUMB  0057H
+NOP4000                                 N NUMB  0049H
+BUFFER_ADDRESS                          N NUMB  0080H
+RMT_NUM                                 N NUMB  00C8H
+TEMP                                    N NUMB  002DH
+RMTDATACOUNT                            N NUMB  0034H
+BPT14                                   N NUMB  0004H
+SENS_CURT1                              N NUMB  0007H
+SENS_CURT0                              N NUMB  0006H
+CCLKA_SEL2                              N NUMB  0002H
+CCLKA_SEL1                              N NUMB  0001H
+CCLKA_SEL0                              N NUMB  0000H
+GIE                                     N NUMB  0007H
+TCCONB                                  N NUMB  0011H
+IND1                                    N NUMB  0001H
+I2CREADDATA                             N NUMB  02EEH
+XCAL_CRC                                N NUMB  0203H
+NOP5                                    N NUMB  008CH
+NOP350                                  N NUMB  0058H
+NOP450                                  N NUMB  0056H
+NOP7000                                 N NUMB  0043H
+NOP40000                                N NUMB  003AH
+DELAYCT1                                N NUMB  002AH
+BPT15                                   N NUMB  0005H
+M1_CK                                   N NUMB  0001H
+M3_CK                                   N NUMB  0003H
+TCENB                                   N NUMB  0003H
+PT2EN                                   N NUMB  0017H
+XCAL_CRC_LOOP_LOOP_8TIMES                    N NUMB  0216H
+XCAL_CRC_LOOP                           N NUMB  020FH
+TIMER_DELAY_BASE                        N NUMB  016CH
+SAMSUNG_REMOTE                          N NUMB  00F4H
+_NPAIRS_L_TEMP                          N NUMB  007AH
+_TEMP1                                  N NUMB  0074H
+_LOW_H                                  N NUMB  0072H
+_FORM_L                                 N NUMB  0086H
+NOP6                                    N NUMB  008BH
+NOP19                                   N NUMB  007EH
+NOP28                                   N NUMB  0075H
+NOP40                                   N NUMB  0069H
+NOP300                                  N NUMB  0059H
+NLOWLEVEL_L                             N NUMB  003DH
+DELAYCT0                                N NUMB  0029H
+NEGTEMP                                 N NUMB  0025H
+BPT12                                   N NUMB  0002H
+C                                       N NUMB  0001H
+PT2MR                                   N NUMB  001CH
+PWMCON                                  N NUMB  000BH
+C_101_400MA                             N NUMB  0272H
+C_000_150MA                             N NUMB  0263H
+SEND_KITKAT_IR_LENGTH_END_FAIL                    N NUMB  00E2H
+SEND_KITKAT_IR                          N NUMB  008FH
+NOP7                                    N NUMB  008AH
+NOP18                                   N NUMB  007FH
+NOP29                                   N NUMB  0074H
+NOP35                                   N NUMB  006EH
+NOP41                                   N NUMB  0068H
+NOP4500                                 N NUMB  0048H
+NOP5000                                 N NUMB  0047H
+NOP20000                                N NUMB  003CH
+RAMINITIAL_ADDRESS                      N NUMB  0080H
+BPT13                                   N NUMB  0003H
+DUTY_SEL0                               N NUMB  0005H
+CAPIE                                   N NUMB  0002H
+I2C_RW                                  N NUMB  0004H
+TCCONA                                  N NUMB  000EH
+FRS0                                    N NUMB  0002H

@@ -1,0 +1,58 @@
+(ExpressProject ""
+  (ProjectVersion "19981106")
+  (ProjectType "PCB")
+  (Folder "Design Resources"
+    (Folder "Library")
+    (File ".\et4207_demo.dsn"
+      (Type "Schematic Design"))
+    (BuildFileAddedOrDeleted "x")
+    (CompileFileAddedOrDeleted "x")
+    (Netlist_TAB "0")
+    (NoModify))
+  (Folder "Outputs"
+    (File ".\allegro\pstxnet.dat"
+      (Type "Report")
+      (DisplayName "pstxnet.dat"))
+    (File ".\allegro\pstxprt.dat"
+      (Type "Report")
+      (DisplayName "pstxprt.dat"))
+    (File ".\allegro\pstchip.dat"
+      (Type "Report")
+      (DisplayName "pstchip.dat")))
+  (Folder "Referenced Projects")
+  (ISPCBBASICLICENSE "false")
+  (PartMRUSelector)
+  (GlobalState
+    (FileView
+      (Path "Design Resources")
+      (Path "Design Resources" ".\et4207_demo.dsn")
+      (Path "Design Resources" ".\et4207_demo.dsn" "SCHEMATIC")
+      (Path "Outputs")
+      (Select "Design Resources" ".\et4207_demo.dsn" "SCHEMATIC" "02 ET4207"))
+    (HierarchyView)
+    (Doc
+      (Type "COrCapturePMDoc")
+      (Frame
+        (Placement "44 2 3 -1 -1 -8 -30 0 200 0 332"))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -30 50 930 50 424")
+        (Scroll "-69 0")
+        (Zoom "42")
+        (Occurrence "/"))
+      (Path "E:\PROJECTS\ET4207\ET4207_DEMOBOARD\ET4207_DEMO.DSN")
+      (Schematic "SCHEMATIC")
+      (Page "01 Block"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -30 75 955 75 449")
+        (Scroll "0 143")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path "E:\PROJECTS\ET4207\ET4207_DEMOBOARD\ET4207_DEMO.DSN")
+      (Schematic "SCHEMATIC")
+      (Page "02 ET4207")))
+  (MPSSessionName "jiangs"))

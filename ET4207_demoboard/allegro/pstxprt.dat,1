@@ -1,0 +1,170 @@
+FILE_TYPE = EXPANDEDPARTLIST;
+{ Using PSTWRITER 16.6.0 d001Jan-08-2016 at 13:42:46 }
+DIRECTIVES
+ PST_VERSION='PST_HDL_CENTRIC_VERSION_0';
+ ROOT_DRAWING='ET4207_DEMO';
+ POST_TIME='Sep 10 2012 04:46:09';
+ SOURCE_TOOL='CAPTURE_WRITER';
+END_DIRECTIVES;
+
+PART_NAME
+ C6 'CAPACITOR NON-POL_SC0805_0.1UF':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16883772@DISCRETE.CAPACITOR NON-POL.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16883772@discrete.\capacitor non-pol.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16883772@discrete.\capacitor non-pol.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C7 'CAPACITOR NON-POL_SC0805_0.1UF':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16876067@DISCRETE.CAPACITOR NON-POL.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16876067@discrete.\capacitor non-pol.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16876067@discrete.\capacitor non-pol.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D2 'LED_3_LED_0805D_LED':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16875604@AUDIOREMOTE_V4_130813.LED_3.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16875604@audioremote_v4_130813.\led_3.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16875604@audioremote_v4_130813.\led_3.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D7 'LED_3_LED_0805D_LED':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16884895@AUDIOREMOTE_V4_130813.LED_3.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16884895@audioremote_v4_130813.\led_3.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16884895@audioremote_v4_130813.\led_3.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J1 'CON6_HX6V_CON6':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16885176@CONNECTOR.CON6.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16885176@connector.\con6.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16885176@connector.\con6.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ Q1 'MOSFET_I_EN_GSD_SOT_23_321_BSS1':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16875024@DK_TRANSISTOR.MOSFET_I_EN_GSD.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16875024@dk_transistor.\mosfet_i_en_gsd.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16875024@dk_transistor.\mosfet_i_en_gsd.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R14 'RESISTOR_SR0805_2R2':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16884871@DISCRETE.RESISTOR.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16884871@discrete.\resistor.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16884871@discrete.\resistor.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R15 'RESISTOR_SR0805_0R':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16885143@DISCRETE.RESISTOR.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16885143@discrete.\resistor.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16885143@discrete.\resistor.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R16 'RESISTOR_SR0805_4K7':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16885348@DISCRETE.RESISTOR.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16885348@discrete.\resistor.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16885348@discrete.\resistor.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R17 'RESISTOR_SR0805_4K7':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16885163@DISCRETE.RESISTOR.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16885163@discrete.\resistor.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16885163@discrete.\resistor.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R18 'RESISTOR_SR0805_4K7':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16885041@DISCRETE.RESISTOR.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16885041@discrete.\resistor.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16885041@discrete.\resistor.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R8 'RESISTOR_SR0805_100R':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16883796@DISCRETE.RESISTOR.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16883796@discrete.\resistor.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16883796@discrete.\resistor.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R9 'RESISTOR_SR0805_2R2':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16875593@DISCRETE.RESISTOR.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16875593@discrete.\resistor.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16875593@discrete.\resistor.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U1 'ET4207MTP':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16884954@ET4207_DEBUG.LPC111X_8.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16884954@et4207_debug.\lpc111x_8.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16884954@et4207_debug.\lpc111x_8.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U2 'STM32F103C8_3_SOP16_ET4207':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16874852@ET4207_DEBUG.STM32F103C8_3.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16874852@et4207_debug.\stm32f103c8_3.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16874852@et4207_debug.\stm32f103c8_3.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U3 'ET4207YD':;
+
+SECTION_NUMBER 1
+ '@ET4207_DEMO.SCHEMATIC(SCH_1):INS16883755@ET4207.LPC111X_7.NORMAL(CHIPS)':
+ C_PATH='@et4207_demo.schematic(sch_1):ins16883755@et4207.\lpc111x_7.normal\(chips)',
+ P_PATH='@et4207_demo.schematic(sch_1):page_ins16883755@et4207.\lpc111x_7.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+END.

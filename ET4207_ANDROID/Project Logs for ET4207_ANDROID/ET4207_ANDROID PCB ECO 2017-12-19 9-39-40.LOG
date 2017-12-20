@@ -1,0 +1,36 @@
+Added Component: Designator=P2(DIP30-2.0)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "17-Jul-2002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "Re-released for DXP Platform."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=3V3 Pin=P2-1
+Added Pin To Net: NetName=GND Pin=P2-2
+Added Pin To Net: NetName=TXD2 Pin=P2-3
+Added Pin To Net: NetName=RXD2 Pin=P2-4
+Added Pin To Net: NetName=I2C0_SCL Pin=P2-5
+Added Pin To Net: NetName=I2C0_SDA Pin=P2-6
+Added Pin To Net: NetName=MOSI0 Pin=P2-7
+Added Pin To Net: NetName=MISO0 Pin=P2-8
+Added Pin To Net: NetName=MCLK Pin=P2-9
+Added Pin To Net: NetName=CS0 Pin=P2-10
+Added Pin To Net: NetName=EINT13 Pin=P2-11
+Added Pin To Net: NetName=EINT12 Pin=P2-12
+Added Pin To Net: NetName=MMC3CLK Pin=P2-13
+Added Pin To Net: NetName=MMC3CMD Pin=P2-14
+Added Pin To Net: NetName=MMC3CD Pin=P2-15
+Added Pin To Net: NetName=EINT11 Pin=P2-16
+Added Pin To Net: NetName=MMCDATA0 Pin=P2-17
+Added Pin To Net: NetName=MMCDATA1 Pin=P2-18
+Added Pin To Net: NetName=MMCDATA2 Pin=P2-19
+Added Pin To Net: NetName=MMCDATA3 Pin=P2-20
+Added Pin To Net: NetName=MISO1/I2C5SDA Pin=P2-21
+Added Pin To Net: NetName=EINT26 Pin=P2-22
+Added Pin To Net: NetName=MOSI1/I2C5SCL Pin=P2-23
+Added Pin To Net: NetName=EINT27 Pin=P2-24
+Added Pin To Net: NetName=CLK1/IEMCLK Pin=P2-25
+Added Pin To Net: NetName=EINT28 Pin=P2-26
+Added Pin To Net: NetName=CS1/IEMDAT Pin=P2-27
+Added Pin To Net: NetName=EINT29 Pin=P2-28
+Added Pin To Net: NetName=5V Pin=P2-29
+Added Pin To Net: NetName=GND Pin=P2-30
+Added Member To Class: ClassName=ET4207_ANDROID Member=Component P2 Header 15X2

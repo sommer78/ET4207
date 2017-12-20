@@ -44,10 +44,10 @@ I2cReadDataEnd:
 I2cWriteData:
 		MOVI2CW
 		MOVWF	IND0
-		INCF	FRS0,F
-	;	INCFSZ	FRS0,F 
-	;	GOTO	$+2
-	;	SETDP	01h
+	;	INCF	FRS0,F
+		INCFSZ	FRS0,F 
+		GOTO	$+2
+		SETDP	01h
 		CLRF	INTF
 		RETFIE
 CmdDeal:

@@ -9,18 +9,18 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
 0006                       S    ; 手机遥控器
 0007                       S    ;===================================
 0008                       S    INCLUDE ET4007.INC
-0009                       S    INCLUDE MAIN.INC
+0009                       S    INCLUDE ET4207_INCLUDE.INC
 0010                       S    
 0011                       S    ORG	00H
 0012                       S    START:
 0013  0000    0000         S    		NOP
-0014  0001    A4E5         S    		GOTO	MAIN
+0014  0001    A830         S    		GOTO	MAIN
 0015                       S    ORG	06H
-0016  0006    A4C2         S    		GOTO 	INTERRUPT_06H
+0016  0006    A46B         S    		GOTO 	INTERRUPT_06H
 0017                       S    ORG 0CH
-0018  000C    A483         S    		GOTO	INTERRUPT_0CH
+0018  000C    A42A         S    		GOTO	INTERRUPT_0CH
 0019                       S    ORG	012H
-0020  0012    A4C0         S    		GOTO	INTERRUPT_EXT
+0020  0012    A469         S    		GOTO	INTERRUPT_EXT
 0021                       S    
 0022                       S    INCLUDE DELAY.ASM
  M    0013    8017         S    CALL      0017H
@@ -161,7 +161,7 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
  M    0099    0000         S    NOP
  M    009A    CA14         S    BCF       0014H  0005H
  M    009B    DA13         S    BSF       0013H  0005H
- M    009C    A4F0         S    GOTO      04F0H
+ M    009C    A83B         S    GOTO      083BH
  M    009D    200D         S    MOVFW     000DH
  M    009E    2201         S    MOVWF     0001H
  M    009F    0A03         S    INCF      0003H  0001H
@@ -326,7 +326,7 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
  M    013E    203D         S    MOVFW     003DH
  M    013F    382C         S    SUBWFC    002CH  0000H
  M    0140    2231         S    MOVWF     0031H
- M    0141    821B         S    CALL      021BH
+ M    0141    84E5         S    CALL      04E5H
  M    0142    4003         S    MOVLW     0003H
  M    0143    1830         S    SUBWF     0030H  0000H
  M    0144    4000         S    MOVLW     0000H
@@ -339,7 +339,7 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
  M    014B    203F         S    MOVFW     003FH
  M    014C    382A         S    SUBWFC    002AH  0000H
  M    014D    2231         S    MOVWF     0031H
- M    014E    821B         S    CALL      021BH
+ M    014E    84E5         S    CALL      04E5H
  M    014F    4032         S    MOVLW     0032H
  M    0150    1830         S    SUBWF     0030H  0000H
  M    0151    4000         S    MOVLW     0000H
@@ -365,7 +365,7 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
  M    0165    2041         S    MOVFW     0041H
  M    0166    382C         S    SUBWFC    002CH  0000H
  M    0167    2231         S    MOVWF     0031H
- M    0168    821B         S    CALL      021BH
+ M    0168    84E5         S    CALL      04E5H
  M    0169    4003         S    MOVLW     0003H
  M    016A    1830         S    SUBWF     0030H  0000H
  M    016B    4000         S    MOVLW     0000H
@@ -378,7 +378,7 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
  M    0172    2043         S    MOVFW     0043H
  M    0173    382A         S    SUBWFC    002AH  0000H
  M    0174    2231         S    MOVWF     0031H
- M    0175    821B         S    CALL      021BH
+ M    0175    84E5         S    CALL      04E5H
  M    0176    4032         S    MOVLW     0032H
  M    0177    1830         S    SUBWF     0030H  0000H
  M    0178    4000         S    MOVLW     0000H
@@ -482,7 +482,7 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
  M    01DA    4100         S    SETDP     0000H
  M    01DB    4050         S    MOVLW     0050H
  M    01DC    2202         S    MOVWF     0002H
- M    01DD    81F9         S    CALL      01F9H
+ M    01DD    84C3         S    CALL      04C3H
  M    01DE    4000         S    MOVLW     0000H
  M    01DF    2248         S    MOVWF     0048H
  M    01E0    204D         S    MOVFW     004DH
@@ -490,7 +490,7 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
  M    01E2    4101         S    SETDP     0001H
  M    01E3    4000         S    MOVLW     0100H
  M    01E4    2202         S    MOVWF     0002H
- M    01E5    81F9         S    CALL      01F9H
+ M    01E5    84C3         S    CALL      04C3H
  M    01E6    4000         S    MOVLW     0000H
  M    01E7    2248         S    MOVWF     0048H
  M    01E8    204E         S    MOVFW     004EH
@@ -498,288 +498,288 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
  M    01EA    4100         S    SETDP     0000H
  M    01EB    40C0         S    MOVLW     00C0H
  M    01EC    2202         S    MOVWF     0002H
- M    01ED    81F9         S    CALL      01F9H
+ M    01ED    84C3         S    CALL      04C3H
  M    01EE    2046         S    MOVFW     0046H
  M    01EF    224B         S    MOVWF     004BH
  M    01F0    A1F5         S    GOTO      01F5H
  M    01F1    4000         S    MOVLW     0000H
  M    01F2    224A         S    MOVWF     004AH
  M    01F3    4100         S    SETDP     0000H
- M    01F4    A4F0         S    GOTO      04F0H
+ M    01F4    A83B         S    GOTO      083BH
  M    01F5    4001         S    MOVLW     0001H
  M    01F6    224A         S    MOVWF     004AH
  M    01F7    4100         S    SETDP     0000H
- M    01F8    A4F0         S    GOTO      04F0H
- M    01F9    2000         S    MOVFW     0000H
- M    01FA    3246         S    XORWF     0046H  0001H
- M    01FB    0E02         S    INCFSZ    0002H  0001H
- M    01FC    A1FE         S    GOTO      01FEH
- M    01FD    4101         S    SETDP     0001H
- M    01FE    4008         S    MOVLW     0008H
- M    01FF    2247         S    MOVWF     0047H
- M    0200    2046         S    MOVFW     0046H
- M    0201    6801         S    ANDLW     0001H
- M    0202    5800         S    SUBLW     0000H
- M    0203    E004         S    BTFSC     0004H  0000H
- M    0204    A20A         S    GOTO      020AH
- M    0205    C204         S    BCF       0004H  0001H
- M    0206    3C46         S    RRF       0046H  0000H
- M    0207    708C         S    XORLW     008CH
- M    0208    2246         S    MOVWF     0046H
- M    0209    A20C         S    GOTO      020CH
- M    020A    C204         S    BCF       0004H  0001H
- M    020B    3E46         S    RRF       0046H  0001H
- M    020C    1647         S    DECFSZ    0047H  0001H
- M    020D    A200         S    GOTO      0200H
- M    020E    4001         S    MOVLW     0001H
- M    020F    1A49         S    SUBWF     0049H  0001H
- M    0210    4000         S    MOVLW     0000H
- M    0211    3A48         S    SUBWFC    0048H  0001H
- M    0212    2048         S    MOVFW     0048H
- M    0213    5800         S    SUBLW     0000H
- M    0214    F004         S    BTFSS     0004H  0000H
- M    0215    A1F9         S    GOTO      01F9H
- M    0216    2049         S    MOVFW     0049H
- M    0217    5800         S    SUBLW     0000H
- M    0218    F004         S    BTFSS     0004H  0000H
- M    0219    A1F9         S    GOTO      01F9H
- M    021A    0003         S    RETURN
- M    021B    E204         S    BTFSC     0004H  0001H
- M    021C    0003         S    RETURN
- M    021D    1E30         S    COMF      0030H  0001H
- M    021E    1E31         S    COMF      0031H  0001H
- M    021F    4001         S    MOVLW     0001H
- M    0220    0630         S    ADDWF     0030H  0001H
- M    0221    4000         S    MOVLW     0000H
- M    0222    2631         S    ADDWFC    0031H  0001H
- M    0223    0003         S    RETURN
+ M    01F8    A83B         S    GOTO      083BH
 0024                       S    INCLUDE CONSUMERIR.ASM
- M    0224    4002         S    MOVLW     0002H
- M    0225    3841         S    SUBWFC    0041H  0000H
- M    0226    E204         S    BTFSC     0004H  0001H
- M    0227    A4F0         S    GOTO      04F0H
- M    0228    839B         S    CALL      039BH
- M    0229    2036         S    MOVFW     0036H
- M    022A    1849         S    SUBWF     0049H  0000H
- M    022B    F004         S    BTFSS     0004H  0000H
- M    022C    A4F0         S    GOTO      04F0H
- M    022D    A286         S    GOTO      0286H
- M    022E    4002         S    MOVLW     0002H
- M    022F    3841         S    SUBWFC    0041H  0000H
- M    0230    E204         S    BTFSC     0004H  0001H
- M    0231    A4F0         S    GOTO      04F0H
- M    0232    839B         S    CALL      039BH
- M    0233    2036         S    MOVFW     0036H
- M    0234    1849         S    SUBWF     0049H  0000H
- M    0235    F004         S    BTFSS     0004H  0000H
- M    0236    A4F0         S    GOTO      04F0H
- M    0237    0006         S    CLRWDT
- M    0238    403F         S    MOVLW     003FH
- M    0239    0442         S    ADDWF     0042H  0000H
- M    023A    222B         S    MOVWF     002BH
- M    023B    4000         S    MOVLW     0000H
- M    023C    2641         S    ADDWFC    0041H  0001H
- M    023D    222A         S    MOVWF     002AH
- M    023E    E02A         S    BTFSC     002AH  0000H
- M    023F    A242         S    GOTO      0242H
- M    0240    4100         S    SETDP     0000H
- M    0241    A243         S    GOTO      0243H
- M    0242    4101         S    SETDP     0001H
- M    0243    202B         S    MOVFW     002BH
- M    0244    2202         S    MOVWF     0002H
- M    0245    2000         S    MOVFW     0000H
- M    0246    2223         S    MOVWF     0023H
- M    0247    4001         S    MOVLW     0001H
- M    0248    1A42         S    SUBWF     0042H  0001H
- M    0249    4000         S    MOVLW     0000H
- M    024A    3A41         S    SUBWFC    0041H  0001H
- M    024B    2023         S    MOVFW     0023H
- M    024C    2224         S    MOVWF     0024H
- M    024D    FE24         S    BTFSS     0024H  0007H
- M    024E    A252         S    GOTO      0252H
- M    024F    2024         S    MOVFW     0024H
- M    0250    70D5         S    XORLW     00D5H
- M    0251    2224         S    MOVWF     0024H
- M    0252    C204         S    BCF       0004H  0001H
- M    0253    3624         S    RLF       0024H  0001H
- M    0254    FE23         S    BTFSS     0023H  0007H
- M    0255    A259         S    GOTO      0259H
- M    0256    2024         S    MOVFW     0024H
- M    0257    6C01         S    IORLW     0001H
- M    0258    2224         S    MOVWF     0024H
- M    0259    2042         S    MOVFW     0042H
- M    025A    222C         S    MOVWF     002CH
- M    025B    2041         S    MOVFW     0041H
- M    025C    222D         S    MOVWF     002DH
- M    025D    400A         S    MOVLW     000AH
- M    025E    1A2C         S    SUBWF     002CH  0001H
- M    025F    4000         S    MOVLW     0000H
- M    0260    3A2D         S    SUBWFC    002DH  0001H
- M    0261    022B         S    CLRF      002BH
- M    0262    022A         S    CLRF      002AH
- M    0263    4100         S    SETDP     0000H
- M    0264    404A         S    MOVLW     004AH
- M    0265    2202         S    MOVWF     0002H
- M    0266    202B         S    MOVFW     002BH
- M    0267    3224         S    XORWF     0024H  0001H
- M    0268    2024         S    MOVFW     0024H
- M    0269    2231         S    MOVWF     0031H
- M    026A    C204         S    BCF       0004H  0001H
- M    026B    3E31         S    RRF       0031H  0001H
- M    026C    2024         S    MOVFW     0024H
- M    026D    F024         S    BTFSS     0024H  0000H
- M    026E    A272         S    GOTO      0272H
- M    026F    2031         S    MOVFW     0031H
- M    0270    70D5         S    XORLW     00D5H
- M    0271    2231         S    MOVWF     0031H
- M    0272    2000         S    MOVFW     0000H
- M    0273    3031         S    XORWF     0031H  0000H
- M    0274    2200         S    MOVWF     0000H
- M    0275    0A24         S    INCF      0024H  0001H
- M    0276    0E02         S    INCFSZ    0002H  0001H
- M    0277    A279         S    GOTO      0279H
- M    0278    4101         S    SETDP     0001H
- M    0279    4001         S    MOVLW     0001H
- M    027A    062B         S    ADDWF     002BH  0001H
- M    027B    4000         S    MOVLW     0000H
- M    027C    262A         S    ADDWFC    002AH  0001H
- M    027D    202D         S    MOVFW     002DH
- M    027E    182A         S    SUBWF     002AH  0000H
- M    027F    F004         S    BTFSS     0004H  0000H
- M    0280    A266         S    GOTO      0266H
- M    0281    202C         S    MOVFW     002CH
- M    0282    182B         S    SUBWF     002BH  0000H
- M    0283    F004         S    BTFSS     0004H  0000H
- M    0284    A266         S    GOTO      0266H
- M    0285    0006         S    CLRWDT
- M    0286    D20B         S    BSF       000BH  0001H
- M    0287    D80B         S    BSF       000BH  0004H
- M    0288    C204         S    BCF       0004H  0001H
- M    0289    3C43         S    RRF       0043H  0000H
- M    028A    2209         S    MOVWF     0009H
- M    028B    2043         S    MOVFW     0043H
- M    028C    220A         S    MOVWF     000AH
- M    028D    C81E         S    BCF       001EH  0004H
- M    028E    D61E         S    BSF       001EH  0003H
- M    028F    CE0B         S    BCF       000BH  0007H
- M    0290    4002         S    MOVLW     0002H
- M    0291    220E         S    MOVWF     000EH
- M    0292    CE0E         S    BCF       000EH  0007H
- M    0293    D60E         S    BSF       000EH  0003H
- M    0294    0206         S    CLRF      0006H
- M    0295    C807         S    BCF       0007H  0004H
- M    0296    CE07         S    BCF       0007H  0007H
- M    0297    2043         S    MOVFW     0043H
- M    0298    5880         S    SUBLW     0080H
- M    0299    2224         S    MOVWF     0024H
- M    029A    4009         S    MOVLW     0009H
- M    029B    0624         S    ADDWF     0024H  0001H
- M    029C    2044         S    MOVFW     0044H
- M    029D    2239         S    MOVWF     0039H
- M    029E    2045         S    MOVFW     0045H
- M    029F    223A         S    MOVWF     003AH
- M    02A0    4001         S    MOVLW     0001H
- M    02A1    1A3A         S    SUBWF     003AH  0001H
- M    02A2    4000         S    MOVLW     0000H
- M    02A3    3A39         S    SUBWFC    0039H  0001H
- M    02A4    4100         S    SETDP     0000H
- M    02A5    4040         S    MOVLW     0040H
- M    02A6    444A         S    ADDLW     004AH
- M    02A7    2202         S    MOVWF     0002H
- M    02A8    2000         S    MOVFW     0000H
- M    02A9    2234         S    MOVWF     0034H
- M    02AA    3E34         S    RRF       0034H  0001H
- M    02AB    3E34         S    RRF       0034H  0001H
- M    02AC    3E34         S    RRF       0034H  0001H
- M    02AD    3C34         S    RRF       0034H  0000H
- M    02AE    680F         S    ANDLW     000FH
- M    02AF    2235         S    MOVWF     0035H
+ M    01F9    4002         S    MOVLW     0002H
+ M    01FA    3841         S    SUBWFC    0041H  0000H
+ M    01FB    E204         S    BTFSC     0004H  0001H
+ M    01FC    A83B         S    GOTO      083BH
+ M    01FD    848E         S    CALL      048EH
+ M    01FE    2036         S    MOVFW     0036H
+ M    01FF    1849         S    SUBWF     0049H  0000H
+ M    0200    F004         S    BTFSS     0004H  0000H
+ M    0201    A83B         S    GOTO      083BH
+ M    0202    A25B         S    GOTO      025BH
+ M    0203    4002         S    MOVLW     0002H
+ M    0204    3841         S    SUBWFC    0041H  0000H
+ M    0205    E204         S    BTFSC     0004H  0001H
+ M    0206    A83B         S    GOTO      083BH
+ M    0207    848E         S    CALL      048EH
+ M    0208    2036         S    MOVFW     0036H
+ M    0209    1849         S    SUBWF     0049H  0000H
+ M    020A    F004         S    BTFSS     0004H  0000H
+ M    020B    A83B         S    GOTO      083BH
+ M    020C    0006         S    CLRWDT
+ M    020D    403F         S    MOVLW     003FH
+ M    020E    0442         S    ADDWF     0042H  0000H
+ M    020F    222B         S    MOVWF     002BH
+ M    0210    4000         S    MOVLW     0000H
+ M    0211    2641         S    ADDWFC    0041H  0001H
+ M    0212    222A         S    MOVWF     002AH
+ M    0213    E02A         S    BTFSC     002AH  0000H
+ M    0214    A217         S    GOTO      0217H
+ M    0215    4100         S    SETDP     0000H
+ M    0216    A218         S    GOTO      0218H
+ M    0217    4101         S    SETDP     0001H
+ M    0218    202B         S    MOVFW     002BH
+ M    0219    2202         S    MOVWF     0002H
+ M    021A    2000         S    MOVFW     0000H
+ M    021B    2223         S    MOVWF     0023H
+ M    021C    4001         S    MOVLW     0001H
+ M    021D    1A42         S    SUBWF     0042H  0001H
+ M    021E    4000         S    MOVLW     0000H
+ M    021F    3A41         S    SUBWFC    0041H  0001H
+ M    0220    2023         S    MOVFW     0023H
+ M    0221    2224         S    MOVWF     0024H
+ M    0222    FE24         S    BTFSS     0024H  0007H
+ M    0223    A227         S    GOTO      0227H
+ M    0224    2024         S    MOVFW     0024H
+ M    0225    70D5         S    XORLW     00D5H
+ M    0226    2224         S    MOVWF     0024H
+ M    0227    C204         S    BCF       0004H  0001H
+ M    0228    3624         S    RLF       0024H  0001H
+ M    0229    FE23         S    BTFSS     0023H  0007H
+ M    022A    A22E         S    GOTO      022EH
+ M    022B    2024         S    MOVFW     0024H
+ M    022C    6C01         S    IORLW     0001H
+ M    022D    2224         S    MOVWF     0024H
+ M    022E    2042         S    MOVFW     0042H
+ M    022F    222C         S    MOVWF     002CH
+ M    0230    2041         S    MOVFW     0041H
+ M    0231    222D         S    MOVWF     002DH
+ M    0232    400A         S    MOVLW     000AH
+ M    0233    1A2C         S    SUBWF     002CH  0001H
+ M    0234    4000         S    MOVLW     0000H
+ M    0235    3A2D         S    SUBWFC    002DH  0001H
+ M    0236    022B         S    CLRF      002BH
+ M    0237    022A         S    CLRF      002AH
+ M    0238    4100         S    SETDP     0000H
+ M    0239    404A         S    MOVLW     004AH
+ M    023A    2202         S    MOVWF     0002H
+ M    023B    202B         S    MOVFW     002BH
+ M    023C    3224         S    XORWF     0024H  0001H
+ M    023D    2024         S    MOVFW     0024H
+ M    023E    2231         S    MOVWF     0031H
+ M    023F    C204         S    BCF       0004H  0001H
+ M    0240    3E31         S    RRF       0031H  0001H
+ M    0241    2024         S    MOVFW     0024H
+ M    0242    F024         S    BTFSS     0024H  0000H
+ M    0243    A247         S    GOTO      0247H
+ M    0244    2031         S    MOVFW     0031H
+ M    0245    70D5         S    XORLW     00D5H
+ M    0246    2231         S    MOVWF     0031H
+ M    0247    2000         S    MOVFW     0000H
+ M    0248    3031         S    XORWF     0031H  0000H
+ M    0249    2200         S    MOVWF     0000H
+ M    024A    0A24         S    INCF      0024H  0001H
+ M    024B    0E02         S    INCFSZ    0002H  0001H
+ M    024C    A24E         S    GOTO      024EH
+ M    024D    4101         S    SETDP     0001H
+ M    024E    4001         S    MOVLW     0001H
+ M    024F    062B         S    ADDWF     002BH  0001H
+ M    0250    4000         S    MOVLW     0000H
+ M    0251    262A         S    ADDWFC    002AH  0001H
+ M    0252    202D         S    MOVFW     002DH
+ M    0253    182A         S    SUBWF     002AH  0000H
+ M    0254    F004         S    BTFSS     0004H  0000H
+ M    0255    A23B         S    GOTO      023BH
+ M    0256    202C         S    MOVFW     002CH
+ M    0257    182B         S    SUBWF     002BH  0000H
+ M    0258    F004         S    BTFSS     0004H  0000H
+ M    0259    A23B         S    GOTO      023BH
+ M    025A    0006         S    CLRWDT
+ M    025B    D20B         S    BSF       000BH  0001H
+ M    025C    D80B         S    BSF       000BH  0004H
+ M    025D    C204         S    BCF       0004H  0001H
+ M    025E    3C43         S    RRF       0043H  0000H
+ M    025F    2209         S    MOVWF     0009H
+ M    0260    2043         S    MOVFW     0043H
+ M    0261    220A         S    MOVWF     000AH
+ M    0262    C81E         S    BCF       001EH  0004H
+ M    0263    D61E         S    BSF       001EH  0003H
+ M    0264    CE0B         S    BCF       000BH  0007H
+ M    0265    4002         S    MOVLW     0002H
+ M    0266    220E         S    MOVWF     000EH
+ M    0267    CE0E         S    BCF       000EH  0007H
+ M    0268    D60E         S    BSF       000EH  0003H
+ M    0269    0206         S    CLRF      0006H
+ M    026A    C807         S    BCF       0007H  0004H
+ M    026B    CE07         S    BCF       0007H  0007H
+ M    026C    2043         S    MOVFW     0043H
+ M    026D    5880         S    SUBLW     0080H
+ M    026E    2224         S    MOVWF     0024H
+ M    026F    4009         S    MOVLW     0009H
+ M    0270    0624         S    ADDWF     0024H  0001H
+ M    0271    2044         S    MOVFW     0044H
+ M    0272    2239         S    MOVWF     0039H
+ M    0273    2045         S    MOVFW     0045H
+ M    0274    223A         S    MOVWF     003AH
+ M    0275    4001         S    MOVLW     0001H
+ M    0276    1A3A         S    SUBWF     003AH  0001H
+ M    0277    4000         S    MOVLW     0000H
+ M    0278    3A39         S    SUBWFC    0039H  0001H
+ M    0279    4100         S    SETDP     0000H
+ M    027A    4040         S    MOVLW     0040H
+ M    027B    444A         S    ADDLW     004AH
+ M    027C    2202         S    MOVWF     0002H
+ M    027D    2000         S    MOVFW     0000H
+ M    027E    2234         S    MOVWF     0034H
+ M    027F    3E34         S    RRF       0034H  0001H
+ M    0280    3E34         S    RRF       0034H  0001H
+ M    0281    3E34         S    RRF       0034H  0001H
+ M    0282    3C34         S    RRF       0034H  0000H
+ M    0283    680F         S    ANDLW     000FH
+ M    0284    2235         S    MOVWF     0035H
+ M    0285    C204         S    BCF       0004H  0001H
+ M    0286    3635         S    RLF       0035H  0001H
+ M    0287    C204         S    BCF       0004H  0001H
+ M    0288    3635         S    RLF       0035H  0001H
+ M    0289    2035         S    MOVFW     0035H
+ M    028A    444A         S    ADDLW     004AH
+ M    028B    2203         S    MOVWF     0003H
+ M    028C    2001         S    MOVFW     0001H
+ M    028D    2230         S    MOVWF     0030H
+ M    028E    0A03         S    INCF      0003H  0001H
+ M    028F    2001         S    MOVFW     0001H
+ M    0290    2231         S    MOVWF     0031H
+ M    0291    0A03         S    INCF      0003H  0001H
+ M    0292    2001         S    MOVFW     0001H
+ M    0293    2232         S    MOVWF     0032H
+ M    0294    0A03         S    INCF      0003H  0001H
+ M    0295    2001         S    MOVFW     0001H
+ M    0296    2233         S    MOVWF     0033H
+ M    0297    0A30         S    INCF      0030H  0001H
+ M    0298    0A32         S    INCF      0032H  0001H
+ M    0299    D60B         S    BSF       000BH  0003H
+ M    029A    82D9         S    CALL      02D9H
+ M    029B    1631         S    DECFSZ    0031H  0001H
+ M    029C    A29A         S    GOTO      029AH
+ M    029D    1630         S    DECFSZ    0030H  0001H
+ M    029E    A29A         S    GOTO      029AH
+ M    029F    C60B         S    BCF       000BH  0003H
+ M    02A0    82D9         S    CALL      02D9H
+ M    02A1    1633         S    DECFSZ    0033H  0001H
+ M    02A2    A2A0         S    GOTO      02A0H
+ M    02A3    1632         S    DECFSZ    0032H  0001H
+ M    02A4    A2A0         S    GOTO      02A0H
+ M    02A5    4001         S    MOVLW     0001H
+ M    02A6    1A3A         S    SUBWF     003AH  0001H
+ M    02A7    4000         S    MOVLW     0000H
+ M    02A8    3A39         S    SUBWFC    0039H  0001H
+ M    02A9    F204         S    BTFSS     0004H  0001H
+ M    02AA    A2D8         S    GOTO      02D8H
+ M    02AB    2000         S    MOVFW     0000H
+ M    02AC    680F         S    ANDLW     000FH
+ M    02AD    2235         S    MOVWF     0035H
+ M    02AE    C204         S    BCF       0004H  0001H
+ M    02AF    3635         S    RLF       0035H  0001H
  M    02B0    C204         S    BCF       0004H  0001H
  M    02B1    3635         S    RLF       0035H  0001H
- M    02B2    C204         S    BCF       0004H  0001H
- M    02B3    3635         S    RLF       0035H  0001H
- M    02B4    2035         S    MOVFW     0035H
- M    02B5    444A         S    ADDLW     004AH
- M    02B6    2203         S    MOVWF     0003H
- M    02B7    2001         S    MOVFW     0001H
- M    02B8    2230         S    MOVWF     0030H
- M    02B9    0A03         S    INCF      0003H  0001H
- M    02BA    2001         S    MOVFW     0001H
- M    02BB    2231         S    MOVWF     0031H
- M    02BC    0A03         S    INCF      0003H  0001H
- M    02BD    2001         S    MOVFW     0001H
- M    02BE    2232         S    MOVWF     0032H
- M    02BF    0A03         S    INCF      0003H  0001H
- M    02C0    2001         S    MOVFW     0001H
- M    02C1    2233         S    MOVWF     0033H
- M    02C2    0A30         S    INCF      0030H  0001H
- M    02C3    0A32         S    INCF      0032H  0001H
- M    02C4    D60B         S    BSF       000BH  0003H
- M    02C5    8304         S    CALL      0304H
- M    02C6    1631         S    DECFSZ    0031H  0001H
- M    02C7    A2C5         S    GOTO      02C5H
- M    02C8    1630         S    DECFSZ    0030H  0001H
- M    02C9    A2C5         S    GOTO      02C5H
- M    02CA    C60B         S    BCF       000BH  0003H
- M    02CB    8304         S    CALL      0304H
- M    02CC    1633         S    DECFSZ    0033H  0001H
- M    02CD    A2CB         S    GOTO      02CBH
- M    02CE    1632         S    DECFSZ    0032H  0001H
- M    02CF    A2CB         S    GOTO      02CBH
- M    02D0    4001         S    MOVLW     0001H
- M    02D1    1A3A         S    SUBWF     003AH  0001H
- M    02D2    4000         S    MOVLW     0000H
- M    02D3    3A39         S    SUBWFC    0039H  0001H
- M    02D4    F204         S    BTFSS     0004H  0001H
- M    02D5    A303         S    GOTO      0303H
- M    02D6    2000         S    MOVFW     0000H
- M    02D7    680F         S    ANDLW     000FH
- M    02D8    2235         S    MOVWF     0035H
- M    02D9    C204         S    BCF       0004H  0001H
- M    02DA    3635         S    RLF       0035H  0001H
- M    02DB    C204         S    BCF       0004H  0001H
- M    02DC    3635         S    RLF       0035H  0001H
- M    02DD    2035         S    MOVFW     0035H
- M    02DE    444A         S    ADDLW     004AH
- M    02DF    2203         S    MOVWF     0003H
- M    02E0    2001         S    MOVFW     0001H
- M    02E1    2230         S    MOVWF     0030H
- M    02E2    0A03         S    INCF      0003H  0001H
- M    02E3    2001         S    MOVFW     0001H
- M    02E4    2231         S    MOVWF     0031H
- M    02E5    0A03         S    INCF      0003H  0001H
- M    02E6    2001         S    MOVFW     0001H
- M    02E7    2232         S    MOVWF     0032H
- M    02E8    0A03         S    INCF      0003H  0001H
- M    02E9    2001         S    MOVFW     0001H
- M    02EA    2233         S    MOVWF     0033H
- M    02EB    0A30         S    INCF      0030H  0001H
- M    02EC    0A32         S    INCF      0032H  0001H
- M    02ED    D60B         S    BSF       000BH  0003H
- M    02EE    8304         S    CALL      0304H
- M    02EF    1631         S    DECFSZ    0031H  0001H
- M    02F0    A2EE         S    GOTO      02EEH
- M    02F1    1630         S    DECFSZ    0030H  0001H
- M    02F2    A2EE         S    GOTO      02EEH
- M    02F3    C60B         S    BCF       000BH  0003H
- M    02F4    8304         S    CALL      0304H
- M    02F5    1633         S    DECFSZ    0033H  0001H
- M    02F6    A2F4         S    GOTO      02F4H
- M    02F7    1632         S    DECFSZ    0032H  0001H
- M    02F8    A2F4         S    GOTO      02F4H
- M    02F9    4001         S    MOVLW     0001H
- M    02FA    1A3A         S    SUBWF     003AH  0001H
- M    02FB    4000         S    MOVLW     0000H
- M    02FC    3A39         S    SUBWFC    0039H  0001H
- M    02FD    F204         S    BTFSS     0004H  0001H
- M    02FE    A303         S    GOTO      0303H
- M    02FF    0E02         S    INCFSZ    0002H  0001H
- M    0300    A2A8         S    GOTO      02A8H
- M    0301    4101         S    SETDP     0001H
- M    0302    A2A8         S    GOTO      02A8H
- M    0303    0003         S    RETURN
- M    0304    2024         S    MOVFW     0024H
- M    0305    0008         S    ADDPCW
+ M    02B2    2035         S    MOVFW     0035H
+ M    02B3    444A         S    ADDLW     004AH
+ M    02B4    2203         S    MOVWF     0003H
+ M    02B5    2001         S    MOVFW     0001H
+ M    02B6    2230         S    MOVWF     0030H
+ M    02B7    0A03         S    INCF      0003H  0001H
+ M    02B8    2001         S    MOVFW     0001H
+ M    02B9    2231         S    MOVWF     0031H
+ M    02BA    0A03         S    INCF      0003H  0001H
+ M    02BB    2001         S    MOVFW     0001H
+ M    02BC    2232         S    MOVWF     0032H
+ M    02BD    0A03         S    INCF      0003H  0001H
+ M    02BE    2001         S    MOVFW     0001H
+ M    02BF    2233         S    MOVWF     0033H
+ M    02C0    0A30         S    INCF      0030H  0001H
+ M    02C1    0A32         S    INCF      0032H  0001H
+ M    02C2    D60B         S    BSF       000BH  0003H
+ M    02C3    82D9         S    CALL      02D9H
+ M    02C4    1631         S    DECFSZ    0031H  0001H
+ M    02C5    A2C3         S    GOTO      02C3H
+ M    02C6    1630         S    DECFSZ    0030H  0001H
+ M    02C7    A2C3         S    GOTO      02C3H
+ M    02C8    C60B         S    BCF       000BH  0003H
+ M    02C9    82D9         S    CALL      02D9H
+ M    02CA    1633         S    DECFSZ    0033H  0001H
+ M    02CB    A2C9         S    GOTO      02C9H
+ M    02CC    1632         S    DECFSZ    0032H  0001H
+ M    02CD    A2C9         S    GOTO      02C9H
+ M    02CE    4001         S    MOVLW     0001H
+ M    02CF    1A3A         S    SUBWF     003AH  0001H
+ M    02D0    4000         S    MOVLW     0000H
+ M    02D1    3A39         S    SUBWFC    0039H  0001H
+ M    02D2    F204         S    BTFSS     0004H  0001H
+ M    02D3    A2D8         S    GOTO      02D8H
+ M    02D4    0E02         S    INCFSZ    0002H  0001H
+ M    02D5    A27D         S    GOTO      027DH
+ M    02D6    4101         S    SETDP     0001H
+ M    02D7    A27D         S    GOTO      027DH
+ M    02D8    0003         S    RETURN
+ M    02D9    2024         S    MOVFW     0024H
+ M    02DA    0008         S    ADDPCW
+ M    02DB    0000         S    NOP
+ M    02DC    0000         S    NOP
+ M    02DD    0000         S    NOP
+ M    02DE    0000         S    NOP
+ M    02DF    0000         S    NOP
+ M    02E0    0000         S    NOP
+ M    02E1    0000         S    NOP
+ M    02E2    0000         S    NOP
+ M    02E3    0000         S    NOP
+ M    02E4    0000         S    NOP
+ M    02E5    0000         S    NOP
+ M    02E6    0000         S    NOP
+ M    02E7    0000         S    NOP
+ M    02E8    0000         S    NOP
+ M    02E9    0000         S    NOP
+ M    02EA    0000         S    NOP
+ M    02EB    0000         S    NOP
+ M    02EC    0000         S    NOP
+ M    02ED    0000         S    NOP
+ M    02EE    0000         S    NOP
+ M    02EF    0000         S    NOP
+ M    02F0    0000         S    NOP
+ M    02F1    0000         S    NOP
+ M    02F2    0000         S    NOP
+ M    02F3    0000         S    NOP
+ M    02F4    0000         S    NOP
+ M    02F5    0000         S    NOP
+ M    02F6    0000         S    NOP
+ M    02F7    0000         S    NOP
+ M    02F8    0000         S    NOP
+ M    02F9    0000         S    NOP
+ M    02FA    0000         S    NOP
+ M    02FB    0000         S    NOP
+ M    02FC    0000         S    NOP
+ M    02FD    0000         S    NOP
+ M    02FE    0000         S    NOP
+ M    02FF    0000         S    NOP
+ M    0300    0000         S    NOP
+ M    0301    0000         S    NOP
+ M    0302    0000         S    NOP
+ M    0303    0000         S    NOP
+ M    0304    0000         S    NOP
+ M    0305    0000         S    NOP
  M    0306    0000         S    NOP
  M    0307    0000         S    NOP
  M    0308    0000         S    NOP
@@ -865,7 +865,7 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
  M    0358    0000         S    NOP
  M    0359    0000         S    NOP
  M    035A    0000         S    NOP
- M    035B    0000         S    NOP
+ M    035B    0003         S    RETURN
  M    035C    0000         S    NOP
  M    035D    0000         S    NOP
  M    035E    0000         S    NOP
@@ -885,444 +885,1287 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
  M    036C    0000         S    NOP
  M    036D    0000         S    NOP
  M    036E    0000         S    NOP
- M    036F    0000         S    NOP
- M    0370    0000         S    NOP
- M    0371    0000         S    NOP
- M    0372    0000         S    NOP
- M    0373    0000         S    NOP
- M    0374    0000         S    NOP
- M    0375    0000         S    NOP
- M    0376    0000         S    NOP
- M    0377    0000         S    NOP
- M    0378    0000         S    NOP
- M    0379    0000         S    NOP
- M    037A    0000         S    NOP
- M    037B    0000         S    NOP
- M    037C    0000         S    NOP
- M    037D    0000         S    NOP
- M    037E    0000         S    NOP
- M    037F    0000         S    NOP
- M    0380    0000         S    NOP
- M    0381    0000         S    NOP
- M    0382    0000         S    NOP
- M    0383    0000         S    NOP
- M    0384    0000         S    NOP
- M    0385    0000         S    NOP
- M    0386    0003         S    RETURN
- M    0387    0000         S    NOP
- M    0388    0000         S    NOP
- M    0389    0000         S    NOP
- M    038A    0000         S    NOP
- M    038B    0000         S    NOP
- M    038C    0000         S    NOP
- M    038D    0000         S    NOP
- M    038E    0000         S    NOP
- M    038F    0000         S    NOP
- M    0390    0000         S    NOP
- M    0391    0000         S    NOP
- M    0392    0000         S    NOP
- M    0393    0000         S    NOP
- M    0394    0000         S    NOP
- M    0395    0000         S    NOP
- M    0396    0000         S    NOP
- M    0397    0000         S    NOP
- M    0398    0000         S    NOP
- M    0399    0000         S    NOP
- M    039A    0003         S    RETURN
- M    039B    2041         S    MOVFW     0041H
- M    039C    2237         S    MOVWF     0037H
- M    039D    2042         S    MOVFW     0042H
- M    039E    2238         S    MOVWF     0038H
- M    039F    400A         S    MOVLW     000AH
- M    03A0    1A38         S    SUBWF     0038H  0001H
- M    03A1    4000         S    MOVLW     0000H
- M    03A2    3A37         S    SUBWFC    0037H  0001H
- M    03A3    0236         S    CLRF      0036H
- M    03A4    4100         S    SETDP     0000H
- M    03A5    404A         S    MOVLW     004AH
- M    03A6    2202         S    MOVWF     0002H
- M    03A7    2000         S    MOVFW     0000H
- M    03A8    3236         S    XORWF     0036H  0001H
- M    03A9    0E02         S    INCFSZ    0002H  0001H
- M    03AA    A3AC         S    GOTO      03ACH
- M    03AB    4101         S    SETDP     0001H
- M    03AC    4008         S    MOVLW     0008H
- M    03AD    2234         S    MOVWF     0034H
- M    03AE    2036         S    MOVFW     0036H
- M    03AF    6801         S    ANDLW     0001H
- M    03B0    5800         S    SUBLW     0000H
- M    03B1    E004         S    BTFSC     0004H  0000H
- M    03B2    A3B8         S    GOTO      03B8H
- M    03B3    C204         S    BCF       0004H  0001H
- M    03B4    3C36         S    RRF       0036H  0000H
- M    03B5    708C         S    XORLW     008CH
- M    03B6    2236         S    MOVWF     0036H
- M    03B7    A3BA         S    GOTO      03BAH
- M    03B8    C204         S    BCF       0004H  0001H
- M    03B9    3E36         S    RRF       0036H  0001H
- M    03BA    1634         S    DECFSZ    0034H  0001H
- M    03BB    A3AE         S    GOTO      03AEH
- M    03BC    4001         S    MOVLW     0001H
- M    03BD    1A38         S    SUBWF     0038H  0001H
- M    03BE    4000         S    MOVLW     0000H
- M    03BF    3A37         S    SUBWFC    0037H  0001H
- M    03C0    2037         S    MOVFW     0037H
- M    03C1    5800         S    SUBLW     0000H
- M    03C2    F004         S    BTFSS     0004H  0000H
- M    03C3    A3A7         S    GOTO      03A7H
- M    03C4    2038         S    MOVFW     0038H
- M    03C5    5800         S    SUBLW     0000H
- M    03C6    F004         S    BTFSS     0004H  0000H
- M    03C7    A3A7         S    GOTO      03A7H
- M    03C8    0003         S    RETURN
+ M    036F    0003         S    RETURN
 0025                       S    INCLUDE I2C_CMD_PROTOCOL.ASM
- M    03C9    0008         S    ADDPCW
- M    03CA    4840         S    RETLW     0040H
- M    03CB    4860         S    RETLW     0060H
- M    03CC    4880         S    RETLW     0080H
- M    03CD    48A0         S    RETLW     00A0H
- M    03CE    48C0         S    RETLW     00C0H
- M    03CF    48E0         S    RETLW     00E0H
- M    03D0    4800         S    RETLW     0000H
- M    03D1    4820         S    RETLW     0020H
- M    03D2    4840         S    RETLW     0040H
- M    03D3    4860         S    RETLW     0060H
- M    03D4    4880         S    RETLW     0080H
- M    03D5    48A0         S    RETLW     00A0H
- M    03D6    48C0         S    RETLW     00C0H
- M    03D7    48E0         S    RETLW     00E0H
- M    03D8    4800         S    RETLW     0000H
- M    03D9    4800         S    RETLW     0000H
- M    03DA    4800         S    RETLW     0000H
- M    03DB    4800         S    RETLW     0000H
- M    03DC    402A         S    MOVLW     002AH
- M    03DD    2225         S    MOVWF     0025H
- M    03DE    4007         S    MOVLW     0007H
- M    03DF    2226         S    MOVWF     0026H
- M    03E0    4000         S    MOVLW     0000H
- M    03E1    2227         S    MOVWF     0027H
- M    03E2    4001         S    MOVLW     0001H
- M    03E3    2228         S    MOVWF     0028H
- M    03E4    0003         S    RETURN
- M    03E5    83DC         S    CALL      03DCH
- M    03E6    4025         S    MOVLW     0025H
- M    03E7    2202         S    MOVWF     0002H
- M    03E8    4100         S    SETDP     0000H
- M    03E9    A4B7         S    GOTO      04B7H
- M    03EA    841E         S    CALL      041EH
- M    03EB    2000         S    MOVFW     0000H
- M    03EC    A4B7         S    GOTO      04B7H
- M    03ED    A4B7         S    GOTO      04B7H
- M    03EE    841E         S    CALL      041EH
- M    03EF    A4B7         S    GOTO      04B7H
- M    03F0    DA22         S    BSF       0022H  0005H
- M    03F1    4100         S    SETDP     0000H
- M    03F2    A4B7         S    GOTO      04B7H
- M    03F3    DA22         S    BSF       0022H  0005H
- M    03F4    C622         S    BCF       0022H  0003H
- M    03F5    C421         S    BCF       0021H  0002H
- M    03F6    4040         S    MOVLW     0040H
- M    03F7    2240         S    MOVWF     0040H
- M    03F8    A4B7         S    GOTO      04B7H
- M    03F9    DA22         S    BSF       0022H  0005H
- M    03FA    C622         S    BCF       0022H  0003H
- M    03FB    D421         S    BSF       0021H  0002H
- M    03FC    4040         S    MOVLW     0040H
- M    03FD    2240         S    MOVWF     0040H
- M    03FE    A4B7         S    GOTO      04B7H
- M    03FF    D622         S    BSF       0022H  0003H
- M    0400    A4B7         S    GOTO      04B7H
- M    0401    2020         S    MOVFW     0020H
- M    0402    E020         S    BTFSC     0020H  0000H
- M    0403    A406         S    GOTO      0406H
- M    0404    C21E         S    BCF       001EH  0001H
- M    0405    A407         S    GOTO      0407H
- M    0406    D21E         S    BSF       001EH  0001H
- M    0407    E220         S    BTFSC     0020H  0001H
- M    0408    A40B         S    GOTO      040BH
- M    0409    C41E         S    BCF       001EH  0002H
- M    040A    A40C         S    GOTO      040CH
- M    040B    D41E         S    BSF       001EH  0002H
- M    040C    E420         S    BTFSC     0020H  0002H
- M    040D    A410         S    GOTO      0410H
- M    040E    CA1E         S    BCF       001EH  0005H
- M    040F    A411         S    GOTO      0411H
- M    0410    DA1E         S    BSF       001EH  0005H
- M    0411    A4B7         S    GOTO      04B7H
- M    0412    2020         S    MOVFW     0020H
- M    0413    E020         S    BTFSC     0020H  0000H
- M    0414    A417         S    GOTO      0417H
- M    0415    CC1E         S    BCF       001EH  0006H
- M    0416    A418         S    GOTO      0418H
- M    0417    DC1E         S    BSF       001EH  0006H
- M    0418    E220         S    BTFSC     0020H  0001H
- M    0419    A41C         S    GOTO      041CH
- M    041A    CE1E         S    BCF       001EH  0007H
- M    041B    A41D         S    GOTO      041DH
- M    041C    DE1E         S    BSF       001EH  0007H
- M    041D    A4B7         S    GOTO      04B7H
- M    041E    2020         S    MOVFW     0020H
- M    041F    680F         S    ANDLW     000FH
- M    0420    2220         S    MOVWF     0020H
- M    0421    83C9         S    CALL      03C9H
- M    0422    2202         S    MOVWF     0002H
- M    0423    4006         S    MOVLW     0006H
- M    0424    1820         S    SUBWF     0020H  0000H
- M    0425    E204         S    BTFSC     0004H  0001H
- M    0426    A429         S    GOTO      0429H
- M    0427    4100         S    SETDP     0000H
- M    0428    A42A         S    GOTO      042AH
- M    0429    4101         S    SETDP     0001H
- M    042A    0003         S    RETURN
+ M    0370    0008         S    ADDPCW
+ M    0371    4840         S    RETLW     0040H
+ M    0372    4860         S    RETLW     0060H
+ M    0373    4880         S    RETLW     0080H
+ M    0374    48A0         S    RETLW     00A0H
+ M    0375    48C0         S    RETLW     00C0H
+ M    0376    48E0         S    RETLW     00E0H
+ M    0377    4800         S    RETLW     0000H
+ M    0378    4820         S    RETLW     0020H
+ M    0379    4840         S    RETLW     0040H
+ M    037A    4860         S    RETLW     0060H
+ M    037B    4880         S    RETLW     0080H
+ M    037C    48A0         S    RETLW     00A0H
+ M    037D    48C0         S    RETLW     00C0H
+ M    037E    48E0         S    RETLW     00E0H
+ M    037F    4800         S    RETLW     0000H
+ M    0380    4800         S    RETLW     0000H
+ M    0381    4800         S    RETLW     0000H
+ M    0382    4800         S    RETLW     0000H
+ M    0383    402A         S    MOVLW     002AH
+ M    0384    2225         S    MOVWF     0025H
+ M    0385    4007         S    MOVLW     0007H
+ M    0386    2226         S    MOVWF     0026H
+ M    0387    4000         S    MOVLW     0000H
+ M    0388    2227         S    MOVWF     0027H
+ M    0389    4001         S    MOVLW     0001H
+ M    038A    2228         S    MOVWF     0028H
+ M    038B    0003         S    RETURN
+ M    038C    8383         S    CALL      0383H
+ M    038D    4025         S    MOVLW     0025H
+ M    038E    2202         S    MOVWF     0002H
+ M    038F    4100         S    SETDP     0000H
+ M    0390    A460         S    GOTO      0460H
+ M    0391    83C5         S    CALL      03C5H
+ M    0392    2000         S    MOVFW     0000H
+ M    0393    A460         S    GOTO      0460H
+ M    0394    A460         S    GOTO      0460H
+ M    0395    83C5         S    CALL      03C5H
+ M    0396    A460         S    GOTO      0460H
+ M    0397    DA22         S    BSF       0022H  0005H
+ M    0398    4100         S    SETDP     0000H
+ M    0399    A460         S    GOTO      0460H
+ M    039A    DA22         S    BSF       0022H  0005H
+ M    039B    C622         S    BCF       0022H  0003H
+ M    039C    C421         S    BCF       0021H  0002H
+ M    039D    4040         S    MOVLW     0040H
+ M    039E    2240         S    MOVWF     0040H
+ M    039F    A460         S    GOTO      0460H
+ M    03A0    DA22         S    BSF       0022H  0005H
+ M    03A1    C622         S    BCF       0022H  0003H
+ M    03A2    D421         S    BSF       0021H  0002H
+ M    03A3    4040         S    MOVLW     0040H
+ M    03A4    2240         S    MOVWF     0040H
+ M    03A5    A460         S    GOTO      0460H
+ M    03A6    D622         S    BSF       0022H  0003H
+ M    03A7    A460         S    GOTO      0460H
+ M    03A8    2020         S    MOVFW     0020H
+ M    03A9    E020         S    BTFSC     0020H  0000H
+ M    03AA    A3AD         S    GOTO      03ADH
+ M    03AB    C21E         S    BCF       001EH  0001H
+ M    03AC    A3AE         S    GOTO      03AEH
+ M    03AD    D21E         S    BSF       001EH  0001H
+ M    03AE    E220         S    BTFSC     0020H  0001H
+ M    03AF    A3B2         S    GOTO      03B2H
+ M    03B0    C41E         S    BCF       001EH  0002H
+ M    03B1    A3B3         S    GOTO      03B3H
+ M    03B2    D41E         S    BSF       001EH  0002H
+ M    03B3    E420         S    BTFSC     0020H  0002H
+ M    03B4    A3B7         S    GOTO      03B7H
+ M    03B5    CA1E         S    BCF       001EH  0005H
+ M    03B6    A3B8         S    GOTO      03B8H
+ M    03B7    DA1E         S    BSF       001EH  0005H
+ M    03B8    A460         S    GOTO      0460H
+ M    03B9    2020         S    MOVFW     0020H
+ M    03BA    E020         S    BTFSC     0020H  0000H
+ M    03BB    A3BE         S    GOTO      03BEH
+ M    03BC    CC1E         S    BCF       001EH  0006H
+ M    03BD    A3BF         S    GOTO      03BFH
+ M    03BE    DC1E         S    BSF       001EH  0006H
+ M    03BF    E220         S    BTFSC     0020H  0001H
+ M    03C0    A3C3         S    GOTO      03C3H
+ M    03C1    CE1E         S    BCF       001EH  0007H
+ M    03C2    A3C4         S    GOTO      03C4H
+ M    03C3    DE1E         S    BSF       001EH  0007H
+ M    03C4    A460         S    GOTO      0460H
+ M    03C5    2020         S    MOVFW     0020H
+ M    03C6    680F         S    ANDLW     000FH
+ M    03C7    2220         S    MOVWF     0020H
+ M    03C8    8370         S    CALL      0370H
+ M    03C9    2202         S    MOVWF     0002H
+ M    03CA    4006         S    MOVLW     0006H
+ M    03CB    1820         S    SUBWF     0020H  0000H
+ M    03CC    E204         S    BTFSC     0004H  0001H
+ M    03CD    A3D0         S    GOTO      03D0H
+ M    03CE    4100         S    SETDP     0000H
+ M    03CF    A3D1         S    GOTO      03D1H
+ M    03D0    4101         S    SETDP     0001H
+ M    03D1    0003         S    RETURN
 0026                       S    INCLUDE PERIPHERAL.ASM
- M    042B    D611         S    BSF       0011H  0003H
- M    042C    C011         S    BCF       0011H  0000H
- M    042D    C211         S    BCF       0011H  0001H
- M    042E    C411         S    BCF       0011H  0002H
- M    042F    0207         S    CLRF      0007H
- M    0430    0206         S    CLRF      0006H
- M    0431    DE07         S    BSF       0007H  0007H
- M    0432    0003         S    RETURN
- M    0433    4002         S    MOVLW     0002H
- M    0434    220E         S    MOVWF     000EH
- M    0435    020B         S    CLRF      000BH
- M    0436    0207         S    CLRF      0007H
- M    0437    0206         S    CLRF      0006H
- M    0438    C007         S    BCF       0007H  0000H
- M    0439    CE0E         S    BCF       000EH  0007H
- M    043A    40FF         S    MOVLW     00FFH
- M    043B    2219         S    MOVWF     0019H
- M    043C    40FF         S    MOVLW     00FFH
- M    043D    221A         S    MOVWF     001AH
- M    043E    40EF         S    MOVLW     00EFH
- M    043F    2214         S    MOVWF     0014H
- M    0440    4000         S    MOVLW     0000H
- M    0441    2215         S    MOVWF     0015H
- M    0442    40F7         S    MOVLW     00F7H
- M    0443    2213         S    MOVWF     0013H
- M    0444    40FE         S    MOVLW     00FEH
- M    0445    2217         S    MOVWF     0017H
- M    0446    4000         S    MOVLW     0000H
- M    0447    2218         S    MOVWF     0018H
- M    0448    4000         S    MOVLW     0000H
- M    0449    2216         S    MOVWF     0016H
- M    044A    DE1F         S    BSF       001FH  0007H
- M    044B    0003         S    RETURN
- M    044C    4030         S    MOVLW     0030H
- M    044D    2223         S    MOVWF     0023H
- M    044E    8452         S    CALL      0452H
- M    044F    1623         S    DECFSZ    0023H  0001H
- M    0450    A44E         S    GOTO      044EH
- M    0451    0003         S    RETURN
- M    0452    4010         S    MOVLW     0010H
- M    0453    0000         S    NOP
- M    0454    2224         S    MOVWF     0024H
- M    0455    1624         S    DECFSZ    0024H  0001H
- M    0456    A455         S    GOTO      0455H
- M    0457    0003         S    RETURN
- M    0458    400D         S    MOVLW     000DH
- M    0459    2224         S    MOVWF     0024H
- M    045A    1624         S    DECFSZ    0024H  0001H
- M    045B    A45A         S    GOTO      045AH
- M    045C    0003         S    RETURN
- M    045D    4020         S    MOVLW     0020H
- M    045E    8463         S    CALL      0463H
- M    045F    0003         S    RETURN
- M    0460    4040         S    MOVLW     0040H
- M    0461    8463         S    CALL      0463H
- M    0462    0003         S    RETURN
- M    0463    2202         S    MOVWF     0002H
- M    0464    0200         S    CLRF      0000H
- M    0465    0E02         S    INCFSZ    0002H  0001H
- M    0466    A464         S    GOTO      0464H
- M    0467    4000         S    MOVLW     0000H
- M    0468    2202         S    MOVWF     0002H
- M    0469    4101         S    SETDP     0001H
- M    046A    0200         S    CLRF      0000H
- M    046B    0E02         S    INCFSZ    0002H  0001H
- M    046C    A46A         S    GOTO      046AH
- M    046D    4100         S    SETDP     0000H
- M    046E    0003         S    RETURN
- M    046F    4100         S    SETDP     0000H
- M    0470    0229         S    CLRF      0029H
- M    0471    4040         S    MOVLW     0040H
- M    0472    2202         S    MOVWF     0002H
- M    0473    4001         S    MOVLW     0001H
- M    0474    222A         S    MOVWF     002AH
- M    0475    40C0         S    MOVLW     00C0H
- M    0476    222B         S    MOVWF     002BH
- M    0477    2029         S    MOVFW     0029H
- M    0478    2200         S    MOVWF     0000H
- M    0479    0A29         S    INCF      0029H  0001H
- M    047A    0E02         S    INCFSZ    0002H  0001H
- M    047B    A47D         S    GOTO      047DH
- M    047C    4101         S    SETDP     0001H
- M    047D    162A         S    DECFSZ    002AH  0001H
- M    047E    A477         S    GOTO      0477H
- M    047F    162B         S    DECFSZ    002BH  0001H
- M    0480    A477         S    GOTO      0477H
- M    0481    0000         S    NOP
- M    0482    0003         S    RETURN
+ M    03D2    D611         S    BSF       0011H  0003H
+ M    03D3    C011         S    BCF       0011H  0000H
+ M    03D4    C211         S    BCF       0011H  0001H
+ M    03D5    C411         S    BCF       0011H  0002H
+ M    03D6    0207         S    CLRF      0007H
+ M    03D7    0206         S    CLRF      0006H
+ M    03D8    DE07         S    BSF       0007H  0007H
+ M    03D9    0003         S    RETURN
+ M    03DA    4002         S    MOVLW     0002H
+ M    03DB    220E         S    MOVWF     000EH
+ M    03DC    020B         S    CLRF      000BH
+ M    03DD    0207         S    CLRF      0007H
+ M    03DE    0206         S    CLRF      0006H
+ M    03DF    C007         S    BCF       0007H  0000H
+ M    03E0    CE0E         S    BCF       000EH  0007H
+ M    03E1    40FF         S    MOVLW     00FFH
+ M    03E2    2219         S    MOVWF     0019H
+ M    03E3    40FF         S    MOVLW     00FFH
+ M    03E4    221A         S    MOVWF     001AH
+ M    03E5    40EF         S    MOVLW     00EFH
+ M    03E6    2214         S    MOVWF     0014H
+ M    03E7    4000         S    MOVLW     0000H
+ M    03E8    2215         S    MOVWF     0015H
+ M    03E9    40F7         S    MOVLW     00F7H
+ M    03EA    2213         S    MOVWF     0013H
+ M    03EB    40FE         S    MOVLW     00FEH
+ M    03EC    2217         S    MOVWF     0017H
+ M    03ED    4000         S    MOVLW     0000H
+ M    03EE    2218         S    MOVWF     0018H
+ M    03EF    4000         S    MOVLW     0000H
+ M    03F0    2216         S    MOVWF     0016H
+ M    03F1    DE1F         S    BSF       001FH  0007H
+ M    03F2    0003         S    RETURN
+ M    03F3    4030         S    MOVLW     0030H
+ M    03F4    2223         S    MOVWF     0023H
+ M    03F5    83F9         S    CALL      03F9H
+ M    03F6    1623         S    DECFSZ    0023H  0001H
+ M    03F7    A3F5         S    GOTO      03F5H
+ M    03F8    0003         S    RETURN
+ M    03F9    4010         S    MOVLW     0010H
+ M    03FA    0000         S    NOP
+ M    03FB    2224         S    MOVWF     0024H
+ M    03FC    1624         S    DECFSZ    0024H  0001H
+ M    03FD    A3FC         S    GOTO      03FCH
+ M    03FE    0003         S    RETURN
+ M    03FF    400D         S    MOVLW     000DH
+ M    0400    2224         S    MOVWF     0024H
+ M    0401    1624         S    DECFSZ    0024H  0001H
+ M    0402    A401         S    GOTO      0401H
+ M    0403    0003         S    RETURN
+ M    0404    4020         S    MOVLW     0020H
+ M    0405    840A         S    CALL      040AH
+ M    0406    0003         S    RETURN
+ M    0407    4040         S    MOVLW     0040H
+ M    0408    840A         S    CALL      040AH
+ M    0409    0003         S    RETURN
+ M    040A    2202         S    MOVWF     0002H
+ M    040B    0200         S    CLRF      0000H
+ M    040C    0E02         S    INCFSZ    0002H  0001H
+ M    040D    A40B         S    GOTO      040BH
+ M    040E    4000         S    MOVLW     0000H
+ M    040F    2202         S    MOVWF     0002H
+ M    0410    4101         S    SETDP     0001H
+ M    0411    0200         S    CLRF      0000H
+ M    0412    0E02         S    INCFSZ    0002H  0001H
+ M    0413    A411         S    GOTO      0411H
+ M    0414    4100         S    SETDP     0000H
+ M    0415    0003         S    RETURN
+ M    0416    4100         S    SETDP     0000H
+ M    0417    0229         S    CLRF      0029H
+ M    0418    4040         S    MOVLW     0040H
+ M    0419    2202         S    MOVWF     0002H
+ M    041A    4001         S    MOVLW     0001H
+ M    041B    222A         S    MOVWF     002AH
+ M    041C    40C0         S    MOVLW     00C0H
+ M    041D    222B         S    MOVWF     002BH
+ M    041E    2029         S    MOVFW     0029H
+ M    041F    2200         S    MOVWF     0000H
+ M    0420    0A29         S    INCF      0029H  0001H
+ M    0421    0E02         S    INCFSZ    0002H  0001H
+ M    0422    A424         S    GOTO      0424H
+ M    0423    4101         S    SETDP     0001H
+ M    0424    162A         S    DECFSZ    002AH  0001H
+ M    0425    A41E         S    GOTO      041EH
+ M    0426    162B         S    DECFSZ    002BH  0001H
+ M    0427    A41E         S    GOTO      041EH
+ M    0428    0000         S    NOP
+ M    0429    0003         S    RETURN
 0027                       S    INCLUDE INTERRUPT.ASM
- M    0483    F206         S    BTFSS     0006H  0001H
- M    0484    A4B9         S    GOTO      04B9H
- M    0485    E81F         S    BTFSC     001FH  0004H
- M    0486    A48C         S    GOTO      048CH
- M    0487    FC1F         S    BTFSS     001FH  0006H
- M    0488    A4B7         S    GOTO      04B7H
- M    0489    F822         S    BTFSS     0022H  0004H
- M    048A    A49A         S    GOTO      049AH
- M    048B    A495         S    GOTO      0495H
- M    048C    EC1F         S    BTFSC     001FH  0006H
- M    048D    A493         S    GOTO      0493H
- M    048E    0A02         S    INCF      0002H  0001H
- M    048F    2000         S    MOVFW     0000H
- M    0490    DC1F         S    BSF       001FH  0006H
- M    0491    0206         S    CLRF      0006H
- M    0492    0002         S    RETFIE
- M    0493    0206         S    CLRF      0006H
- M    0494    0002         S    RETFIE
- M    0495    4300         S    MOVI2CW
- M    0496    2200         S    MOVWF     0000H
- M    0497    0A02         S    INCF      0002H  0001H
- M    0498    0206         S    CLRF      0006H
- M    0499    0002         S    RETFIE
- M    049A    D822         S    BSF       0022H  0004H
- M    049B    4300         S    MOVI2CW
- M    049C    2220         S    MOVWF     0020H
- M    049D    4C20         S    SWAPF     0020H  0000H
- M    049E    680F         S    ANDLW     000FH
- M    049F    0008         S    ADDPCW
- M    04A0    A4B0         S    GOTO      04B0H
- M    04A1    A3EE         S    GOTO      03EEH
- M    04A2    A3F0         S    GOTO      03F0H
- M    04A3    A3F9         S    GOTO      03F9H
- M    04A4    A3F3         S    GOTO      03F3H
- M    04A5    A3FF         S    GOTO      03FFH
- M    04A6    A3E5         S    GOTO      03E5H
- M    04A7    A3EA         S    GOTO      03EAH
- M    04A8    A401         S    GOTO      0401H
- M    04A9    A412         S    GOTO      0412H
- M    04AA    A4B0         S    GOTO      04B0H
- M    04AB    A4B0         S    GOTO      04B0H
- M    04AC    A4B0         S    GOTO      04B0H
- M    04AD    A4B0         S    GOTO      04B0H
- M    04AE    A4B0         S    GOTO      04B0H
- M    04AF    A4B0         S    GOTO      04B0H
- M    04B0    C60E         S    BCF       000EH  0003H
- M    04B1    C807         S    BCF       0007H  0004H
- M    04B2    C207         S    BCF       0007H  0001H
- M    04B3    CE07         S    BCF       0007H  0007H
- M    04B4    0206         S    CLRF      0006H
- M    04B5    D021         S    BSF       0021H  0000H
- M    04B6    0002         S    RETFIE
- M    04B7    0206         S    CLRF      0006H
- M    04B8    0002         S    RETFIE
- M    04B9    0206         S    CLRF      0006H
- M    04BA    CE0E         S    BCF       000EH  0007H
- M    04BB    D60E         S    BSF       000EH  0003H
- M    04BC    C611         S    BCF       0011H  0003H
- M    04BD    CE11         S    BCF       0011H  0007H
- M    04BE    C422         S    BCF       0022H  0002H
- M    04BF    0002         S    RETFIE
- M    04C0    C007         S    BCF       0007H  0000H
- M    04C1    A000         S    GOTO      0000H
- M    04C2    E406         S    BTFSC     0006H  0002H
- M    04C3    A4D0         S    GOTO      04D0H
- M    04C4    C806         S    BCF       0006H  0004H
- M    04C5    40FF         S    MOVLW     00FFH
- M    04C6    222B         S    MOVWF     002BH
- M    04C7    40FF         S    MOVLW     00FFH
- M    04C8    222A         S    MOVWF     002AH
- M    04C9    202F         S    MOVFW     002FH
- M    04CA    222D         S    MOVWF     002DH
- M    04CB    202E         S    MOVFW     002EH
- M    04CC    222C         S    MOVWF     002CH
- M    04CD    D422         S    BSF       0022H  0002H
- M    04CE    D622         S    BSF       0022H  0003H
- M    04CF    0002         S    RETFIE
- M    04D0    E422         S    BTFSC     0022H  0002H
- M    04D1    A4DF         S    GOTO      04DFH
- M    04D2    200C         S    MOVFW     000CH
- M    04D3    222B         S    MOVWF     002BH
- M    04D4    200D         S    MOVFW     000DH
- M    04D5    222A         S    MOVWF     002AH
- M    04D6    202F         S    MOVFW     002FH
- M    04D7    222D         S    MOVWF     002DH
- M    04D8    202E         S    MOVFW     002EH
- M    04D9    222C         S    MOVWF     002CH
- M    04DA    022F         S    CLRF      002FH
- M    04DB    022E         S    CLRF      002EH
- M    04DC    D422         S    BSF       0022H  0002H
- M    04DD    C60E         S    BCF       000EH  0003H
- M    04DE    D611         S    BSF       0011H  0003H
- M    04DF    0E2F         S    INCFSZ    002FH  0001H
- M    04E0    A4E2         S    GOTO      04E2H
- M    04E1    0A2E         S    INCF      002EH  0001H
- M    04E2    CE11         S    BCF       0011H  0007H
- M    04E3    0206         S    CLRF      0006H
- M    04E4    0002         S    RETFIE
-0028                       S    
-0029                       S    
-0030                       S    
+ M    042A    F206         S    BTFSS     0006H  0001H
+ M    042B    A462         S    GOTO      0462H
+ M    042C    E81F         S    BTFSC     001FH  0004H
+ M    042D    A433         S    GOTO      0433H
+ M    042E    FC1F         S    BTFSS     001FH  0006H
+ M    042F    A460         S    GOTO      0460H
+ M    0430    F822         S    BTFSS     0022H  0004H
+ M    0431    A443         S    GOTO      0443H
+ M    0432    A43C         S    GOTO      043CH
+ M    0433    EC1F         S    BTFSC     001FH  0006H
+ M    0434    A43A         S    GOTO      043AH
+ M    0435    0A02         S    INCF      0002H  0001H
+ M    0436    2000         S    MOVFW     0000H
+ M    0437    DC1F         S    BSF       001FH  0006H
+ M    0438    0206         S    CLRF      0006H
+ M    0439    0002         S    RETFIE
+ M    043A    0206         S    CLRF      0006H
+ M    043B    0002         S    RETFIE
+ M    043C    4300         S    MOVI2CW
+ M    043D    2200         S    MOVWF     0000H
+ M    043E    0E02         S    INCFSZ    0002H  0001H
+ M    043F    A441         S    GOTO      0441H
+ M    0440    4101         S    SETDP     0001H
+ M    0441    0206         S    CLRF      0006H
+ M    0442    0002         S    RETFIE
+ M    0443    D822         S    BSF       0022H  0004H
+ M    0444    4300         S    MOVI2CW
+ M    0445    2220         S    MOVWF     0020H
+ M    0446    4C20         S    SWAPF     0020H  0000H
+ M    0447    680F         S    ANDLW     000FH
+ M    0448    0008         S    ADDPCW
+ M    0449    A459         S    GOTO      0459H
+ M    044A    A395         S    GOTO      0395H
+ M    044B    A397         S    GOTO      0397H
+ M    044C    A3A0         S    GOTO      03A0H
+ M    044D    A39A         S    GOTO      039AH
+ M    044E    A3A6         S    GOTO      03A6H
+ M    044F    A38C         S    GOTO      038CH
+ M    0450    A391         S    GOTO      0391H
+ M    0451    A3A8         S    GOTO      03A8H
+ M    0452    A3B9         S    GOTO      03B9H
+ M    0453    A459         S    GOTO      0459H
+ M    0454    A459         S    GOTO      0459H
+ M    0455    A459         S    GOTO      0459H
+ M    0456    A459         S    GOTO      0459H
+ M    0457    A459         S    GOTO      0459H
+ M    0458    A459         S    GOTO      0459H
+ M    0459    C60E         S    BCF       000EH  0003H
+ M    045A    C807         S    BCF       0007H  0004H
+ M    045B    C207         S    BCF       0007H  0001H
+ M    045C    CE07         S    BCF       0007H  0007H
+ M    045D    0206         S    CLRF      0006H
+ M    045E    D021         S    BSF       0021H  0000H
+ M    045F    0002         S    RETFIE
+ M    0460    0206         S    CLRF      0006H
+ M    0461    0002         S    RETFIE
+ M    0462    0206         S    CLRF      0006H
+ M    0463    CE0E         S    BCF       000EH  0007H
+ M    0464    D60E         S    BSF       000EH  0003H
+ M    0465    C611         S    BCF       0011H  0003H
+ M    0466    CE11         S    BCF       0011H  0007H
+ M    0467    C422         S    BCF       0022H  0002H
+ M    0468    0002         S    RETFIE
+ M    0469    C007         S    BCF       0007H  0000H
+ M    046A    A000         S    GOTO      0000H
+ M    046B    E406         S    BTFSC     0006H  0002H
+ M    046C    A479         S    GOTO      0479H
+ M    046D    C806         S    BCF       0006H  0004H
+ M    046E    40FF         S    MOVLW     00FFH
+ M    046F    222B         S    MOVWF     002BH
+ M    0470    40FF         S    MOVLW     00FFH
+ M    0471    222A         S    MOVWF     002AH
+ M    0472    202F         S    MOVFW     002FH
+ M    0473    222D         S    MOVWF     002DH
+ M    0474    202E         S    MOVFW     002EH
+ M    0475    222C         S    MOVWF     002CH
+ M    0476    D422         S    BSF       0022H  0002H
+ M    0477    D622         S    BSF       0022H  0003H
+ M    0478    0002         S    RETFIE
+ M    0479    E422         S    BTFSC     0022H  0002H
+ M    047A    A488         S    GOTO      0488H
+ M    047B    200C         S    MOVFW     000CH
+ M    047C    222B         S    MOVWF     002BH
+ M    047D    200D         S    MOVFW     000DH
+ M    047E    222A         S    MOVWF     002AH
+ M    047F    202F         S    MOVFW     002FH
+ M    0480    222D         S    MOVWF     002DH
+ M    0481    202E         S    MOVFW     002EH
+ M    0482    222C         S    MOVWF     002CH
+ M    0483    022F         S    CLRF      002FH
+ M    0484    022E         S    CLRF      002EH
+ M    0485    D422         S    BSF       0022H  0002H
+ M    0486    C60E         S    BCF       000EH  0003H
+ M    0487    D611         S    BSF       0011H  0003H
+ M    0488    0E2F         S    INCFSZ    002FH  0001H
+ M    0489    A48B         S    GOTO      048BH
+ M    048A    0A2E         S    INCF      002EH  0001H
+ M    048B    CE11         S    BCF       0011H  0007H
+ M    048C    0206         S    CLRF      0006H
+ M    048D    0002         S    RETFIE
+0028                       S    INCLUDE CALCULATION.ASM
+ M    048E    2041         S    MOVFW     0041H
+ M    048F    2237         S    MOVWF     0037H
+ M    0490    2042         S    MOVFW     0042H
+ M    0491    2238         S    MOVWF     0038H
+ M    0492    400A         S    MOVLW     000AH
+ M    0493    1A38         S    SUBWF     0038H  0001H
+ M    0494    4000         S    MOVLW     0000H
+ M    0495    3A37         S    SUBWFC    0037H  0001H
+ M    0496    0236         S    CLRF      0036H
+ M    0497    4100         S    SETDP     0000H
+ M    0498    404A         S    MOVLW     004AH
+ M    0499    2202         S    MOVWF     0002H
+ M    049A    2000         S    MOVFW     0000H
+ M    049B    3236         S    XORWF     0036H  0001H
+ M    049C    0E02         S    INCFSZ    0002H  0001H
+ M    049D    A49F         S    GOTO      049FH
+ M    049E    4101         S    SETDP     0001H
+ M    049F    4008         S    MOVLW     0008H
+ M    04A0    2234         S    MOVWF     0034H
+ M    04A1    2036         S    MOVFW     0036H
+ M    04A2    6801         S    ANDLW     0001H
+ M    04A3    5800         S    SUBLW     0000H
+ M    04A4    E004         S    BTFSC     0004H  0000H
+ M    04A5    A4AB         S    GOTO      04ABH
+ M    04A6    C204         S    BCF       0004H  0001H
+ M    04A7    3C36         S    RRF       0036H  0000H
+ M    04A8    708C         S    XORLW     008CH
+ M    04A9    2236         S    MOVWF     0036H
+ M    04AA    A4AD         S    GOTO      04ADH
+ M    04AB    C204         S    BCF       0004H  0001H
+ M    04AC    3E36         S    RRF       0036H  0001H
+ M    04AD    1634         S    DECFSZ    0034H  0001H
+ M    04AE    A4A1         S    GOTO      04A1H
+ M    04AF    4001         S    MOVLW     0001H
+ M    04B0    1A38         S    SUBWF     0038H  0001H
+ M    04B1    4000         S    MOVLW     0000H
+ M    04B2    3A37         S    SUBWFC    0037H  0001H
+ M    04B3    2037         S    MOVFW     0037H
+ M    04B4    5800         S    SUBLW     0000H
+ M    04B5    F004         S    BTFSS     0004H  0000H
+ M    04B6    A49A         S    GOTO      049AH
+ M    04B7    2038         S    MOVFW     0038H
+ M    04B8    5800         S    SUBLW     0000H
+ M    04B9    F004         S    BTFSS     0004H  0000H
+ M    04BA    A49A         S    GOTO      049AH
+ M    04BB    0003         S    RETURN
+ M    04BC    1FE2         S    COMF      01E2H  0001H
+ M    04BD    1FE3         S    COMF      01E3H  0001H
+ M    04BE    4001         S    MOVLW     0001H
+ M    04BF    07E2         S    ADDWF     01E2H  0001H
+ M    04C0    4000         S    MOVLW     0000H
+ M    04C1    27E3         S    ADDWFC    01E3H  0001H
+ M    04C2    0003         S    RETURN
+ M    04C3    2000         S    MOVFW     0000H
+ M    04C4    3246         S    XORWF     0046H  0001H
+ M    04C5    0E02         S    INCFSZ    0002H  0001H
+ M    04C6    A4C8         S    GOTO      04C8H
+ M    04C7    4101         S    SETDP     0001H
+ M    04C8    4008         S    MOVLW     0008H
+ M    04C9    2247         S    MOVWF     0047H
+ M    04CA    2046         S    MOVFW     0046H
+ M    04CB    6801         S    ANDLW     0001H
+ M    04CC    5800         S    SUBLW     0000H
+ M    04CD    E004         S    BTFSC     0004H  0000H
+ M    04CE    A4D4         S    GOTO      04D4H
+ M    04CF    C204         S    BCF       0004H  0001H
+ M    04D0    3C46         S    RRF       0046H  0000H
+ M    04D1    708C         S    XORLW     008CH
+ M    04D2    2246         S    MOVWF     0046H
+ M    04D3    A4D6         S    GOTO      04D6H
+ M    04D4    C204         S    BCF       0004H  0001H
+ M    04D5    3E46         S    RRF       0046H  0001H
+ M    04D6    1647         S    DECFSZ    0047H  0001H
+ M    04D7    A4CA         S    GOTO      04CAH
+ M    04D8    4001         S    MOVLW     0001H
+ M    04D9    1A49         S    SUBWF     0049H  0001H
+ M    04DA    4000         S    MOVLW     0000H
+ M    04DB    3A48         S    SUBWFC    0048H  0001H
+ M    04DC    2048         S    MOVFW     0048H
+ M    04DD    5800         S    SUBLW     0000H
+ M    04DE    F004         S    BTFSS     0004H  0000H
+ M    04DF    A4C3         S    GOTO      04C3H
+ M    04E0    2049         S    MOVFW     0049H
+ M    04E1    5800         S    SUBLW     0000H
+ M    04E2    F004         S    BTFSS     0004H  0000H
+ M    04E3    A4C3         S    GOTO      04C3H
+ M    04E4    0003         S    RETURN
+ M    04E5    E204         S    BTFSC     0004H  0001H
+ M    04E6    0003         S    RETURN
+ M    04E7    1E30         S    COMF      0030H  0001H
+ M    04E8    1E31         S    COMF      0031H  0001H
+ M    04E9    4001         S    MOVLW     0001H
+ M    04EA    0630         S    ADDWF     0030H  0001H
+ M    04EB    4000         S    MOVLW     0000H
+ M    04EC    2631         S    ADDWFC    0031H  0001H
+ M    04ED    0003         S    RETURN
+0029                       S    INCLUDE LEARN_NEW.ASM
+ M    04EE    CE11         S    BCF       0011H  0007H
+ M    04EF    23D1         S    MOVWF     01D1H
+ M    04F0    2004         S    MOVFW     0004H
+ M    04F1    23D2         S    MOVWF     01D2H
+ M    04F2    C9FD         S    BCF       01FDH  0004H
+ M    04F3    EBFD         S    BTFSC     01FDH  0005H
+ M    04F4    A4FE         S    GOTO      04FEH
+ M    04F5    CE0E         S    BCF       000EH  0007H
+ M    04F6    0FE4         S    INCFSZ    01E4H  0001H
+ M    04F7    A4F9         S    GOTO      04F9H
+ M    04F8    0BE5         S    INCF      01E5H  0001H
+ M    04F9    21D2         S    MOVFW     01D2H
+ M    04FA    2204         S    MOVWF     0004H
+ M    04FB    21D1         S    MOVFW     01D1H
+ M    04FC    C406         S    BCF       0006H  0002H
+ M    04FD    0002         S    RETFIE
+ M    04FE    409C         S    MOVLW     009CH
+ M    04FF    220F         S    MOVWF     000FH
+ M    0500    4008         S    MOVLW     0008H
+ M    0501    2211         S    MOVWF     0011H
+ M    0502    C5FD         S    BCF       01FDH  0002H
+ M    0503    D607         S    BSF       0007H  0003H
+ M    0504    CBFD         S    BCF       01FDH  0005H
+ M    0505    200C         S    MOVFW     000CH
+ M    0506    2201         S    MOVWF     0001H
+ M    0507    0A03         S    INCF      0003H  0001H
+ M    0508    200D         S    MOVFW     000DH
+ M    0509    2201         S    MOVWF     0001H
+ M    050A    0A03         S    INCF      0003H  0001H
+ M    050B    21D2         S    MOVFW     01D2H
+ M    050C    2204         S    MOVWF     0004H
+ M    050D    21D1         S    MOVFW     01D1H
+ M    050E    C406         S    BCF       0006H  0002H
+ M    050F    0002         S    RETFIE
+ M    0510    F206         S    BTFSS     0006H  0001H
+ M    0511    A514         S    GOTO      0514H
+ M    0512    C206         S    BCF       0006H  0001H
+ M    0513    0002         S    RETFIE
+ M    0514    C606         S    BCF       0006H  0003H
+ M    0515    D5FD         S    BSF       01FDH  0002H
+ M    0516    EDFD         S    BTFSC     01FDH  0006H
+ M    0517    0002         S    RETFIE
+ M    0518    DBFD         S    BSF       01FDH  0005H
+ M    0519    E9FD         S    BTFSC     01FDH  0004H
+ M    051A    0002         S    RETFIE
+ M    051B    23D1         S    MOVWF     01D1H
+ M    051C    2004         S    MOVFW     0004H
+ M    051D    23D2         S    MOVWF     01D2H
+ M    051E    D9FD         S    BSF       01FDH  0004H
+ M    051F    21E4         S    MOVFW     01E4H
+ M    0520    2201         S    MOVWF     0001H
+ M    0521    0A03         S    INCF      0003H  0001H
+ M    0522    21E5         S    MOVFW     01E5H
+ M    0523    2201         S    MOVWF     0001H
+ M    0524    0A03         S    INCF      0003H  0001H
+ M    0525    03E4         S    CLRF      01E4H
+ M    0526    03E5         S    CLRF      01E5H
+ M    0527    C607         S    BCF       0007H  0003H
+ M    0528    020F         S    CLRF      000FH
+ M    0529    400B         S    MOVLW     000BH
+ M    052A    2211         S    MOVWF     0011H
+ M    052B    03F0         S    CLRF      01F0H
+ M    052C    03F1         S    CLRF      01F1H
+ M    052D    21D2         S    MOVFW     01D2H
+ M    052E    2204         S    MOVWF     0004H
+ M    052F    21D1         S    MOVFW     01D1H
+ M    0530    0002         S    RETFIE
+ M    0531    C006         S    BCF       0006H  0000H
+ M    0532    0002         S    RETFIE
+ M    0533    83DA         S    CALL      03DAH
+ M    0534    4000         S    MOVLW     0000H
+ M    0535    2214         S    MOVWF     0014H
+ M    0536    40B8         S    MOVLW     00B8H
+ M    0537    2213         S    MOVWF     0013H
+ M    0538    40EF         S    MOVLW     00EFH
+ M    0539    2217         S    MOVWF     0017H
+ M    053A    40F8         S    MOVLW     00F8H
+ M    053B    2216         S    MOVWF     0016H
+ M    053C    8404         S    CALL      0404H
+ M    053D    0207         S    CLRF      0007H
+ M    053E    C61E         S    BCF       001EH  0003H
+ M    053F    D81E         S    BSF       001EH  0004H
+ M    0540    DDFD         S    BSF       01FDH  0006H
+ M    0541    03E4         S    CLRF      01E4H
+ M    0542    03E5         S    CLRF      01E5H
+ M    0543    4000         S    MOVLW     0000H
+ M    0544    23D3         S    MOVWF     01D3H
+ M    0545    020B         S    CLRF      000BH
+ M    0546    020A         S    CLRF      000AH
+ M    0547    0209         S    CLRF      0009H
+ M    0548    4027         S    MOVLW     0027H
+ M    0549    220E         S    MOVWF     000EH
+ M    054A    D60E         S    BSF       000EH  0003H
+ M    054B    CE0E         S    BCF       000EH  0007H
+ M    054C    4000         S    MOVLW     0000H
+ M    054D    220F         S    MOVWF     000FH
+ M    054E    4000         S    MOVLW     0000H
+ M    054F    2211         S    MOVWF     0011H
+ M    0550    C5FD         S    BCF       01FDH  0002H
+ M    0551    D407         S    BSF       0007H  0002H
+ M    0552    03E4         S    CLRF      01E4H
+ M    0553    C406         S    BCF       0006H  0002H
+ M    0554    C606         S    BCF       0006H  0003H
+ M    0555    FA13         S    BTFSS     0013H  0005H
+ M    0556    A7B3         S    GOTO      07B3H
+ M    0557    4001         S    MOVLW     0001H
+ M    0558    07DF         S    ADDWF     01DFH  0001H
+ M    0559    4000         S    MOVLW     0000H
+ M    055A    27E0         S    ADDWFC    01E0H  0001H
+ M    055B    4078         S    MOVLW     0078H
+ M    055C    39E1         S    SUBWFC    01E1H  0000H
+ M    055D    E204         S    BTFSC     0004H  0001H
+ M    055E    A7B3         S    GOTO      07B3H
+ M    055F    E406         S    BTFSC     0006H  0002H
+ M    0560    A56D         S    GOTO      056DH
+ M    0561    4033         S    MOVLW     0033H
+ M    0562    19E0         S    SUBWF     01E0H  0000H
+ M    0563    F204         S    BTFSS     0004H  0001H
+ M    0564    A567         S    GOTO      0567H
+ M    0565    03E0         S    CLRF      01E0H
+ M    0566    0BE1         S    INCF      01E1H  0001H
+ M    0567    E1E1         S    BTFSC     01E1H  0000H
+ M    0568    A56B         S    GOTO      056BH
+ M    0569    C616         S    BCF       0016H  0003H
+ M    056A    A554         S    GOTO      0554H
+ M    056B    D616         S    BSF       0016H  0003H
+ M    056C    A554         S    GOTO      0554H
+ M    056D    C616         S    BCF       0016H  0003H
+ M    056E    C406         S    BCF       0006H  0002H
+ M    056F    0BE4         S    INCF      01E4H  0001H
+ M    0570    CE0E         S    BCF       000EH  0007H
+ M    0571    409C         S    MOVLW     009CH
+ M    0572    220F         S    MOVWF     000FH
+ M    0573    CE11         S    BCF       0011H  0007H
+ M    0574    D611         S    BSF       0011H  0003H
+ M    0575    D607         S    BSF       0007H  0003H
+ M    0576    E606         S    BTFSC     0006H  0003H
+ M    0577    A552         S    GOTO      0552H
+ M    0578    F406         S    BTFSS     0006H  0002H
+ M    0579    A576         S    GOTO      0576H
+ M    057A    CE11         S    BCF       0011H  0007H
+ M    057B    200C         S    MOVFW     000CH
+ M    057C    23D6         S    MOVWF     01D6H
+ M    057D    200D         S    MOVFW     000DH
+ M    057E    23D7         S    MOVWF     01D7H
+ M    057F    C406         S    BCF       0006H  0002H
+ M    0580    0BE4         S    INCF      01E4H  0001H
+ M    0581    E606         S    BTFSC     0006H  0003H
+ M    0582    A5D8         S    GOTO      05D8H
+ M    0583    F406         S    BTFSS     0006H  0002H
+ M    0584    A581         S    GOTO      0581H
+ M    0585    CE11         S    BCF       0011H  0007H
+ M    0586    200C         S    MOVFW     000CH
+ M    0587    23D4         S    MOVWF     01D4H
+ M    0588    200D         S    MOVFW     000DH
+ M    0589    23D5         S    MOVWF     01D5H
+ M    058A    C406         S    BCF       0006H  0002H
+ M    058B    0BE4         S    INCF      01E4H  0001H
+ M    058C    0BD3         S    INCF      01D3H  0001H
+ M    058D    E606         S    BTFSC     0006H  0003H
+ M    058E    A5D8         S    GOTO      05D8H
+ M    058F    F406         S    BTFSS     0006H  0002H
+ M    0590    A58D         S    GOTO      058DH
+ M    0591    CE11         S    BCF       0011H  0007H
+ M    0592    200C         S    MOVFW     000CH
+ M    0593    23D4         S    MOVWF     01D4H
+ M    0594    200D         S    MOVFW     000DH
+ M    0595    23D5         S    MOVWF     01D5H
+ M    0596    C406         S    BCF       0006H  0002H
+ M    0597    0BE4         S    INCF      01E4H  0001H
+ M    0598    0BD3         S    INCF      01D3H  0001H
+ M    0599    E606         S    BTFSC     0006H  0003H
+ M    059A    A5D8         S    GOTO      05D8H
+ M    059B    F406         S    BTFSS     0006H  0002H
+ M    059C    A599         S    GOTO      0599H
+ M    059D    C406         S    BCF       0006H  0002H
+ M    059E    0BE4         S    INCF      01E4H  0001H
+ M    059F    CE11         S    BCF       0011H  0007H
+ M    05A0    E606         S    BTFSC     0006H  0003H
+ M    05A1    A5D8         S    GOTO      05D8H
+ M    05A2    F406         S    BTFSS     0006H  0002H
+ M    05A3    A5A0         S    GOTO      05A0H
+ M    05A4    CE11         S    BCF       0011H  0007H
+ M    05A5    200C         S    MOVFW     000CH
+ M    05A6    23D4         S    MOVWF     01D4H
+ M    05A7    200D         S    MOVFW     000DH
+ M    05A8    23D5         S    MOVWF     01D5H
+ M    05A9    C406         S    BCF       0006H  0002H
+ M    05AA    0BE4         S    INCF      01E4H  0001H
+ M    05AB    0BD3         S    INCF      01D3H  0001H
+ M    05AC    E606         S    BTFSC     0006H  0003H
+ M    05AD    A5D8         S    GOTO      05D8H
+ M    05AE    F406         S    BTFSS     0006H  0002H
+ M    05AF    A5AC         S    GOTO      05ACH
+ M    05B0    C406         S    BCF       0006H  0002H
+ M    05B1    0BE4         S    INCF      01E4H  0001H
+ M    05B2    CE11         S    BCF       0011H  0007H
+ M    05B3    E606         S    BTFSC     0006H  0003H
+ M    05B4    A5D8         S    GOTO      05D8H
+ M    05B5    F406         S    BTFSS     0006H  0002H
+ M    05B6    A5B3         S    GOTO      05B3H
+ M    05B7    C406         S    BCF       0006H  0002H
+ M    05B8    0BE4         S    INCF      01E4H  0001H
+ M    05B9    CE11         S    BCF       0011H  0007H
+ M    05BA    E606         S    BTFSC     0006H  0003H
+ M    05BB    A5D8         S    GOTO      05D8H
+ M    05BC    F406         S    BTFSS     0006H  0002H
+ M    05BD    A5BA         S    GOTO      05BAH
+ M    05BE    C406         S    BCF       0006H  0002H
+ M    05BF    0BE4         S    INCF      01E4H  0001H
+ M    05C0    CE11         S    BCF       0011H  0007H
+ M    05C1    E606         S    BTFSC     0006H  0003H
+ M    05C2    A5D8         S    GOTO      05D8H
+ M    05C3    F406         S    BTFSS     0006H  0002H
+ M    05C4    A5C1         S    GOTO      05C1H
+ M    05C5    CE11         S    BCF       0011H  0007H
+ M    05C6    200C         S    MOVFW     000CH
+ M    05C7    23D4         S    MOVWF     01D4H
+ M    05C8    200D         S    MOVFW     000DH
+ M    05C9    23D5         S    MOVWF     01D5H
+ M    05CA    C406         S    BCF       0006H  0002H
+ M    05CB    0BE4         S    INCF      01E4H  0001H
+ M    05CC    0BD3         S    INCF      01D3H  0001H
+ M    05CD    E606         S    BTFSC     0006H  0003H
+ M    05CE    A5D8         S    GOTO      05D8H
+ M    05CF    F406         S    BTFSS     0006H  0002H
+ M    05D0    A5CD         S    GOTO      05CDH
+ M    05D1    CE11         S    BCF       0011H  0007H
+ M    05D2    C406         S    BCF       0006H  0002H
+ M    05D3    4001         S    MOVLW     0001H
+ M    05D4    07E4         S    ADDWF     01E4H  0001H
+ M    05D5    4000         S    MOVLW     0000H
+ M    05D6    27E5         S    ADDWFC    01E5H  0001H
+ M    05D7    A5CD         S    GOTO      05CDH
+ M    05D8    40AA         S    MOVLW     00AAH
+ M    05D9    220E         S    MOVWF     000EH
+ M    05DA    CE0E         S    BCF       000EH  0007H
+ M    05DB    CDFD         S    BCF       01FDH  0006H
+ M    05DC    C606         S    BCF       0006H  0003H
+ M    05DD    21E5         S    MOVFW     01E5H
+ M    05DE    2323         S    MOVWF     0123H
+ M    05DF    21E4         S    MOVFW     01E4H
+ M    05E0    2322         S    MOVWF     0122H
+ M    05E1    DE07         S    BSF       0007H  0007H
+ M    05E2    4020         S    MOVLW     0020H
+ M    05E3    2203         S    MOVWF     0003H
+ M    05E4    4022         S    MOVLW     0022H
+ M    05E5    2202         S    MOVWF     0002H
+ M    05E6    03DB         S    CLRF      01DBH
+ M    05E7    03F3         S    CLRF      01F3H
+ M    05E8    CBFD         S    BCF       01FDH  0005H
+ M    05E9    21D6         S    MOVFW     01D6H
+ M    05EA    1BD4         S    SUBWF     01D4H  0001H
+ M    05EB    21D7         S    MOVFW     01D7H
+ M    05EC    3BD5         S    SUBWFC    01D5H  0001H
+ M    05ED    D3FD         S    BSF       01FDH  0001H
+ M    05EE    21D3         S    MOVFW     01D3H
+ M    05EF    0008         S    ADDPCW
+ M    05F0    A605         S    GOTO      0605H
+ M    05F1    A5FD         S    GOTO      05FDH
+ M    05F2    A5FA         S    GOTO      05FAH
+ M    05F3    A5F7         S    GOTO      05F7H
+ M    05F4    C204         S    BCF       0004H  0001H
+ M    05F5    3FD5         S    RRF       01D5H  0001H
+ M    05F6    3FD4         S    RRF       01D4H  0001H
+ M    05F7    C204         S    BCF       0004H  0001H
+ M    05F8    3FD5         S    RRF       01D5H  0001H
+ M    05F9    3FD4         S    RRF       01D4H  0001H
+ M    05FA    C204         S    BCF       0004H  0001H
+ M    05FB    3FD5         S    RRF       01D5H  0001H
+ M    05FC    3FD4         S    RRF       01D4H  0001H
+ M    05FD    21D4         S    MOVFW     01D4H
+ M    05FE    2301         S    MOVWF     0101H
+ M    05FF    C1FD         S    BCF       01FDH  0000H
+ M    0600    586E         S    SUBLW     006EH
+ M    0601    E204         S    BTFSC     0004H  0001H
+ M    0602    D1FD         S    BSF       01FDH  0000H
+ M    0603    C3FD         S    BCF       01FDH  0001H
+ M    0604    A605         S    GOTO      0605H
+ M    0605    21DA         S    MOVFW     01DAH
+ M    0606    7004         S    XORLW     0004H
+ M    0607    E004         S    BTFSC     0004H  0000H
+ M    0608    A798         S    GOTO      0798H
+ M    0609    F011         S    BTFSS     0011H  0000H
+ M    060A    A6CE         S    GOTO      06CEH
+ M    060B    2010         S    MOVFW     0010H
+ M    060C    23E2         S    MOVWF     01E2H
+ M    060D    409B         S    MOVLW     009BH
+ M    060E    19E2         S    SUBWF     01E2H  0000H
+ M    060F    F204         S    BTFSS     0004H  0001H
+ M    0610    A617         S    GOTO      0617H
+ M    0611    220F         S    MOVWF     000FH
+ M    0612    CE11         S    BCF       0011H  0007H
+ M    0613    409B         S    MOVLW     009BH
+ M    0614    07F0         S    ADDWF     01F0H  0001H
+ M    0615    4000         S    MOVLW     0000H
+ M    0616    27F1         S    ADDWFC    01F1H  0001H
+ M    0617    F1FD         S    BTFSS     01FDH  0000H
+ M    0618    A620         S    GOTO      0620H
+ M    0619    400D         S    MOVLW     000DH
+ M    061A    19F0         S    SUBWF     01F0H  0000H
+ M    061B    4003         S    MOVLW     0003H
+ M    061C    39F1         S    SUBWFC    01F1H  0000H
+ M    061D    F204         S    BTFSS     0004H  0001H
+ M    061E    A6CE         S    GOTO      06CEH
+ M    061F    A633         S    GOTO      0633H
+ M    0620    4088         S    MOVLW     0088H
+ M    0621    1906         S    SUBWF     0106H  0000H
+ M    0622    4013         S    MOVLW     0013H
+ M    0623    3907         S    SUBWFC    0107H  0000H
+ M    0624    E204         S    BTFSC     0004H  0001H
+ M    0625    A62D         S    GOTO      062DH
+ M    0626    40A9         S    MOVLW     00A9H
+ M    0627    19F0         S    SUBWF     01F0H  0000H
+ M    0628    4003         S    MOVLW     0003H
+ M    0629    39F1         S    SUBWFC    01F1H  0000H
+ M    062A    F204         S    BTFSS     0004H  0001H
+ M    062B    A6CE         S    GOTO      06CEH
+ M    062C    A633         S    GOTO      0633H
+ M    062D    4027         S    MOVLW     0027H
+ M    062E    19F0         S    SUBWF     01F0H  0000H
+ M    062F    4009         S    MOVLW     0009H
+ M    0630    39F1         S    SUBWFC    01F1H  0000H
+ M    0631    F204         S    BTFSS     0004H  0001H
+ M    0632    A6CE         S    GOTO      06CEH
+ M    0633    2010         S    MOVFW     0010H
+ M    0634    23E2         S    MOVWF     01E2H
+ M    0635    409B         S    MOVLW     009BH
+ M    0636    19E2         S    SUBWF     01E2H  0000H
+ M    0637    23E2         S    MOVWF     01E2H
+ M    0638    F204         S    BTFSS     0004H  0001H
+ M    0639    A640         S    GOTO      0640H
+ M    063A    220F         S    MOVWF     000FH
+ M    063B    CE11         S    BCF       0011H  0007H
+ M    063C    409B         S    MOVLW     009BH
+ M    063D    07F0         S    ADDWF     01F0H  0001H
+ M    063E    4000         S    MOVLW     0000H
+ M    063F    27F1         S    ADDWFC    01F1H  0001H
+ M    0640    4012         S    MOVLW     0012H
+ M    0641    19F0         S    SUBWF     01F0H  0000H
+ M    0642    407A         S    MOVLW     007AH
+ M    0643    39F1         S    SUBWFC    01F1H  0000H
+ M    0644    E204         S    BTFSC     0004H  0001H
+ M    0645    A798         S    GOTO      0798H
+ M    0646    EBFD         S    BTFSC     01FDH  0005H
+ M    0647    A633         S    GOTO      0633H
+ M    0648    21F0         S    MOVFW     01F0H
+ M    0649    23F7         S    MOVWF     01F7H
+ M    064A    21F1         S    MOVFW     01F1H
+ M    064B    23F8         S    MOVWF     01F8H
+ M    064C    21E2         S    MOVFW     01E2H
+ M    064D    07F7         S    ADDWF     01F7H  0001H
+ M    064E    4000         S    MOVLW     0000H
+ M    064F    27F8         S    ADDWFC    01F8H  0001H
+ M    0650    21F7         S    MOVFW     01F7H
+ M    0651    23D7         S    MOVWF     01D7H
+ M    0652    21F8         S    MOVFW     01F8H
+ M    0653    23D6         S    MOVWF     01D6H
+ M    0654    401C         S    MOVLW     001CH
+ M    0655    19F8         S    SUBWF     01F8H  0000H
+ M    0656    E204         S    BTFSC     0004H  0001H
+ M    0657    A670         S    GOTO      0670H
+ M    0658    2002         S    MOVFW     0002H
+ M    0659    23E2         S    MOVWF     01E2H
+ M    065A    4100         S    SETDP     0000H
+ M    065B    2000         S    MOVFW     0000H
+ M    065C    23F7         S    MOVWF     01F7H
+ M    065D    0A02         S    INCF      0002H  0001H
+ M    065E    2000         S    MOVFW     0000H
+ M    065F    23F8         S    MOVWF     01F8H
+ M    0660    21E2         S    MOVFW     01E2H
+ M    0661    2202         S    MOVWF     0002H
+ M    0662    4101         S    SETDP     0001H
+ M    0663    C204         S    BCF       0004H  0001H
+ M    0664    3FF8         S    RRF       01F8H  0001H
+ M    0665    3FF7         S    RRF       01F7H  0001H
+ M    0666    C204         S    BCF       0004H  0001H
+ M    0667    3FF8         S    RRF       01F8H  0001H
+ M    0668    3FF7         S    RRF       01F7H  0001H
+ M    0669    C204         S    BCF       0004H  0001H
+ M    066A    3FF8         S    RRF       01F8H  0001H
+ M    066B    3FF7         S    RRF       01F7H  0001H
+ M    066C    21F7         S    MOVFW     01F7H
+ M    066D    23D7         S    MOVWF     01D7H
+ M    066E    21F8         S    MOVFW     01F8H
+ M    066F    23D6         S    MOVWF     01D6H
+ M    0670    4020         S    MOVLW     0020H
+ M    0671    4022         S    MOVLW     0022H
+ M    0672    2203         S    MOVWF     0003H
+ M    0673    4024         S    MOVLW     0024H
+ M    0674    2202         S    MOVWF     0002H
+ M    0675    03DB         S    CLRF      01DBH
+ M    0676    DDFD         S    BSF       01FDH  0006H
+ M    0677    F5FD         S    BTFSS     01FDH  0002H
+ M    0678    A677         S    GOTO      0677H
+ M    0679    21DA         S    MOVFW     01DAH
+ M    067A    0008         S    ADDPCW
+ M    067B    A693         S    GOTO      0693H
+ M    067C    A68E         S    GOTO      068EH
+ M    067D    A689         S    GOTO      0689H
+ M    067E    A684         S    GOTO      0684H
+ M    067F    21D7         S    MOVFW     01D7H
+ M    0680    23B1         S    MOVWF     01B1H
+ M    0681    21D6         S    MOVFW     01D6H
+ M    0682    23B2         S    MOVWF     01B2H
+ M    0683    A697         S    GOTO      0697H
+ M    0684    21D7         S    MOVFW     01D7H
+ M    0685    2394         S    MOVWF     0194H
+ M    0686    21D6         S    MOVFW     01D6H
+ M    0687    2395         S    MOVWF     0195H
+ M    0688    A697         S    GOTO      0697H
+ M    0689    21D7         S    MOVFW     01D7H
+ M    068A    2377         S    MOVWF     0177H
+ M    068B    21D6         S    MOVFW     01D6H
+ M    068C    2378         S    MOVWF     0178H
+ M    068D    A697         S    GOTO      0697H
+ M    068E    21D7         S    MOVFW     01D7H
+ M    068F    235A         S    MOVWF     015AH
+ M    0690    21D6         S    MOVFW     01D6H
+ M    0691    235B         S    MOVWF     015BH
+ M    0692    A697         S    GOTO      0697H
+ M    0693    21D7         S    MOVFW     01D7H
+ M    0694    233D         S    MOVWF     013DH
+ M    0695    21D6         S    MOVFW     01D6H
+ M    0696    233E         S    MOVWF     013EH
+ M    0697    0BDA         S    INCF      01DAH  0001H
+ M    0698    21DA         S    MOVFW     01DAH
+ M    0699    5804         S    SUBLW     0004H
+ M    069A    E204         S    BTFSC     0004H  0001H
+ M    069B    A69E         S    GOTO      069EH
+ M    069C    4004         S    MOVLW     0004H
+ M    069D    23DA         S    MOVWF     01DAH
+ M    069E    21E4         S    MOVFW     01E4H
+ M    069F    23E2         S    MOVWF     01E2H
+ M    06A0    21E5         S    MOVFW     01E5H
+ M    06A1    23E3         S    MOVWF     01E3H
+ M    06A2    F1FD         S    BTFSS     01FDH  0000H
+ M    06A3    A6AD         S    GOTO      06ADH
+ M    06A4    4001         S    MOVLW     0001H
+ M    06A5    07E2         S    ADDWF     01E2H  0001H
+ M    06A6    4000         S    MOVLW     0000H
+ M    06A7    27E3         S    ADDWFC    01E3H  0001H
+ M    06A8    21E2         S    MOVFW     01E2H
+ M    06A9    23E4         S    MOVWF     01E4H
+ M    06AA    21E3         S    MOVFW     01E3H
+ M    06AB    23E5         S    MOVWF     01E5H
+ M    06AC    A6AD         S    GOTO      06ADH
+ M    06AD    21DA         S    MOVFW     01DAH
+ M    06AE    0008         S    ADDPCW
+ M    06AF    A6C7         S    GOTO      06C7H
+ M    06B0    A6C2         S    GOTO      06C2H
+ M    06B1    A6BD         S    GOTO      06BDH
+ M    06B2    A6B8         S    GOTO      06B8H
+ M    06B3    21E4         S    MOVFW     01E4H
+ M    06B4    2396         S    MOVWF     0196H
+ M    06B5    21E5         S    MOVFW     01E5H
+ M    06B6    2397         S    MOVWF     0197H
+ M    06B7    A6CB         S    GOTO      06CBH
+ M    06B8    21E4         S    MOVFW     01E4H
+ M    06B9    2379         S    MOVWF     0179H
+ M    06BA    21E5         S    MOVFW     01E5H
+ M    06BB    237A         S    MOVWF     017AH
+ M    06BC    A6CB         S    GOTO      06CBH
+ M    06BD    21E4         S    MOVFW     01E4H
+ M    06BE    235C         S    MOVWF     015CH
+ M    06BF    21E5         S    MOVFW     01E5H
+ M    06C0    235D         S    MOVWF     015DH
+ M    06C1    A6CB         S    GOTO      06CBH
+ M    06C2    21E4         S    MOVFW     01E4H
+ M    06C3    233F         S    MOVWF     013FH
+ M    06C4    21E5         S    MOVFW     01E5H
+ M    06C5    2340         S    MOVWF     0140H
+ M    06C6    A6CB         S    GOTO      06CBH
+ M    06C7    21E4         S    MOVFW     01E4H
+ M    06C8    2322         S    MOVWF     0122H
+ M    06C9    21E5         S    MOVFW     01E5H
+ M    06CA    2323         S    MOVWF     0123H
+ M    06CB    03E4         S    CLRF      01E4H
+ M    06CC    03E5         S    CLRF      01E5H
+ M    06CD    CDFD         S    BCF       01FDH  0006H
+ M    06CE    40F0         S    MOVLW     00F0H
+ M    06CF    1803         S    SUBWF     0003H  0000H
+ M    06D0    E204         S    BTFSC     0004H  0001H
+ M    06D1    A7A4         S    GOTO      07A4H
+ M    06D2    4024         S    MOVLW     0024H
+ M    06D3    1803         S    SUBWF     0003H  0000H
+ M    06D4    F204         S    BTFSS     0004H  0001H
+ M    06D5    A797         S    GOTO      0797H
+ M    06D6    2002         S    MOVFW     0002H
+ M    06D7    1803         S    SUBWF     0003H  0000H
+ M    06D8    F204         S    BTFSS     0004H  0001H
+ M    06D9    A7A7         S    GOTO      07A7H
+ M    06DA    5803         S    SUBLW     0003H
+ M    06DB    E204         S    BTFSC     0004H  0001H
+ M    06DC    A797         S    GOTO      0797H
+ M    06DD    4100         S    SETDP     0000H
+ M    06DE    2000         S    MOVFW     0000H
+ M    06DF    23DC         S    MOVWF     01DCH
+ M    06E0    23E2         S    MOVWF     01E2H
+ M    06E1    0A02         S    INCF      0002H  0001H
+ M    06E2    2000         S    MOVFW     0000H
+ M    06E3    23DD         S    MOVWF     01DDH
+ M    06E4    23E3         S    MOVWF     01E3H
+ M    06E5    0A02         S    INCF      0002H  0001H
+ M    06E6    2000         S    MOVFW     0000H
+ M    06E7    23DE         S    MOVWF     01DEH
+ M    06E8    23E9         S    MOVWF     01E9H
+ M    06E9    0A02         S    INCF      0002H  0001H
+ M    06EA    2000         S    MOVFW     0000H
+ M    06EB    23DF         S    MOVWF     01DFH
+ M    06EC    23EA         S    MOVWF     01EAH
+ M    06ED    0A02         S    INCF      0002H  0001H
+ M    06EE    2002         S    MOVFW     0002H
+ M    06EF    23F2         S    MOVWF     01F2H
+ M    06F0    21F3         S    MOVFW     01F3H
+ M    06F1    7000         S    XORLW     0000H
+ M    06F2    F004         S    BTFSS     0004H  0000H
+ M    06F3    A6FD         S    GOTO      06FDH
+ M    06F4    400A         S    MOVLW     000AH
+ M    06F5    07E2         S    ADDWF     01E2H  0001H
+ M    06F6    4000         S    MOVLW     0000H
+ M    06F7    27E3         S    ADDWFC    01E3H  0001H
+ M    06F8    21E2         S    MOVFW     01E2H
+ M    06F9    23DC         S    MOVWF     01DCH
+ M    06FA    21E3         S    MOVFW     01E3H
+ M    06FB    23DD         S    MOVWF     01DDH
+ M    06FC    A707         S    GOTO      0707H
+ M    06FD    4019         S    MOVLW     0019H
+ M    06FE    1BE2         S    SUBWF     01E2H  0001H
+ M    06FF    4000         S    MOVLW     0000H
+ M    0700    3BE3         S    SUBWFC    01E3H  0001H
+ M    0701    F204         S    BTFSS     0004H  0001H
+ M    0702    A707         S    GOTO      0707H
+ M    0703    21E2         S    MOVFW     01E2H
+ M    0704    23DC         S    MOVWF     01DCH
+ M    0705    21E3         S    MOVFW     01E3H
+ M    0706    23DD         S    MOVWF     01DDH
+ M    0707    21DC         S    MOVFW     01DCH
+ M    0708    23E7         S    MOVWF     01E7H
+ M    0709    21DD         S    MOVFW     01DDH
+ M    070A    23E8         S    MOVWF     01E8H
+ M    070B    4004         S    MOVLW     0004H
+ M    070C    19DF         S    SUBWF     01DFH  0000H
+ M    070D    E204         S    BTFSC     0004H  0001H
+ M    070E    A7B0         S    GOTO      07B0H
+ M    070F    4001         S    MOVLW     0001H
+ M    0710    07DE         S    ADDWF     01DEH  0001H
+ M    0711    4000         S    MOVLW     0000H
+ M    0712    27DF         S    ADDWFC    01DFH  0001H
+ M    0713    03EB         S    CLRF      01EBH
+ M    0714    4101         S    SETDP     0001H
+ M    0715    4002         S    MOVLW     0102H
+ M    0716    2202         S    MOVWF     0002H
+ M    0717    21EB         S    MOVFW     01EBH
+ M    0718    31F3         S    XORWF     01F3H  0000H
+ M    0719    E004         S    BTFSC     0004H  0000H
+ M    071A    A74B         S    GOTO      074BH
+ M    071B    2000         S    MOVFW     0000H
+ M    071C    23E2         S    MOVWF     01E2H
+ M    071D    0A02         S    INCF      0002H  0001H
+ M    071E    2000         S    MOVFW     0000H
+ M    071F    23E3         S    MOVWF     01E3H
+ M    0720    0A02         S    INCF      0002H  0001H
+ M    0721    21E7         S    MOVFW     01E7H
+ M    0722    1BE2         S    SUBWF     01E2H  0001H
+ M    0723    21E8         S    MOVFW     01E8H
+ M    0724    3BE3         S    SUBWFC    01E3H  0001H
+ M    0725    F204         S    BTFSS     0004H  0001H
+ M    0726    84BC         S    CALL      04BCH
+ M    0727    4064         S    MOVLW     0064H
+ M    0728    1BE2         S    SUBWF     01E2H  0001H
+ M    0729    4000         S    MOVLW     0000H
+ M    072A    3BE3         S    SUBWFC    01E3H  0001H
+ M    072B    F204         S    BTFSS     0004H  0001H
+ M    072C    A730         S    GOTO      0730H
+ M    072D    0A02         S    INCF      0002H  0001H
+ M    072E    0A02         S    INCF      0002H  0001H
+ M    072F    A742         S    GOTO      0742H
+ M    0730    2000         S    MOVFW     0000H
+ M    0731    23E2         S    MOVWF     01E2H
+ M    0732    0A02         S    INCF      0002H  0001H
+ M    0733    2000         S    MOVFW     0000H
+ M    0734    23E3         S    MOVWF     01E3H
+ M    0735    0A02         S    INCF      0002H  0001H
+ M    0736    21E9         S    MOVFW     01E9H
+ M    0737    1BE2         S    SUBWF     01E2H  0001H
+ M    0738    21EA         S    MOVFW     01EAH
+ M    0739    3BE3         S    SUBWFC    01E3H  0001H
+ M    073A    F204         S    BTFSS     0004H  0001H
+ M    073B    84BC         S    CALL      04BCH
+ M    073C    4005         S    MOVLW     0005H
+ M    073D    1BE2         S    SUBWF     01E2H  0001H
+ M    073E    4000         S    MOVLW     0000H
+ M    073F    3BE3         S    SUBWFC    01E3H  0001H
+ M    0740    F204         S    BTFSS     0004H  0001H
+ M    0741    A748         S    GOTO      0748H
+ M    0742    0BEB         S    INCF      01EBH  0001H
+ M    0743    4008         S    MOVLW     0008H
+ M    0744    19EB         S    SUBWF     01EBH  0000H
+ M    0745    E204         S    BTFSC     0004H  0001H
+ M    0746    A7AA         S    GOTO      07AAH
+ M    0747    A717         S    GOTO      0717H
+ M    0748    21EB         S    MOVFW     01EBH
+ M    0749    23ED         S    MOVWF     01EDH
+ M    074A    A763         S    GOTO      0763H
+ M    074B    0BF3         S    INCF      01F3H  0001H
+ M    074C    21EB         S    MOVFW     01EBH
+ M    074D    23ED         S    MOVWF     01EDH
+ M    074E    4002         S    MOVLW     0102H
+ M    074F    2202         S    MOVWF     0002H
+ M    0750    4101         S    SETDP     0001H
+ M    0751    4001         S    MOVLW     0001H
+ M    0752    1BEB         S    SUBWF     01EBH  0001H
+ M    0753    F204         S    BTFSS     0004H  0001H
+ M    0754    A758         S    GOTO      0758H
+ M    0755    4004         S    MOVLW     0004H
+ M    0756    0602         S    ADDWF     0002H  0001H
+ M    0757    A751         S    GOTO      0751H
+ M    0758    21DC         S    MOVFW     01DCH
+ M    0759    2200         S    MOVWF     0000H
+ M    075A    0A02         S    INCF      0002H  0001H
+ M    075B    21DD         S    MOVFW     01DDH
+ M    075C    2200         S    MOVWF     0000H
+ M    075D    0A02         S    INCF      0002H  0001H
+ M    075E    21DE         S    MOVFW     01DEH
+ M    075F    2200         S    MOVWF     0000H
+ M    0760    0A02         S    INCF      0002H  0001H
+ M    0761    21DF         S    MOVFW     01DFH
+ M    0762    2200         S    MOVWF     0000H
+ M    0763    21DA         S    MOVFW     01DAH
+ M    0764    0008         S    ADDPCW
+ M    0765    A771         S    GOTO      0771H
+ M    0766    A76F         S    GOTO      076FH
+ M    0767    A76D         S    GOTO      076DH
+ M    0768    A76B         S    GOTO      076BH
+ M    0769    4098         S    MOVLW     0198H
+ M    076A    A772         S    GOTO      0772H
+ M    076B    407B         S    MOVLW     017BH
+ M    076C    A772         S    GOTO      0772H
+ M    076D    405E         S    MOVLW     015EH
+ M    076E    A772         S    GOTO      0772H
+ M    076F    4041         S    MOVLW     0141H
+ M    0770    A772         S    GOTO      0772H
+ M    0771    4024         S    MOVLW     0124H
+ M    0772    2202         S    MOVWF     0002H
+ M    0773    21DB         S    MOVFW     01DBH
+ M    0774    23EB         S    MOVWF     01EBH
+ M    0775    4001         S    MOVLW     0001H
+ M    0776    1BEB         S    SUBWF     01EBH  0001H
+ M    0777    F204         S    BTFSS     0004H  0001H
+ M    0778    A77F         S    GOTO      077FH
+ M    0779    4001         S    MOVLW     0001H
+ M    077A    1BEB         S    SUBWF     01EBH  0001H
+ M    077B    F204         S    BTFSS     0004H  0001H
+ M    077C    A78A         S    GOTO      078AH
+ M    077D    0A02         S    INCF      0002H  0001H
+ M    077E    A775         S    GOTO      0775H
+ M    077F    37ED         S    RLF       01EDH  0001H
+ M    0780    37ED         S    RLF       01EDH  0001H
+ M    0781    37ED         S    RLF       01EDH  0001H
+ M    0782    37ED         S    RLF       01EDH  0001H
+ M    0783    40F0         S    MOVLW     00F0H
+ M    0784    2BED         S    ANDWF     01EDH  0001H
+ M    0785    2000         S    MOVFW     0000H
+ M    0786    680F         S    ANDLW     000FH
+ M    0787    31ED         S    XORWF     01EDH  0000H
+ M    0788    2200         S    MOVWF     0000H
+ M    0789    A790         S    GOTO      0790H
+ M    078A    400F         S    MOVLW     000FH
+ M    078B    2BED         S    ANDWF     01EDH  0001H
+ M    078C    2000         S    MOVFW     0000H
+ M    078D    68F0         S    ANDLW     00F0H
+ M    078E    31ED         S    XORWF     01EDH  0000H
+ M    078F    2200         S    MOVWF     0000H
+ M    0790    0BDB         S    INCF      01DBH  0001H
+ M    0791    21DB         S    MOVFW     01DBH
+ M    0792    5831         S    SUBLW     0031H
+ M    0793    F204         S    BTFSS     0004H  0001H
+ M    0794    A7AD         S    GOTO      07ADH
+ M    0795    21F2         S    MOVFW     01F2H
+ M    0796    2202         S    MOVWF     0002H
+ M    0797    A605         S    GOTO      0605H
+ M    0798    CE07         S    BCF       0007H  0007H
+ M    0799    0000         S    NOP
+ M    079A    87B7         S    CALL      07B7H
+ M    079B    0000         S    NOP
+ M    079C    40F8         S    MOVLW     00F8H
+ M    079D    2219         S    MOVWF     0019H
+ M    079E    4000         S    MOVLW     0000H
+ M    079F    2219         S    MOVWF     0019H
+ M    07A0    0000         S    NOP
+ M    07A1    0000         S    NOP
+ M    07A2    C821         S    BCF       0021H  0004H
+ M    07A3    A7B3         S    GOTO      07B3H
+ M    07A4    0000         S    NOP
+ M    07A5    0000         S    NOP
+ M    07A6    0000         S    NOP
+ M    07A7    0000         S    NOP
+ M    07A8    0000         S    NOP
+ M    07A9    0000         S    NOP
+ M    07AA    0000         S    NOP
+ M    07AB    0000         S    NOP
+ M    07AC    0000         S    NOP
+ M    07AD    0000         S    NOP
+ M    07AE    0000         S    NOP
+ M    07AF    0000         S    NOP
+ M    07B0    0000         S    NOP
+ M    07B1    0000         S    NOP
+ M    07B2    A533         S    GOTO      0533H
+ M    07B3    4001         S    MOVLW     0001H
+ M    07B4    224A         S    MOVWF     004AH
+ M    07B5    4100         S    SETDP     0000H
+ M    07B6    A83B         S    GOTO      083BH
+0030                       S    INCLUDE DATA_MATCH.ASM
+ M    07B7    21DA         S    MOVFW     01DAH
+ M    07B8    7000         S    XORLW     0000H
+ M    07B9    E004         S    BTFSC     0004H  0000H
+ M    07BA    A7F1         S    GOTO      07F1H
+ M    07BB    03D7         S    CLRF      01D7H
+ M    07BC    4103         S    SETDP     0003H
+ M    07BD    4022         S    MOVLW     0122H
+ M    07BE    2202         S    MOVWF     0002H
+ M    07BF    403F         S    MOVLW     013FH
+ M    07C0    2203         S    MOVWF     0003H
+ M    07C1    8803         S    CALL      0803H
+ M    07C2    EFFD         S    BTFSC     01FDH  0007H
+ M    07C3    D7D7         S    BSF       01D7H  0003H
+ M    07C4    4022         S    MOVLW     0122H
+ M    07C5    2202         S    MOVWF     0002H
+ M    07C6    405C         S    MOVLW     015CH
+ M    07C7    2203         S    MOVWF     0003H
+ M    07C8    8803         S    CALL      0803H
+ M    07C9    EFFD         S    BTFSC     01FDH  0007H
+ M    07CA    D5D7         S    BSF       01D7H  0002H
+ M    07CB    4022         S    MOVLW     0122H
+ M    07CC    2202         S    MOVWF     0002H
+ M    07CD    4079         S    MOVLW     0179H
+ M    07CE    2203         S    MOVWF     0003H
+ M    07CF    8803         S    CALL      0803H
+ M    07D0    EFFD         S    BTFSC     01FDH  0007H
+ M    07D1    D3D7         S    BSF       01D7H  0001H
+ M    07D2    4022         S    MOVLW     0122H
+ M    07D3    2202         S    MOVWF     0002H
+ M    07D4    4096         S    MOVLW     0196H
+ M    07D5    2203         S    MOVWF     0003H
+ M    07D6    8803         S    CALL      0803H
+ M    07D7    EFFD         S    BTFSC     01FDH  0007H
+ M    07D8    D1D7         S    BSF       01D7H  0000H
+ M    07D9    21D7         S    MOVFW     01D7H
+ M    07DA    0008         S    ADDPCW
+ M    07DB    A7EB         S    GOTO      07EBH
+ M    07DC    A7EB         S    GOTO      07EBH
+ M    07DD    A7EB         S    GOTO      07EBH
+ M    07DE    A7EB         S    GOTO      07EBH
+ M    07DF    A7ED         S    GOTO      07EDH
+ M    07E0    A7ED         S    GOTO      07EDH
+ M    07E1    A7EB         S    GOTO      07EBH
+ M    07E2    A7EB         S    GOTO      07EBH
+ M    07E3    A7EB         S    GOTO      07EBH
+ M    07E4    A7EB         S    GOTO      07EBH
+ M    07E5    A7EB         S    GOTO      07EBH
+ M    07E6    A7EB         S    GOTO      07EBH
+ M    07E7    A7EB         S    GOTO      07EBH
+ M    07E8    A7EB         S    GOTO      07EBH
+ M    07E9    A7EF         S    GOTO      07EFH
+ M    07EA    A7EF         S    GOTO      07EFH
+ M    07EB    4000         S    MOVLW     0000H
+ M    07EC    A7F3         S    GOTO      07F3H
+ M    07ED    4002         S    MOVLW     0002H
+ M    07EE    A7F3         S    GOTO      07F3H
+ M    07EF    4004         S    MOVLW     0004H
+ M    07F0    A7F3         S    GOTO      07F3H
+ M    07F1    4005         S    MOVLW     0005H
+ M    07F2    A7F3         S    GOTO      07F3H
+ M    07F3    2300         S    MOVWF     0100H
+ M    07F4    0003         S    RETURN
+ M    07F5    401D         S    MOVLW     001DH
+ M    07F6    23E2         S    MOVWF     01E2H
+ M    07F7    4103         S    SETDP     0003H
+ M    07F8    403F         S    MOVLW     013FH
+ M    07F9    2202         S    MOVWF     0002H
+ M    07FA    4096         S    MOVLW     0196H
+ M    07FB    2203         S    MOVWF     0003H
+ M    07FC    2001         S    MOVFW     0001H
+ M    07FD    2200         S    MOVWF     0000H
+ M    07FE    0A03         S    INCF      0003H  0001H
+ M    07FF    0A02         S    INCF      0002H  0001H
+ M    0800    17E2         S    DECFSZ    01E2H  0001H
+ M    0801    A7FC         S    GOTO      07FCH
+ M    0802    0003         S    RETURN
+ M    0803    CFFD         S    BCF       01FDH  0007H
+ M    0804    2000         S    MOVFW     0000H
+ M    0805    23E4         S    MOVWF     01E4H
+ M    0806    0A02         S    INCF      0002H  0001H
+ M    0807    2000         S    MOVFW     0000H
+ M    0808    23E5         S    MOVWF     01E5H
+ M    0809    0A02         S    INCF      0002H  0001H
+ M    080A    2001         S    MOVFW     0001H
+ M    080B    23E2         S    MOVWF     01E2H
+ M    080C    0A03         S    INCF      0003H  0001H
+ M    080D    2001         S    MOVFW     0001H
+ M    080E    23E3         S    MOVWF     01E3H
+ M    080F    0A03         S    INCF      0003H  0001H
+ M    0810    21E4         S    MOVFW     01E4H
+ M    0811    1BE2         S    SUBWF     01E2H  0001H
+ M    0812    21E5         S    MOVFW     01E5H
+ M    0813    3BE3         S    SUBWFC    01E3H  0001H
+ M    0814    F204         S    BTFSS     0004H  0001H
+ M    0815    84BC         S    CALL      04BCH
+ M    0816    4064         S    MOVLW     0064H
+ M    0817    1BE2         S    SUBWF     01E2H  0001H
+ M    0818    4000         S    MOVLW     0000H
+ M    0819    3BE3         S    SUBWFC    01E3H  0001H
+ M    081A    E204         S    BTFSC     0004H  0001H
+ M    081B    0003         S    RETURN
+ M    081C    2000         S    MOVFW     0000H
+ M    081D    23E4         S    MOVWF     01E4H
+ M    081E    0A02         S    INCF      0002H  0001H
+ M    081F    2001         S    MOVFW     0001H
+ M    0820    23E2         S    MOVWF     01E2H
+ M    0821    0A03         S    INCF      0003H  0001H
+ M    0822    21E4         S    MOVFW     01E4H
+ M    0823    70FF         S    XORLW     00FFH
+ M    0824    F004         S    BTFSS     0004H  0000H
+ M    0825    A82B         S    GOTO      082BH
+ M    0826    21E2         S    MOVFW     01E2H
+ M    0827    70FF         S    XORLW     00FFH
+ M    0828    E004         S    BTFSC     0004H  0000H
+ M    0829    DFFD         S    BSF       01FDH  0007H
+ M    082A    0003         S    RETURN
+ M    082B    21E4         S    MOVFW     01E4H
+ M    082C    31E2         S    XORWF     01E2H  0000H
+ M    082D    E004         S    BTFSC     0004H  0000H
+ M    082E    A81C         S    GOTO      081CH
+ M    082F    0003         S    RETURN
 0031                       S    
 0032                       S    MAIN:
-0033  04E5    0000         S    		NOP
-0034  04E6    0000         S    		NOP
-0035  04E7    0000         S    		NOP
-0036  04E8    E604         S    		BTFSC	STATUS,TO
-0037  04E9    A526         S    		GOTO	WDTC_STATUS
-0038  04EA    400E         S    		MOVLW	0EH
-0039  04EB    221D         S    		MOVWF	WDTCTR
-0040  04EC    0006         S    		CLRWDT
+0033  0830    0000         S    		NOP
+0034  0831    0000         S    		NOP
+0035  0832    0000         S    		NOP
+0036  0833    E604         S    		BTFSC	STATUS,TO
+0037  0834    A871         S    		GOTO	WDTC_STATUS
+0038  0835    4004         S    		MOVLW	04H				;; DISABLE WDOG
+0039  0836    221D         S    		MOVWF	WDTCTR
+0040  0837    0006         S    		CLRWDT
 0041                       S    MAIN_START:
-0042  04ED    8433         S    		CALL	SYSINI
-0043  04EE    845D         S    		CALL	RAMSCLEARALL
-0044  04EF    83DC         S    		CALL	INIVERSION
+0042  0838    83DA         S    		CALL	SYSINI
+0043  0839    8404         S    		CALL	RAMSCLEARALL
+0044  083A    8383         S    		CALL	INIVERSION
 0045                       S    	
 0046                       S    
 0047                       S    
 0048                       S    
 0049                       S    SLEEPMODE:
-0050  04F0    802D         S    		CALL	NOP1000
-0051  04F1    CE1E         S    		BCF     RMTCTR,SENS_CURT1
-0052  04F2    CC1E         S    		BCF     RMTCTR,SENS_CURT0
-0053  04F3    C81E         S    		BCF     RMTCTR,RX_EN				
-0054  04F4    C61E         S    		BCF     RMTCTR,TX_EN			 ;RX_EN=0,TX_EN=0 禁止发射，禁止接收-->降低功耗
-0055  04F5    DA1E         S    		BSF     RMTCTR,PWM_CURT
-0056  04F6    D41E         S    		BSF     RMTCTR,PWM_CURT1		;电流设置1	
-0057  04F7    D21E         S    		BSF     RMTCTR,PWM_CURT0		;电流设置0
+0050  083B    802D         S    		CALL	NOP1000
+0051  083C    CE1E         S    		BCF     RMTCTR,SENS_CURT1
+0052  083D    CC1E         S    		BCF     RMTCTR,SENS_CURT0
+0053  083E    C81E         S    		BCF     RMTCTR,RX_EN				
+0054  083F    C61E         S    		BCF     RMTCTR,TX_EN			 ;RX_EN=0,TX_EN=0 禁止发射，禁止接收-->降低功耗
+0055  0840    DA1E         S    		BSF     RMTCTR,PWM_CURT
+0056  0841    D41E         S    		BSF     RMTCTR,PWM_CURT1		;电流设置1	
+0057  0842    D21E         S    		BSF     RMTCTR,PWM_CURT0		;电流设置0
 0058                       S    
-0059  04F8    D41F         S    		BSF		I2CCON,I2C_PT15				;PT1.5 OD(开漏功能)打开
-0060  04F9    DE1F         S    		BSF		I2CCON,I2C_EN				;ENABLE I2C PORT(PT1_4(SCL), PT1_3(SDA))
-0061  04FA    C607         S    		BCF		INTE,TMBIE
+0059  0843    D41F         S    		BSF		I2CCON,I2C_PT15				;PT1.5 OD(开漏功能)打开
+0060  0844    DE1F         S    		BSF		I2CCON,I2C_EN				;ENABLE I2C PORT(PT1_4(SCL), PT1_3(SDA))
+0061  0845    C607         S    		BCF		INTE,TMBIE
 0062                       S    SLEEPMODE_1:		
 0063                       S    		;MOVLW	06H
 0064                       S    		;MOVWF	WDTCTR
 0065                       S    		;CLRWDT
-0066  04FB    0222         S    		CLRF	FLAG1
-0067  04FC    4004         S    		MOVLW	04H
-0068  04FD    221D         S    		MOVWF	WDTCTR
-0069  04FE    0006         S    		CLRWDT
+0066  0846    0222         S    		CLRF	FLAG1
+0067  0847    4004         S    		MOVLW	04H
+0068  0848    221D         S    		MOVWF	WDTCTR
+0069  0849    0006         S    		CLRWDT
 0070                       S    
 0071                       S    
- M    04FF    CA14         S    BCF       0014H  0005H
- M    0500    DA13         S    BSF       0013H  0005H
+ M    084A    CA14         S    BCF       0014H  0005H
+ M    084B    DA13         S    BSF       0013H  0005H
 0072                       S    		_ET4207_NOT_BUSY_
 0073                       S    
-0074  0501    C207         S    		BCF		INTE,I2CIE ;DISABLE I2C INTERRPUT
-0075  0502    CE07         S    		BCF		INTE,GIE
-0076  0503    0206         S    		CLRF	INTF
-0077  0504    C822         S    		BCF		FLAG1,ISCMDBYTE
+0074  084C    C207         S    		BCF		INTE,I2CIE ;DISABLE I2C INTERRPUT
+0075  084D    CE07         S    		BCF		INTE,GIE
+0076  084E    0206         S    		CLRF	INTF
+0077  084F    C822         S    		BCF		FLAG1,ISCMDBYTE
 0078                       S    	;	BSF		FLAG,ISLEARNREC
-0079  0505    0004         S    		SLEEP
+0079  0850    0004         S    		SLEEP
 0080                       S    	;	GOTO	LEARN_RMT
-0081  0506    0000         S    		NOP
-0082  0507    0000         S    		NOP
-0083  0508    400D         S    		MOVLW	0DH
-0084  0509    221D         S    		MOVWF	WDTCTR
- M    050A    DA14         S    BSF       0014H  0005H
- M    050B    CA13         S    BCF       0013H  0005H
+0081  0851    0000         S    		NOP
+0082  0852    0000         S    		NOP
+0083  0853    4004         S    		MOVLW	04H							;0DH
+0084  0854    221D         S    		MOVWF	WDTCTR
+ M    0855    DA14         S    BSF       0014H  0005H
+ M    0856    CA13         S    BCF       0013H  0005H
 0085                       S    		_ET4207_BUSY_
 0086                       S    	
 0087                       S    
@@ -1330,41 +2173,41 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
 0089                       S    ;I2C:		
 0090                       S    			;MOVFW	PPACKPOINTER
 0091                       S    			;MOVWF	FRS0
-0092  050C    D207         S    		BSF		INTE, I2CIE ;ENABLE I2C INTERRPUT
-0093  050D    DE07         S    		BSF		INTE, GIE ;ENABLE GLOBLE INTERRUPT 
+0092  0857    D207         S    		BSF		INTE, I2CIE ;ENABLE I2C INTERRPUT
+0093  0858    DE07         S    		BSF		INTE, GIE ;ENABLE GLOBLE INTERRUPT 
 0094                       S    I2CWATINGFORSTOP:
 0095                       S    	;	BTFSC   FLAG, ISERROR  ;IF CMD IS ERROR GOTO SLEEP MODE
 0096                       S    ;		GOTO	SLEEPMODE_1
-0097  050E    FA1F         S    		BTFSS   I2CCON, I2C_STO  ;IF I2C_STO=1, DEAL WITH DATA, OTHER WAIT
-0098  050F    A50E         S    		GOTO	I2CWATINGFORSTOP
-0099  0510    C207         S    		BCF		INTE,I2CIE ;DISABLE I2C INTERRPUT
-0100  0511    CE07         S    		BCF		INTE,GIE
-0101  0512    C822         S    		BCF		FLAG1,ISCMDBYTE
+0097  0859    FA1F         S    		BTFSS   I2CCON, I2C_STO  ;IF I2C_STO=1, DEAL WITH DATA, OTHER WAIT
+0098  085A    A859         S    		GOTO	I2CWATINGFORSTOP
+0099  085B    C207         S    		BCF		INTE,I2CIE ;DISABLE I2C INTERRPUT
+0100  085C    CE07         S    		BCF		INTE,GIE
+0101  085D    C822         S    		BCF		FLAG1,ISCMDBYTE
 0102                       S    			
-0103  0513    EA22         S    		BTFSC	FLAG1,ISCMDEND
-0104  0514    A516         S    		GOTO	MAINSTART
+0103  085E    EA22         S    		BTFSC	FLAG1,ISCMDEND
+0104  085F    A861         S    		GOTO	MAINSTART
 0105                       S    
-0106  0515    A4FB         S    		GOTO	SLEEPMODE_1
+0106  0860    A846         S    		GOTO	SLEEPMODE_1
 0107                       S    	
 0108                       S    MAINSTART:
-0109  0516    2040         S    		MOVFW	_WRITE_CMD_DATA
-0110  0517    5840         S    		SUBLW	40H
-0111  0518    E004         S    		BTFSC	STATUS,Z
-0112  0519    A524         S    		GOTO	RMT_LEARN_START
-0113  051A    2040         S    		MOVFW	_WRITE_CMD_DATA
-0114  051B    5854         S    		SUBLW	054H
-0115  051C    E004         S    		BTFSC	STATUS,Z
-0116  051D    8224         S    		CALL	CONSUMERIR_START
-0117  051E    2040         S    		MOVFW	_WRITE_CMD_DATA
-0118  051F    5855         S    		SUBLW	055H
-0119  0520    E004         S    		BTFSC	STATUS,Z
-0120  0521    822E         S    		CALL	TIANJIA_START
-0121  0522    0000         S    		NOP
-0122  0523    A4F0         S    		GOTO	SLEEPMODE	
+0109  0861    2040         S    		MOVFW	_WRITE_CMD_DATA
+0110  0862    5840         S    		SUBLW	40H
+0111  0863    E004         S    		BTFSC	STATUS,Z
+0112  0864    A86F         S    		GOTO	RMT_LEARN_START
+0113  0865    2040         S    		MOVFW	_WRITE_CMD_DATA
+0114  0866    5854         S    		SUBLW	054H
+0115  0867    E004         S    		BTFSC	STATUS,Z
+0116  0868    81F9         S    		CALL	CONSUMERIR_START
+0117  0869    2040         S    		MOVFW	_WRITE_CMD_DATA
+0118  086A    5855         S    		SUBLW	055H
+0119  086B    E004         S    		BTFSC	STATUS,Z
+0120  086C    8203         S    		CALL	TIANJIA_START
+0121  086D    0000         S    		NOP
+0122  086E    A83B         S    		GOTO	SLEEPMODE	
 0123                       S    RMT_LEARN_START:
 0124                       S    	;	BSF		TCCONA,CAPSEL
-0125  0524    8460         S    		CALL	LEARN_RAM_CLR
-0126  0525    A0A5         S    		GOTO	LEARN_RMT
+0125  086F    8407         S    		CALL	LEARN_RAM_CLR
+0126  0870    A0A5         S    		GOTO	LEARN_RMT
 0127                       S    	
 0128                       S    
 0129                       S    
@@ -1372,9 +2215,9 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
 0131                       S    
 0132                       S    
 0133                       S    WDTC_STATUS:
-0134  0526    0000         S    		NOP
-0135  0527    0204         S    		CLRF	STATUS
-0136  0528    A4ED         S    		GOTO	MAIN_START
+0134  0871    0000         S    		NOP
+0135  0872    0204         S    		CLRF	STATUS
+0136  0873    A838         S    		GOTO	MAIN_START
 0137                       S    
 0138                       S    
 0139                       S    
@@ -1384,21 +2227,47 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
 0143                       S    		END                =================== << SYMBOL TABLE LISTING >> ========================
 NAME                                    TYPE    VALUE  ATTRIBUTE   LINE
 -----------------------------------------------------------------------
-MAINSTART                               N NUMB  0516H
-SLEEPMODE                               N NUMB  04F0H
-SYSINI                                  N NUMB  0433H
-LEARN_XCAL_CRC_LOOP_8TIMES_REASULT_0                    N NUMB  020AH
+MAINSTART                               N NUMB  0861H
+SLEEPMODE                               N NUMB  083BH
+BUF_COMPARE                             N NUMB  0803H
+CYCLE_CHK_END                           N NUMB  0797H
+FRAME_SET                               N NUMB  0772H
+FRAME4                                  N NUMB  0769H
+FRAME_HEAD                              N NUMB  06CBH
+LEARN_XCAL_CRC_LOOP_8TIMES_REASULT_0                    N NUMB  04D4H
+SYSINI                                  N NUMB  03DAH
 REC_WAIT_DOWN_EDGE                      N NUMB  008FH
 NOP34                                   N NUMB  004DH
 NOP42                                   N NUMB  0045H
 NOP500                                  N NUMB  0033H
 NOP3500                                 N NUMB  0028H
 NOP6000                                 N NUMB  0023H
+RC6_TH_L1                               N NUMB  0004H
+RC6_HEAD_LH                             N NUMB  0004H
+RC6_HEAD_HH                             N NUMB  0000H
+M3004_T1H                               N NUMB  0024H
+STRU_AAAA                               N NUMB  0004H
+RET_10SL                                N NUMB  0000H
+PT1_SEL                                 N NUMB  0000H
+DAT4_14                                 N NUMB  01ACH
+DAT4_02                                 N NUMB  019AH
+DAT3_0B                                 N NUMB  0186H
+DAT3_01                                 N NUMB  017CH
+DAT2_05                                 N NUMB  0163H
+DAT1_13                                 N NUMB  0154H
+DAT0_16                                 N NUMB  013AH
+DAT0_01                                 N NUMB  0125H
+CYCLE1_HL                               N NUMB  0108H
+FSEN                                    N NUMB  0002H
+KEY_VAL1                                N NUMB  01FAH
+SCAN_COUNT                              N NUMB  01CDH
+KEYNUMO                                 N NUMB  01F9H
 _NPAIRS_H                               N NUMB  0044H
 FREQL2                                  N NUMB  0063H
 N_PARTINDEXCOUNT                        N NUMB  004CH
 SAMPLE0_NLOWLEVEL_H                     N NUMB  003FH
 FLAG1                                   N NUMB  0022H
+LED                                     N NUMB  0003H
 BUSY                                    N NUMB  0005H
 BPT10                                   N NUMB  0000H
 TCRSTB                                  N NUMB  0007H
@@ -1407,17 +2276,40 @@ PWMEN                                   N NUMB  0003H
 I2CIE                                   N NUMB  0001H
 CAPIF                                   N NUMB  0002H
 FRS1                                    N NUMB  0003H
-WDTC_STATUS                             N NUMB  0526H
-I2CWATINGFORSTOP                        N NUMB  050EH
-READVERSION                             N NUMB  03E5H
-NEG                                     N NUMB  021BH
-LEARN_XCAL_CRC_LOOP_LOOP_8TIMES_END                    N NUMB  020CH
-LEARN_XCAL_CRC                          N NUMB  01F9H
+WDTC_STATUS                             N NUMB  0871H
+I2CWATINGFORSTOP                        N NUMB  0859H
+REC_DATA_SAVE_LOOP                      N NUMB  0775H
+MEASURE_LOW_CYCLE                       N NUMB  04EFH
+NEG                                     N NUMB  04E5H
+LEARN_XCAL_CRC_LOOP_LOOP_8TIMES_END                    N NUMB  04D6H
+LEARN_XCAL_CRC                          N NUMB  04C3H
+READVERSION                             N NUMB  038CH
 NOP17                                   N NUMB  005EH
 NOP37                                   N NUMB  004AH
 NOP43                                   N NUMB  0044H
 NOP650                                  N NUMB  0030H
 NOP1000                                 N NUMB  002DH
+RC5_TH_L1                               N NUMB  0008H
+TIMA_6MSH                               N NUMB  0003H
+TIMA_15MSL                              N NUMB  0027H
+TIMA_15MSH                              N NUMB  0009H
+LV_4MSH                                 N NUMB  0013H
+DAT4_15                                 N NUMB  01ADH
+DAT4_01                                 N NUMB  0199H
+DAT3_0C                                 N NUMB  0187H
+DAT3_06                                 N NUMB  0181H
+DAT2_04                                 N NUMB  0162H
+DAT1_12                                 N NUMB  0153H
+DAT0_17                                 N NUMB  013BH
+DAT0_00                                 N NUMB  0124H
+CYCLE7_HH                               N NUMB  0121H
+CYCLE7_LH                               N NUMB  011FH
+CYCLE6_LH                               N NUMB  011BH
+CYCLE3_LH                               N NUMB  010FH
+FNEW                                    N NUMB  0007H
+SCAN_BUFL                               N NUMB  01CCH
+TMPL                                    N NUMB  01E2H
+CARRY_SH                                N NUMB  01D7H
 _LENGTH_H_TEMP                          N NUMB  0037H
 _CRC_TEMP                               N NUMB  0036H
 _FREQ                                   N NUMB  0043H
@@ -1434,15 +2326,44 @@ OSC_TEST                                N NUMB  001FH
 I2C_STO                                 N NUMB  0005H
 I2CCON                                  N NUMB  001FH
 TSETB                                   N NUMB  000FH
-INIT_RAM1                               N NUMB  0477H
-XCAL_CRC_LOOP_LOOP_8TIMES_END                    N NUMB  03BAH
-CONSUMERIR_DECODE_END                    N NUMB  0303H
+SEND_ABAB                               N NUMB  07EDH
+CYCLE_COMPARE_N                         N NUMB  0742H
+REC_CYCLE_SAVE_LOOP                     N NUMB  0717H
+F_C38K                                  N NUMB  0620H
+PLUS_COUNT                              N NUMB  04F5H
+XCAL_CRC_LOOP_LOOP_8TIMES_END                    N NUMB  04ADH
+INIT_RAM1                               N NUMB  041EH
+CONSUMERIR_DECODE_END                    N NUMB  02D8H
 LEARN_OUT                               N NUMB  01F5H
 LEARN_DECODE                            N NUMB  01C8H
 NOP16                                   N NUMB  005FH
 NOP36                                   N NUMB  004BH
 NOP44                                   N NUMB  0043H
 NOP250                                  N NUMB  0038H
+RC6_JYL_H1                              N NUMB  002DH
+RC6_JYL_H0                              N NUMB  001EH
+RC5_TH_H1                               N NUMB  0000H
+RC5_TH_L0                               N NUMB  0004H
+RCT100_T0H                              N NUMB  000AH
+RCT100_T0L                              N NUMB  000AH
+FRAME_RC5                               N NUMB  00F2H
+PT2_SEL                                 N NUMB  00B0H
+TF4_TH                                  N NUMB  01B2H
+DAT4_16                                 N NUMB  01AEH
+DAT4_00                                 N NUMB  0198H
+DAT3_07                                 N NUMB  0182H
+DAT2_07                                 N NUMB  0165H
+DAT1_11                                 N NUMB  0152H
+DAT0_0F                                 N NUMB  0133H
+DAT0_07                                 N NUMB  012BH
+CYCLE5_HL                               N NUMB  0118H
+CYCLE4_LL                               N NUMB  0112H
+CYCLE2_HH                               N NUMB  010DH
+F_M_LOW                                 N NUMB  0005H
+TF_COUNTL                               N NUMB  01F0H
+DAT0                                    N NUMB  01E4H
+CYCLE_HH                                N NUMB  01DFH
+TF_H                                    N NUMB  01D6H
 TIANJIA_TEMP1                           N NUMB  002CH
 ISHIGHLOW                               N NUMB  0002H
 FLAG                                    N NUMB  0021H
@@ -1454,11 +2375,18 @@ KEY_VALUE                               N NUMB  0012H
 TCOUTB                                  N NUMB  0010H
 TCOUTAH                                 N NUMB  000DH
 TSETAH                                  N NUMB  000AH
-INITVALUE                               N NUMB  046FH
-DELAY_40US                              N NUMB  0452H
-INITINTP                                N NUMB  042BH
-WRITEEND                                N NUMB  03F0H
-TIANJIAEND                              N NUMB  0286H
+DSP_ERR2                                N NUMB  07A7H
+DAT1_7_BC                               N NUMB  06FDH
+FRAME_TF3                               N NUMB  0684H
+LED_SS                                  N NUMB  0567H
+LEARN_SAA                               N NUMB  0552H
+LEARN_CSH                               N NUMB  053DH
+PLUS_SAVE                               N NUMB  051BH
+INITVALUE                               N NUMB  0416H
+DELAY_40US                              N NUMB  03F9H
+INITINTP                                N NUMB  03D2H
+WRITEEND                                N NUMB  0397H
+TIANJIAEND                              N NUMB  025BH
 SAMPLECOMPARE_1                         N NUMB  0162H
 REC_LEARN_END                           N NUMB  0099H
 REC_WAIT_UP_EDGE                        N NUMB  0086H
@@ -1466,6 +2394,27 @@ NOP15                                   N NUMB  0060H
 NOP31                                   N NUMB  0050H
 NOP550                                  N NUMB  0032H
 NOP3000                                 N NUMB  0029H
+RC5_TH_H0                               N NUMB  0000H
+RCT100_T1H                              N NUMB  0016H
+RCT100_T1L                              N NUMB  0058H
+SPEC_3004_PC_H                          N NUMB  000AH
+M3004_T0H                               N NUMB  0018H
+TIMA_200MSH                             N NUMB  007AH
+DAT4_17                                 N NUMB  01AFH
+DAT3_0A                                 N NUMB  0185H
+DAT3_04                                 N NUMB  017FH
+DAT2_0E                                 N NUMB  016CH
+DAT2_06                                 N NUMB  0164H
+DAT1_10                                 N NUMB  0151H
+DAT0_0E                                 N NUMB  0132H
+DAT0_06                                 N NUMB  012AH
+FIR                                     N NUMB  0000H
+F_PLUS                                  N NUMB  0001H
+KEY_OLD                                 N NUMB  01F6H
+CYCLE_HH_TMP                            N NUMB  01EAH
+CYCLE_HL_TMP                            N NUMB  01E9H
+DAT1                                    N NUMB  01E5H
+FIRST_PLUS                              N NUMB  01D0H
 FREQH4                                  N NUMB  0066H
 _LENGTH_H_LEARN                         N NUMB  0048H
 NPARTINDEXCOUNT                         N NUMB  0035H
@@ -1478,11 +2427,18 @@ PT2SEL                                  N NUMB  001AH
 PT2                                     N NUMB  0016H
 PT1PU                                   N NUMB  0015H
 INTE                                    N NUMB  0007H
-RMT_LEARN_START                         N NUMB  0524H
-SLEEPMODE_1                             N NUMB  04FBH
-TIMBINTERRUPT                           N NUMB  04B9H
-XCAL_CRC_LOOP_8TIMES_REASULT_0                    N NUMB  03B8H
-LEARN_XCAL_CRC_LOOP                     N NUMB  01F9H
+RMT_LEARN_START                         N NUMB  086FH
+SLEEPMODE_1                             N NUMB  0846H
+DSP_ERR3                                N NUMB  07AAH
+DATA_MATCH                              N NUMB  0798H
+FRAME0                                  N NUMB  0771H
+CYCLE_COMPARE_L                         N NUMB  0721H
+FRAME_TF2                               N NUMB  0689H
+CARRY_M                                 N NUMB  05E9H
+LEARN_START                             N NUMB  0533H
+LEARN_XCAL_CRC_LOOP                     N NUMB  04C3H
+XCAL_CRC_LOOP_8TIMES_REASULT_0                    N NUMB  04ABH
+TIMBINTERRUPT                           N NUMB  0462H
 SAMPLECOMPARE_0                         N NUMB  013BH
 LEARN_RMT                               N NUMB  00A5H
 RECEIVER_START                          N NUMB  006DH
@@ -1495,6 +2451,29 @@ NOP150                                  N NUMB  003AH
 NOP600                                  N NUMB  0031H
 NOP2000                                 N NUMB  002BH
 NOP9000                                 N NUMB  001DH
+M3004_T1L                               N NUMB  0060H
+STRU_AAAE                               N NUMB  0003H
+RF_EE_ADDH                              N NUMB  0003H
+RF_EE_ADDL                              N NUMB  0000H
+TF_4700USH                              N NUMB  0003H
+TF_4700USL                              N NUMB  006AH
+DAT4_10                                 N NUMB  01A8H
+TF3_TH                                  N NUMB  0195H
+DAT3_0F                                 N NUMB  018AH
+DAT3_05                                 N NUMB  0180H
+HEAD3_TIMH                              N NUMB  017AH
+HEAD3_TIML                              N NUMB  0179H
+DAT2_0D                                 N NUMB  016BH
+DAT2_01                                 N NUMB  015FH
+HEAD2_TIMH                              N NUMB  015DH
+HEAD2_TIML                              N NUMB  015CH
+DAT1_17                                 N NUMB  0158H
+DAT0_0D                                 N NUMB  0131H
+DAT0_05                                 N NUMB  0129H
+CYCLE1_HH                               N NUMB  0109H
+F_HEAD                                  N NUMB  0006H
+SMJS_BAK                                N NUMB  01ECH
+KEYNUM2                                 N NUMB  01CEH
 _CRC                                    N NUMB  0049H
 _LENGTH_H                               N NUMB  0041H
 _LENGTH_L_LEARN                         N NUMB  0049H
@@ -1505,9 +2484,15 @@ TMAIE                                   N NUMB  0004H
 TMBIF                                   N NUMB  0003H
 PT1                                     N NUMB  0013H
 INTF                                    N NUMB  0006H
-DLOOP2MS                                N NUMB  044EH
-SETLEARN                                N NUMB  0412H
-CONSUMERIR_START                        N NUMB  0224H
+SEND_STRU_SET                           N NUMB  07F3H
+FRAME1                                  N NUMB  076FH
+FRAME_TF1                               N NUMB  068EH
+CYCLE_LOOP                              N NUMB  0605H
+CARRY_P4                                N NUMB  05F4H
+LLED                                    N NUMB  056CH
+DLOOP2MS                                N NUMB  03F5H
+SETLEARN                                N NUMB  03B9H
+CONSUMERIR_START                        N NUMB  01F9H
 LEARN_NEXT                              N NUMB  01BCH
 LEARN_CAP_WAIT                          N NUMB  00D6H
 NOP13                                   N NUMB  0062H
@@ -1517,6 +2502,27 @@ NOP47                                   N NUMB  0041H
 NOP50                                   N NUMB  003EH
 NOP100                                  N NUMB  003BH
 NOP2500                                 N NUMB  002AH
+SPEC_FRAME_PC_H                         N NUMB  000AH
+RC6_TL_L0                               N NUMB  0026H
+TIMA_5MSL                               N NUMB  000DH
+TIMA_6MSL                               N NUMB  00A9H
+DAT4_11                                 N NUMB  01A9H
+DAT2_12                                 N NUMB  0170H
+DAT2_00                                 N NUMB  015EH
+DAT1_16                                 N NUMB  0157H
+DAT1_00                                 N NUMB  0141H
+DAT0_04                                 N NUMB  0128H
+CYCLE7_LL                               N NUMB  011EH
+CYCLE6_LL                               N NUMB  011AH
+CYCLE5_LL                               N NUMB  0116H
+CARRY_TIM                               N NUMB  0101H
+FRAME_STRU                              N NUMB  0100H
+TMP                                     N NUMB  01F8H
+SCAN_BUFH                               N NUMB  01CBH
+TMPH                                    N NUMB  01E3H
+SPEC_CODE_NUM                           N NUMB  01D3H
+CARRY_L                                 N NUMB  01D4H
+W_BAK                                   N NUMB  01D1H
 _WRITE_CMD_DATA                         N NUMB  0040H
 FREQL                                   N NUMB  004FH
 _LEARN_FLAG                             N NUMB  004AH
@@ -1528,12 +2534,19 @@ RST_FLAG_0                              N NUMB  0006H
 PT1SEL                                  N NUMB  0019H
 MCK                                     N NUMB  0008H
 WORK                                    N NUMB  0005H
-INTERRUPT_06H                           N NUMB  04C2H
-I2CINTERRUPTEND                         N NUMB  04B7H
-ERROR                                   N NUMB  04B0H
-CMDDEAL                                 N NUMB  049AH
-INTERRUPT_0CH                           N NUMB  0483H
-DELAY_40US_L                            N NUMB  0458H
+MATCH                                   N NUMB  07B7H
+DSP_ERR1                                N NUMB  07A4H
+FRAME2                                  N NUMB  076DH
+CYCLE_COMPARE_END                       N NUMB  0748H
+FRAME_TF0                               N NUMB  0693H
+TF_CHECK0                               N NUMB  0640H
+ABS                                     N NUMB  04BCH
+INTERRUPT_06H                           N NUMB  046BH
+I2CINTERRUPTEND                         N NUMB  0460H
+ERROR                                   N NUMB  0459H
+CMDDEAL                                 N NUMB  0443H
+INTERRUPT_0CH                           N NUMB  042AH
+DELAY_40US_L                            N NUMB  03FFH
 REMOTER_CODE_RESTONE                    N NUMB  01C8H
 REC_WAIT_FIRST_DOWN_EDGE                    N NUMB  007EH
 NOP12                                   N NUMB  0063H
@@ -1541,6 +2554,24 @@ NOP20                                   N NUMB  005BH
 NOP32                                   N NUMB  004FH
 NOP6500                                 N NUMB  0022H
 DELAY150MS                              N NUMB  0013H
+RC6_TL_H0                               N NUMB  000FH
+RC6_TL_L1                               N NUMB  004CH
+TF4_TL                                  N NUMB  01B1H
+DAT4_12                                 N NUMB  01AAH
+DAT3_0D                                 N NUMB  0188H
+DAT2_13                                 N NUMB  0171H
+DAT2_0F                                 N NUMB  016DH
+DAT2_03                                 N NUMB  0161H
+DAT1_15                                 N NUMB  0156H
+DAT1_01                                 N NUMB  0142H
+CYCLE2_HL                               N NUMB  010CH
+CYCLE_REC_NUM                           N NUMB  01F3H
+TF_COUNTH                               N NUMB  01F1H
+SCAN_COLUMN                             N NUMB  01F9H
+KEYBUFFH                                N NUMB  01EAH
+EE_ADDH                                 N NUMB  01DDH
+CYCLE_HL                                N NUMB  01DEH
+SPEC_CODE_SYS                           N NUMB  01D4H
 TIANJIA_TEMP5                           N NUMB  0031H
 P_PARTINDEXCOUNT                        N NUMB  0032H
 NWRITEBYTECOUNT_H                       N NUMB  002AH
@@ -1553,13 +2584,39 @@ PT1MR                                   N NUMB  001BH
 PT2PU                                   N NUMB  0018H
 TCOUTAL                                 N NUMB  000CH
 TSETAL                                  N NUMB  0009H
-MAIN                                    N NUMB  04E5H
-I2CWRITEDATA                            N NUMB  0495H
-READEND                                 N NUMB  03EDH
+MAIN                                    N NUMB  0830H
+BUF_COMPARE_N1                          N NUMB  082BH
+BUF_COMPARE_N                           N NUMB  081CH
+FRAME3                                  N NUMB  076BH
+CYCLE_COMPARE                           N NUMB  071BH
+FRAME_TF                                N NUMB  0697H
+LEARN_S                                 N NUMB  0554H
+INT_TIMEB_RET                           N NUMB  052DH
+I2CWRITEDATA                            N NUMB  043CH
+READEND                                 N NUMB  0394H
 NOP11                                   N NUMB  0064H
 NOP21                                   N NUMB  005AH
 NOP48                                   N NUMB  0040H
 START                                   N NUMB  0000H
+RC6_TL_H1                               N NUMB  001EH
+RC5_TL_H1                               N NUMB  003DH
+STRU_ABAB                               N NUMB  0002H
+TIMA_200MSL                             N NUMB  0012H
+DAT4_13                                 N NUMB  01ABH
+DAT3_0E                                 N NUMB  0189H
+DAT3_08                                 N NUMB  0183H
+DAT2_10                                 N NUMB  016EH
+DAT2_0A                                 N NUMB  0168H
+DAT2_02                                 N NUMB  0160H
+DAT1_14                                 N NUMB  0155H
+DAT1_02                                 N NUMB  0143H
+CYCLE6_HL                               N NUMB  011CH
+TF_TMPH                                 N NUMB  01F8H
+SM_BUFH                                 N NUMB  01ECH
+SCAN_TEMP                               N NUMB  01E3H
+CYCLE_LL                                N NUMB  01DCH
+REC_FRAME_COUNT                         N NUMB  01DAH
+LEDJS                                   N NUMB  01CFH
 POINTER0                                N NUMB  004AH
 _LEARN1                                 N NUMB  0047H
 DELTA_ABS_H                             N NUMB  0031H
@@ -1570,13 +2627,36 @@ BPT23                                   N NUMB  0003H
 M4_CK                                   N NUMB  0004H
 TX_EN                                   N NUMB  0003H
 PWM_SEL                                 N NUMB  0007H
-INTERRUPT_TIMERA                        N NUMB  04C4H
-CONSUMERIR_DECODELOOP                    N NUMB  02A8H
+REC_DATA_SAVE                           N NUMB  0763H
+RECCYCLE_SAVE                           N NUMB  0758H
+CYCLE_COMPARE_H                         N NUMB  0730H
+DAT_BC                                  N NUMB  06F0H
+CARRY_P1                                N NUMB  05FDH
+INTERRUPT_TIMERA                        N NUMB  046DH
+CONSUMERIR_DECODELOOP                    N NUMB  027DH
 PUSH_TIME_REG                           N NUMB  009DH
 REC_SET_REG                             N NUMB  0071H
 NOP10                                   N NUMB  0065H
 NOP26                                   N NUMB  0055H
 NOP49                                   N NUMB  003FH
+STANDBY_KEY                             N NUMB  00CAH
+LSET_KEY                                N NUMB  0080H
+SPEC_FRAME_PC                           N NUMB  0096H
+RC5_TL_H0                               N NUMB  001EH
+RC5_TL_L1                               N NUMB  003EH
+BUFER_START                             N NUMB  0020H
+DAT4_0F                                 N NUMB  01A7H
+TF3_TL                                  N NUMB  0194H
+DAT3_09                                 N NUMB  0184H
+DAT2_11                                 N NUMB  016FH
+DAT1_03                                 N NUMB  0144H
+TF0_TL                                  N NUMB  013DH
+DAT0_09                                 N NUMB  012DH
+FFSN                                    N NUMB  0001H
+F_CMP_R                                 N NUMB  0007H
+E_BUF                                   N NUMB  01F5H
+SCAN_ROW                                N NUMB  01E2H
+LED_TIMH                                N NUMB  01E1H
 _LENGTH_L_TEMP                          N NUMB  0038H
 POINTER1                                N NUMB  004AH
 _LENGTH_L                               N NUMB  0042H
@@ -1591,18 +2671,44 @@ E0IF                                    N NUMB  0000H
 I2C_PT13                                N NUMB  0000H
 I2C_ADDR                                N NUMB  0003H
 I2C_EN                                  N NUMB  0007H
-MAIN_START                              N NUMB  04EDH
-INTERRUPT_CAPTURE_INC                    N NUMB  04DFH
-I2CREADDATAEND                          N NUMB  0493H
-DLOOP1                                  N NUMB  045AH
-DELAY_2MS                               N NUMB  044CH
-SETCURRENT                              N NUMB  0401H
+MAIN_START                              N NUMB  0838H
+DATA_MOVE_LOOP                          N NUMB  07FCH
+DSP_ERR4                                N NUMB  07ADH
+REC_CYCLE_SAVE                          N NUMB  074BH
+CYCLE_CHK                               N NUMB  06CEH
+FRAME_HEAD_SAVE_NOR                     N NUMB  06ADH
+MEASURE_HIGH_CYCLE                      N NUMB  0518H
+INT_TIMEB1                              N NUMB  0514H
+INTERRUPT_CAPTURE_INC                    N NUMB  0488H
+I2CREADDATAEND                          N NUMB  043AH
+DLOOP1                                  N NUMB  0401H
+DELAY_2MS                               N NUMB  03F3H
+SETCURRENT                              N NUMB  03A8H
 SAMPLECOMPARE_LOOP                      N NUMB  0133H
 NOP8                                    N NUMB  0067H
 NOP27                                   N NUMB  0054H
 NOP200                                  N NUMB  0039H
 NOP1500                                 N NUMB  002CH
 NOP8000                                 N NUMB  001FH
+LEARN_KEY4                              N NUMB  0084H
+LEARN_KEY3                              N NUMB  0083H
+LEARN_KEY2                              N NUMB  0082H
+LEARN_KEY1                              N NUMB  0081H
+RC5_TL_L0                               N NUMB  001FH
+FRAME_RCT100                            N NUMB  00F1H
+STRU_ABBA                               N NUMB  0001H
+TIMA_5MSH                               N NUMB  0003H
+DAT4_0E                                 N NUMB  01A6H
+DAT3_15                                 N NUMB  0190H
+DAT2_16                                 N NUMB  0174H
+DAT2_0C                                 N NUMB  016AH
+DAT1_04                                 N NUMB  0145H
+DAT0_08                                 N NUMB  012CH
+CYCLE5_LH                               N NUMB  0117H
+CYCLE2_LL                               N NUMB  010AH
+CYCLE0_HH                               N NUMB  0105H
+FRS0_BAK                                N NUMB  01F2H
+CARRY_H                                 N NUMB  01D5H
 _HIGH_H                                 N NUMB  0030H
 N_INDEX                                 N NUMB  004EH
 SAMPLE1_NLOWLEVEL_L                     N NUMB  0044H
@@ -1616,16 +2722,47 @@ CCLKB_SEL1                              N NUMB  0001H
 CCLKB_SEL0                              N NUMB  0000H
 Z                                       N NUMB  0000H
 RMTCTR                                  N NUMB  001EH
-CLEARRAMS                               N NUMB  0463H
-DLOOP0                                  N NUMB  0455H
-STOPRMTLEARN                            N NUMB  03FFH
-READCODE                                N NUMB  03EAH
+SAVE_REDAT_N                            N NUMB  0790H
+DAT_SEARCH                              N NUMB  0713H
+DAT_BC_END1                             N NUMB  070FH
+FRAME_HEAD_SAVE1                        N NUMB  06ADH
+FRAME_HEAD_SAVE                         N NUMB  069EH
+FRAME_TF4                               N NUMB  067FH
+TF_CHECK_END                            N NUMB  0670H
+TF_CHECK_NEXT                           N NUMB  0646H
+CARRY_P3                                N NUMB  05F7H
+LEARN_S1                                N NUMB  056DH
+INT_TIMEA_RET1                          N NUMB  04F9H
+CLEARRAMS                               N NUMB  040AH
+DLOOP0                                  N NUMB  03FCH
+STOPRMTLEARN                            N NUMB  03A6H
+READCODE                                N NUMB  0391H
 LEARN_ERROR                             N NUMB  01F1H
 NOP9                                    N NUMB  0066H
 NOP24                                   N NUMB  0057H
 NOP8500                                 N NUMB  001EH
 NOP10000                                N NUMB  001BH
 NOP30000                                N NUMB  0019H
+SPEC_3004_PC                            N NUMB  00FAH
+DAT4_0D                                 N NUMB  01A5H
+DAT4_09                                 N NUMB  01A1H
+HEAD4_TIMH                              N NUMB  0197H
+HEAD4_TIML                              N NUMB  0196H
+DAT3_14                                 N NUMB  018FH
+TF2_TL                                  N NUMB  0177H
+DAT2_17                                 N NUMB  0175H
+DAT2_0B                                 N NUMB  0169H
+DAT1_05                                 N NUMB  0146H
+CYCLE4_HL                               N NUMB  0114H
+CYCLE3_HH                               N NUMB  0111H
+FSET                                    N NUMB  0003H
+DB1                                     N NUMB  01FCH
+KEY_FUN                                 N NUMB  01CFH
+KEYBUFFL                                N NUMB  01E9H
+GNDBUFFL                                N NUMB  01E7H
+KEYCOUNT                                N NUMB  01E6H
+EE_ADDL                                 N NUMB  01DCH
+CARRY_COUNT                             N NUMB  01D3H
 _NPAIRS_H_TEMP                          N NUMB  0039H
 SAMPLE1_NHIGHLEVEL_L                    N NUMB  0042H
 SAMPLE1_NHIGHLEVEL_H                    N NUMB  0041H
@@ -1639,12 +2776,41 @@ PWM_CURT0                               N NUMB  0001H
 PD                                      N NUMB  0004H
 I2C_READY                               N NUMB  0006H
 STATUS                                  N NUMB  0004H
-LEARN_RAM_CLR                           N NUMB  0460H
-STARTRECLEARN                           N NUMB  03F9H
-CONSUMERIR_REMOTE                       N NUMB  0286H
+FRAME_HEAD4                             N NUMB  06B3H
+CARRY_END                               N NUMB  0605H
+CARRY_P2                                N NUMB  05FAH
+LED_CLR                                 N NUMB  056BH
+INT_TIMEA_CAPIF                         N NUMB  04EEH
+LEARN_RAM_CLR                           N NUMB  0407H
+STARTRECLEARN                           N NUMB  03A0H
+CONSUMERIR_REMOTE                       N NUMB  025BH
 NOP25                                   N NUMB  0056H
 NOP5500                                 N NUMB  0024H
 NOP7500                                 N NUMB  0020H
+FAST_LSET_KEY                           N NUMB  005AH
+RC6_JYH_H1                              N NUMB  0000H
+RC6_JYH_H0                              N NUMB  0000H
+BUFER_START_A                           N NUMB  0022H
+DAT4_0C                                 N NUMB  01A4H
+DAT4_08                                 N NUMB  01A0H
+DAT3_17                                 N NUMB  0192H
+DAT2_14                                 N NUMB  0172H
+TF1_TL                                  N NUMB  015AH
+DAT1_0A                                 N NUMB  014BH
+DAT1_06                                 N NUMB  0147H
+DAT0_10                                 N NUMB  0134H
+HEAD0_TIMH                              N NUMB  0123H
+HEAD0_TIML                              N NUMB  0122H
+CYCLE6_HH                               N NUMB  011DH
+F_M_SEL                                 N NUMB  0004H
+F_TF                                    N NUMB  0003H
+DB0                                     N NUMB  01FBH
+TF_TMPL                                 N NUMB  01F7H
+CTR_JS                                  N NUMB  01F7H
+SM_BUFL                                 N NUMB  01EDH
+SMJS                                    N NUMB  01EBH
+LED_TIMM                                N NUMB  01E0H
+CYCLE_LH                                N NUMB  01DDH
 _LOW_L                                  N NUMB  0033H
 _FORM_H                                 N NUMB  0046H
 INDEX_BIT                               N NUMB  0045H
@@ -1657,15 +2823,36 @@ BPT16                                   N NUMB  0006H
 PWM_CURT1                               N NUMB  0002H
 RMT_IN                                  N NUMB  0000H
 TCENA                                   N NUMB  0003H
-RAMSCLEARALL                            N NUMB  045DH
-STARTRMTLEARN                           N NUMB  03F3H
-ROMTAB                                  N NUMB  03C9H
-TIANJIA_START                           N NUMB  022EH
+SEND_AAAA                               N NUMB  07EFH
+SEND_ABBA                               N NUMB  07EBH
+DSP_ERR                                 N NUMB  07B0H
+SAVE_RECDAT_H                           N NUMB  077FH
+LOW_VOLTAGE                             N NUMB  05D8H
+HEAD0_LOOP                              N NUMB  05CDH
+RAMSCLEARALL                            N NUMB  0404H
+STARTRMTLEARN                           N NUMB  039AH
+ROMTAB                                  N NUMB  0370H
+TIANJIA_START                           N NUMB  0203H
 LEARN_END                               N NUMB  01C9H
 STORENEWSAMPLE                          N NUMB  018CH
 NOP39                                   N NUMB  0048H
 NOP9500                                 N NUMB  001CH
 NOP50000                                N NUMB  0017H
+STRU_ABBB                               N NUMB  0000H
+DAT4_0B                                 N NUMB  01A3H
+DAT4_07                                 N NUMB  019FH
+DAT3_16                                 N NUMB  0191H
+DAT2_15                                 N NUMB  0173H
+DAT1_0B                                 N NUMB  014CH
+DAT1_07                                 N NUMB  0148H
+TF0_TH                                  N NUMB  013EH
+DAT0_11                                 N NUMB  0135H
+CYCLE1_LH                               N NUMB  0107H
+CYCLE0_LL                               N NUMB  0102H
+F_LEARN                                 N NUMB  01FDH
+SYS0                                    N NUMB  01EEH
+LED_TIML                                N NUMB  01DFH
+STATUS_BAK                              N NUMB  01D2H
 _REPEAT                                 N NUMB  0048H
 BRMTOUT_LEARN                           N NUMB  0001H
 _INDEX                                  N NUMB  0040H
@@ -1676,14 +2863,38 @@ WDTCTR                                  N NUMB  001DH
 IND0                                    N NUMB  0000H
 F                                       N NUMB  0001H
 W                                       N NUMB  0000H
-INTERRUPT_EXT                           N NUMB  04C0H
-CLEARRAMLOOP_H                          N NUMB  046AH
-CLEARRAMLOOP_L                          N NUMB  0464H
-INIVERSION                              N NUMB  03DCH
+LEARN_ABOUT                             N NUMB  07B3H
+FRAME_HEAD2                             N NUMB  06BDH
+TF_CHECK                                N NUMB  0633H
+F_C56K                                  N NUMB  0617H
+FRAMEND_CHK                             N NUMB  0605H
+CARRY_NONE                              N NUMB  0605H
+PLUS_COUNT_L                            N NUMB  04FEH
+INTERRUPT_EXT                           N NUMB  0469H
+CLEARRAMLOOP_H                          N NUMB  0411H
+CLEARRAMLOOP_L                          N NUMB  040BH
+INIVERSION                              N NUMB  0383H
 NOP4                                    N NUMB  006BH
 NOP38                                   N NUMB  0049H
 NOP400                                  N NUMB  0035H
 NOP4000                                 N NUMB  0027H
+RC6_HEAD_LL                             N NUMB  004CH
+RC6_HEAD_HL                             N NUMB  005FH
+RET_10SH                                N NUMB  0012H
+DAT4_0A                                 N NUMB  01A2H
+DAT4_06                                 N NUMB  019EH
+DAT3_11                                 N NUMB  018CH
+DAT2_09                                 N NUMB  0167H
+DAT1_0C                                 N NUMB  014DH
+DAT0_12                                 N NUMB  0136H
+CYCLE2_LH                               N NUMB  010BH
+CYCLE0_HL                               N NUMB  0104H
+F_TIMB                                  N NUMB  0002H
+DB2                                     N NUMB  01D0H
+SYS1                                    N NUMB  01EFH
+KEYNUM                                  N NUMB  01FAH
+REC_CYCLE_COUNT                         N NUMB  01DBH
+SPEC_CODE_DAT                           N NUMB  01D5H
 TIANJIACODE_1                           N NUMB  0023H
 _INDEX_1                                N NUMB  0035H
 _HIGH_L                                 N NUMB  0031H
@@ -1704,14 +2915,42 @@ CCLKA_SEL0                              N NUMB  0000H
 GIE                                     N NUMB  0007H
 TCCONB                                  N NUMB  0011H
 IND1                                    N NUMB  0001H
-INTERRUPT_CAPTURE                       N NUMB  04D0H
-I2CREADDATA                             N NUMB  048CH
-XCAL_CRC                                N NUMB  039BH
+DAT_BC_END                              N NUMB  0707H
+FRAME_HEAD3                             N NUMB  06B8H
+MEASURE_15MS                            N NUMB  062DH
+REMOTE_LEARN                            N NUMB  053CH
+XCAL_CRC                                N NUMB  048EH
+INTERRUPT_CAPTURE                       N NUMB  0479H
+I2CREADDATA                             N NUMB  0433H
 NOP5                                    N NUMB  006AH
 NOP350                                  N NUMB  0036H
 NOP450                                  N NUMB  0034H
 NOP7000                                 N NUMB  0021H
 NOP40000                                N NUMB  0018H
+PLUS_COUNT_PC                           N NUMB  0005H
+STRU_AS                                 N NUMB  0005H
+LV_4MSL                                 N NUMB  0088H
+DAT4_05                                 N NUMB  019DH
+DAT3_10                                 N NUMB  018BH
+DAT3_02                                 N NUMB  017DH
+TF2_TH                                  N NUMB  0178H
+DAT2_08                                 N NUMB  0166H
+DAT1_0D                                 N NUMB  014EH
+DAT1_08                                 N NUMB  0149H
+HEAD1_TIMH                              N NUMB  0140H
+HEAD1_TIML                              N NUMB  013FH
+DAT0_13                                 N NUMB  0137H
+DAT0_0C                                 N NUMB  0130H
+CYCLE7_HL                               N NUMB  0120H
+CYCLE4_HH                               N NUMB  0115H
+CYCLE3_HL                               N NUMB  0110H
+CYCLE3_LL                               N NUMB  010EH
+FSCH                                    N NUMB  0005H
+LEARN_FLAG                              N NUMB  01FFH
+SYS2                                    N NUMB  01F0H
+KEY_VAL2                                N NUMB  01CEH
+GNDBUFFH                                N NUMB  01E8H
+CARRY_SL                                N NUMB  01D6H
 FREQH2                                  N NUMB  0062H
 NEW_NHIGHLEVEL_L                        N NUMB  002FH
 NEW_NHIGHLEVEL_H                        N NUMB  002EH
@@ -1723,19 +2962,65 @@ M1_CK                                   N NUMB  0001H
 M3_CK                                   N NUMB  0003H
 TCENB                                   N NUMB  0003H
 PT2EN                                   N NUMB  0017H
-GETADDRESSINDEX2                        N NUMB  042AH
-GETADDRESSINDEX1                        N NUMB  0429H
-GETADDRESSINDEX                         N NUMB  041EH
-WRITECODE                               N NUMB  03EEH
-XCAL_CRC_LOOP_LOOP_8TIMES                    N NUMB  03AEH
-XCAL_CRC_LOOP                           N NUMB  03A7H
-TIMER_DELAY_BASE                        N NUMB  0304H
-LEARN_XCAL_CRC_LOOP_LOOP_8TIMES                    N NUMB  0200H
+DATA_MOVE                               N NUMB  07F5H
+SEND_ABBB                               N NUMB  07EBH
+DAT0_BC                                 N NUMB  06F4H
+FRAME_HEAD0                             N NUMB  06C7H
+SEC_HEAD                                N NUMB  0676H
+INT_TIMEA                               N NUMB  04EEH
+LEARN_XCAL_CRC_LOOP_LOOP_8TIMES                    N NUMB  04CAH
+XCAL_CRC_LOOP_LOOP_8TIMES                    N NUMB  04A1H
+XCAL_CRC_LOOP                           N NUMB  049AH
+GETADDRESSINDEX2                        N NUMB  03D1H
+GETADDRESSINDEX1                        N NUMB  03D0H
+GETADDRESSINDEX                         N NUMB  03C5H
+WRITECODE                               N NUMB  0395H
+TIMER_DELAY_BASE                        N NUMB  02D9H
 NOP6                                    N NUMB  0069H
 NOP19                                   N NUMB  005CH
 NOP28                                   N NUMB  0053H
 NOP40                                   N NUMB  0047H
 NOP300                                  N NUMB  0037H
+EPROM_CLR                               N NUMB  00C0H
+PLUS_TIME_PC                            N NUMB  0064H
+RC6_TH_H0                               N NUMB  0000H
+RC6_JYH_L1                              N NUMB  0006H
+RC6_JYL_L1                              N NUMB  0072H
+RC6_JYH_L0                              N NUMB  0004H
+RC6_JYL_L0                              N NUMB  004CH
+FRAME_M3004                             N NUMB  00F0H
+KEY8_EE_ADDH                            N NUMB  0002H
+KEY8_EE_ADDL                            N NUMB  00A0H
+KEY7_EE_ADDH                            N NUMB  0002H
+KEY7_EE_ADDL                            N NUMB  0040H
+KEY6_EE_ADDH                            N NUMB  0001H
+KEY6_EE_ADDL                            N NUMB  00E0H
+KEY5_EE_ADDH                            N NUMB  0001H
+KEY5_EE_ADDL                            N NUMB  0080H
+KEY4_EE_ADDH                            N NUMB  0001H
+KEY4_EE_ADDL                            N NUMB  0020H
+KEY3_EE_ADDH                            N NUMB  0000H
+KEY3_EE_ADDL                            N NUMB  00C0H
+KEY2_EE_ADDH                            N NUMB  0000H
+KEY2_EE_ADDL                            N NUMB  0060H
+KEY1_EE_ADDH                            N NUMB  0000H
+KEY1_EE_ADDL                            N NUMB  0000H
+DAT4_04                                 N NUMB  019CH
+DAT3_13                                 N NUMB  018EH
+DAT3_03                                 N NUMB  017EH
+TF1_TH                                  N NUMB  015BH
+DAT1_0E                                 N NUMB  014FH
+DAT1_09                                 N NUMB  014AH
+DAT0_14                                 N NUMB  0138H
+DAT0_0B                                 N NUMB  012FH
+DAT0_03                                 N NUMB  0127H
+CYCLE5_HH                               N NUMB  0119H
+CYCLE4_LH                               N NUMB  0113H
+FTIM                                    N NUMB  0004H
+LEARN_KEY_NUM                           N NUMB  01FEH
+SYS3                                    N NUMB  01F1H
+KEY_VAL3                                N NUMB  01CFH
+TF_L                                    N NUMB  01D7H
 _NPAIRS_L_TEMP                          N NUMB  003AH
 _TEMP1                                  N NUMB  0034H
 _LOW_H                                  N NUMB  0032H
@@ -1750,12 +3035,22 @@ BPT12                                   N NUMB  0002H
 C                                       N NUMB  0001H
 PT2MR                                   N NUMB  001CH
 PWMCON                                  N NUMB  000BH
-TIANJIA004                              N NUMB  0279H
-TIANJIA003                              N NUMB  0272H
-TIANJIA005                              N NUMB  0266H
-TIANJIA002                              N NUMB  0259H
-TIANJIA001                              N NUMB  0252H
-TIANJIA000                              N NUMB  0237H
+SEND_AS                                 N NUMB  07F1H
+SEND_AAAE                               N NUMB  07EFH
+SAVE_RECDAT_L                           N NUMB  078AH
+RECDATA_ADD_SEARCH                      N NUMB  0773H
+RECCYCLE_ADD_SEARCH                     N NUMB  0751H
+FRAME_HEAD1                             N NUMB  06C2H
+MEASURE_6MS                             N NUMB  0626H
+LED_SET                                 N NUMB  0569H
+INT_EXT                                 N NUMB  0531H
+INT_TIMEB                               N NUMB  0510H
+TIANJIA004                              N NUMB  024EH
+TIANJIA003                              N NUMB  0247H
+TIANJIA005                              N NUMB  023BH
+TIANJIA002                              N NUMB  022EH
+TIANJIA001                              N NUMB  0227H
+TIANJIA000                              N NUMB  020CH
 NOP7                                    N NUMB  0068H
 NOP18                                   N NUMB  005DH
 NOP29                                   N NUMB  0052H
@@ -1764,6 +3059,25 @@ NOP41                                   N NUMB  0046H
 NOP4500                                 N NUMB  0026H
 NOP5000                                 N NUMB  0025H
 NOP20000                                N NUMB  001AH
+RC6_TH_H1                               N NUMB  0000H
+RC6_TH_L0                               N NUMB  0002H
+M3004_T0L                               N NUMB  0006H
+FRAME_RC6                               N NUMB  00F3H
+RET_10SM                                N NUMB  00ACH
+BUFER_OFF                               N NUMB  00F0H
+DAT4_03                                 N NUMB  019BH
+DAT3_12                                 N NUMB  018DH
+DAT3_00                                 N NUMB  017BH
+DAT1_0F                                 N NUMB  0150H
+DAT0_15                                 N NUMB  0139H
+DAT0_0A                                 N NUMB  012EH
+DAT0_02                                 N NUMB  0126H
+CYCLE1_LL                               N NUMB  0106H
+CYCLE0_LH                               N NUMB  0103H
+F_C56                                   N NUMB  0000H
+CYCLE_LH_TMP                            N NUMB  01E8H
+CYCLE_LL_TMP                            N NUMB  01E7H
+KEY_COUNT                               N NUMB  01E6H
 TIANJIA_TEMP2                           N NUMB  002DH
 TIANJIACODE_2                           N NUMB  0024H
 FREQL3                                  N NUMB  0065H

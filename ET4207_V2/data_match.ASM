@@ -1,0 +1,190 @@
+/*
+;*******************************
+;接收数据整理计算程序
+;共接收5帧码，ABCDE E=最后一串码
+;分辨出 A   A   A   A  ....  =0
+;       A   B   B   B  ....  =1
+;       A=C B=D A=C B=D....  =2
+;       A   B   B   E=A....  =3
+;       A   A   A   E  ....  =4
+
+第0串码A 与后面比较 第1串码B 第2串码C 第3串码D.. 第4串码E
+                        =        =       =        =     AAAA...0FH        
+                        0        0       0        0     ABBB...00H
+						0        =       0       0/=    ABAB...04H/05H 
+                        0        0       0        =     ABBA...01H
+                        =        =       =        0     AAAE...0EH						    
+FRAME_STRU             BIT3     BIT2    BIT1     BIT0
+;********************************
+*/
+
+
+    ;REC_FRAME_COUNT
+MATCH:
+   ;CLRF FRAME_STRU  ;默认为第0种方式
+    MOVFW REC_FRAME_COUNT
+	XORLW 0
+	BTFSC STATUS,Z
+	GOTO SEND_AS
+
+    CLRF TF_L
+
+   SETDP 3 ;FRS0 FRS1都指向100H
+   MOVLW HEAD0_TIML ;第0第1串比较
+   MOVWF FRS0 
+   MOVLW HEAD1_TIML
+   MOVWF FRS1 
+   CALL BUF_COMPARE
+   BTFSC F_LEARN,F_CMP_R
+   BSF TF_L,3
+   
+   MOVLW HEAD0_TIML ;第0第2串比较
+   MOVWF FRS0 
+   MOVLW HEAD2_TIML
+   MOVWF FRS1 
+   CALL BUF_COMPARE
+   BTFSC F_LEARN,F_CMP_R
+   BSF TF_L,2
+
+   MOVLW HEAD0_TIML ;第0第3串比较
+   MOVWF FRS0 
+   MOVLW HEAD3_TIML
+   MOVWF FRS1 
+   CALL BUF_COMPARE
+   BTFSC F_LEARN,F_CMP_R
+   BSF TF_L,1
+
+   MOVLW HEAD0_TIML ;第0第4串比较
+   MOVWF FRS0 
+   MOVLW HEAD4_TIML
+   MOVWF FRS1 
+   CALL BUF_COMPARE
+   BTFSC F_LEARN,F_CMP_R
+   BSF TF_L,0
+
+   MOVFW TF_L
+   ADDPCW
+   GOTO SEND_ABBB ;0000
+   GOTO SEND_ABBA ;0001
+   GOTO SEND_ABBB ;0010
+   GOTO SEND_ABBB ;0011
+   GOTO SEND_ABAB ;0100
+   GOTO SEND_ABAB ;0101
+   GOTO SEND_ABBB ;0110
+   GOTO SEND_ABBB ;0111
+   GOTO SEND_ABBB ;1000
+   GOTO SEND_ABBB ;1001
+   GOTO SEND_ABBB ;1010
+   GOTO SEND_ABBB ;1011
+   GOTO SEND_ABBB ;1100
+   GOTO SEND_ABBB ;1101
+   GOTO SEND_AAAE ;1110
+   GOTO SEND_AAAA ;1111
+
+SEND_ABBB: ;0000
+SEND_ABBA: ;0001
+        MOVLW STRU_ABBB ;0
+		GOTO SEND_STRU_SET
+;SEND_ABBA: ;0001
+;        MOVLW STRU_ABBA ;1
+;		GOTO SEND_STRU_SET
+SEND_ABAB: ;0101
+        MOVLW STRU_ABAB ;2
+		GOTO SEND_STRU_SET
+SEND_AAAE: ;1110
+ ;       CALL DATA_MOVE
+ ;       MOVLW STRU_AAAE ;3
+;		GOTO SEND_STRU_SET
+SEND_AAAA: ;1111
+        MOVLW STRU_AAAA ;4
+		GOTO SEND_STRU_SET
+SEND_AS: ;学到一帧，发单串码
+        MOVLW STRU_AS ;5
+		GOTO SEND_STRU_SET
+SEND_STRU_SET:
+        MOVWF FRAME_STRU     
+        RETURN
+
+
+
+DATA_MOVE: ;把第四帧数据放到第一帧位置
+		MOVLW 29
+		MOVWF TMPL 
+        SETDP 3
+		MOVLW HEAD1_TIML
+		MOVWF FRS0
+		MOVLW HEAD4_TIML
+		MOVWF FRS1
+DATA_MOVE_LOOP:
+        MOVFW IND1
+		MOVWF IND0
+        INCF FRS1,F
+		INCF FRS0,F
+        DECFSZ TMPL,F
+		GOTO DATA_MOVE_LOOP
+		RETURN 
+
+
+   
+
+
+BUF_COMPARE:
+   BCF F_LEARN,F_CMP_R
+
+   MOVFW IND0
+   MOVWF DAT0
+    INCF FRS0,F
+   MOVFW IND0
+   MOVWF DAT1
+    INCF FRS0,F
+
+   MOVFW IND1
+   MOVWF TMPL
+    INCF FRS1,F
+   MOVFW IND1
+   MOVWF TMPH
+    INCF FRS1,F
+   
+        MOVFW DAT0 ;引导高电平比较
+        SUBWF TMPL,F
+        MOVFW DAT1
+       SUBWFC TMPH,F
+        BTFSS STATUS,C
+	 	 CALL ABS
+        MOVLW PLUS_TIME_PC
+        SUBWF TMPL,F
+		MOVLW 0
+	   SUBWFC TMPH,F  ;TMPH.TMPL - 固定偏差值
+        BTFSC STATUS,C
+  	   RETURN  ;超出阈值 
+BUF_COMPARE_N:
+   MOVFW IND0
+   MOVWF DAT0
+    INCF FRS0,F
+ 
+   MOVFW IND1
+   MOVWF TMPL
+    INCF FRS1,F
+   
+   MOVFW DAT0
+   XORLW 0FFH
+   BTFSS STATUS,Z
+   GOTO BUF_COMPARE_N1
+
+   MOVFW TMPL
+   XORLW 0FFH
+   BTFSC STATUS,Z
+   BSF F_LEARN,F_CMP_R
+   RETURN
+
+BUF_COMPARE_N1:
+   MOVFW DAT0
+   XORWF TMPL,W
+   BTFSC STATUS,Z
+   GOTO BUF_COMPARE_N
+   RETURN
+
+
+
+
+

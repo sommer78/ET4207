@@ -29,7 +29,8 @@ void ET4207_Init(void); //≥ı ºªØIIC
 
 u8 ET4207SendCode(u8 *etcode,int length);
 
-void  Hard_IIC_WriteNByte(I2C_TypeDef * IICx, u8 SlaveAdd, u8 WriteAdd, u8 NumToWrite, u8 * pBuffer, u8 * err);
+u8  Hard_IIC_WriteNByte(I2C_TypeDef * IICx, u8 SlaveAdd, u8 WriteAdd, u16 NumToWrite, u8 * pBuffer);
+
 
 
 #endif

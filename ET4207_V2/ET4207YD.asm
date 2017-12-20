@@ -6,7 +6,7 @@
 ; ÊÖ»úÒ£¿ØÆ÷
 ;===================================
 include ET4007.inc
-include main.inc
+include et4207_include.inc
 
 org	00h
 START:
@@ -25,9 +25,9 @@ include consumerir.asm
 include i2c_cmd_protocol.asm
 include peripheral.asm
 include interrupt.asm
-
-
-
+include calculation.asm
+include learn_new.asm
+include data_match.asm
 
 MAIN:
 		NOP
@@ -35,7 +35,7 @@ MAIN:
 		NOP
 		BTFSC	STATUS,TO
 		GOTO	WDTC_STATUS
-		MOVLW	0eh
+		MOVLW	04h				;; disable wdog
 		MOVWF	WDTCTR
 		CLRWDT
 MAIN_START:
@@ -80,7 +80,7 @@ SleepMode_1:
 	;	GOTO	Learn_rmt
 		NOP
 		NOP
-		MOVLW	0dh
+		MOVLW	04h							;0dh
 		MOVWF	WDTCTR
 		_ET4207_BUSY_
 	

@@ -61,7 +61,7 @@ REC_WAIT_DOWN_EDGE:
 
 		GOTO	REC_WAIT_UP_EDGE
 REC_LEARN_END:
-			nop
+		nop
 		_ET4207_NOT_BUSY_
 		GOTO	SleepMode
 
@@ -504,54 +504,3 @@ Learn_OUT:
 
 
 
-Learn_xCal_crc:
-Learn_xCal_crc_loop:
-		MOVFW	IND0
-		XORWF	_crc_learn,f
-		INCFSZ	FRS0,F
-		GOTO	$+2
-		SETDP	01h
-		MOVLW	8
-		MOVWF	_learn1
-	Learn_xCal_crc_loop_loop_8times:
-		MOVFW	_crc_learn
-		ANDLW	01h
-		SUBLW	00h
-		BTFSC	STATUS,Z
-		GOTO	Learn_xCal_crc_loop_8times_reasult_0
-		BCF		STATUS,C
-		RRF		_crc_learn,w
-		XORLW	8ch
-		MOVWF	_crc_learn
-		GOTO	Learn_xCal_crc_loop_loop_8times_end
-	Learn_xCal_crc_loop_8times_reasult_0:
-		BCF		STATUS,C
-		RRF		_crc_learn,f
-	Learn_xCal_crc_loop_loop_8times_end:
-		DECFSZ	_learn1,f
-		GOTO	Learn_xCal_crc_loop_loop_8times
-		MOVLW	01h
-		SUBWF	_LENGTH_l_learn,f
-		MOVLW	00h
-		SUBWFC	_LENGTH_h_learn,f
-		MOVFW	_LENGTH_h_learn
-		SUBLW	00h
-		BTFSS	STATUS,Z
-		GOTO	Learn_xCal_crc_loop
-		MOVFW	_LENGTH_l_learn
-		SUBLW	00h
-		BTFSS	STATUS,Z
-		GOTO	Learn_xCal_crc_loop
-		RETURN
-
-
-		Neg:
-		BTFSC		Status,C
-		RETURN
-		COMF		DELTA_ABS_L,f
-		COMF		DELTA_ABS_H,f
-		MOVLW		1
-		ADDWF		DELTA_ABS_L,f
-		MOVLW		0
-		ADDWFC		DELTA_ABS_H,f
-		RETURN

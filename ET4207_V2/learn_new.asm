@@ -1,0 +1,1118 @@
+;LED_ON:
+     ; BSF PT2,LED_Z
+    ;  BCF PT1,LED_F
+   ;   RETURN
+;LED_OFF:
+    ;  BCF PT2,LED_Z
+    ;  BSF PT1,LED_F
+    ;  RETURN
+
+
+
+INT_TIMEA:
+INT_TIMEA_CAPIF: ;脉冲上升沿中断
+
+         BCF TCCONB,TCRSTB ;TIMEB重新计数，作为载波结束计算用
+
+
+
+MEASURE_LOW_CYCLE:
+        MOVWF W_BAK
+		MOVFW STATUS
+		MOVWF STATUS_BAK
+
+         BCF F_LEARN,F_M_SEL ;上升沿中断，tmb下一步测是否高电平结束
+
+        BTFSC F_LEARN,F_M_LOW
+         GOTO PLUS_COUNT_L
+PLUS_COUNT:
+          BCF TCCONA,TCRSTA  ;TMA清零开始测 低电平
+       INCFSZ DAT0,F
+         GOTO INT_TIMEA_RET1
+	     INCF DAT1,F      
+INT_TIMEA_RET1:
+		MOVFW STATUS_BAK
+		MOVWF STATUS
+	 	MOVFW W_BAK
+		 BCF INTF,CAPIF
+       RETFIE  ;25*0.8=20US 小于20us会少算一个周期
+    
+PLUS_COUNT_L:	      
+  		  MOVLW 156 ;206
+          MOVWF TSETB
+          MOVLW 00001000B ;111B  ;定时器B选1分频
+		  MOVWF TCCONB
+   ;      BCF F_LEARN,F_M_SEL ;上升沿中断，tmb下一步测是否高电平结束
+		 BCF F_LEARN,F_TIMB ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	     BSF INTE,TMBIE    ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+;	        BTFSS F_LEARN,F_M_LOW
+;         GOTO PLUS_COUNT
+          BCF F_LEARN,F_M_LOW
+		MOVFW TCOUTAL
+		MOVWF IND1
+         INCF FRS1,F
+		MOVFW TCOUTAH
+		MOVWF IND1
+         INCF FRS1,F
+		MOVFW STATUS_BAK
+		MOVWF STATUS
+	 	MOVFW W_BAK
+		 BCF INTF,CAPIF
+       RETFIE  ;25*0.8=20US 小于20us会少算一个周期
+
+;-------------------------
+INT_TIMEB:
+        BTFSS INTF,I2CIF
+		GOTO INT_TIMEB1
+        BCF INTF,I2CIF
+        RETFIE
+INT_TIMEB1:
+		BCF INTF,TMBIF
+		
+;		BTFSC F_LEARN,F_TIMB
+
+		BSF F_LEARN,F_TIMB
+		 BTFSC F_LEARN,F_HEAD 
+		RETFIE 
+MEASURE_HIGH_CYCLE:
+        BSF F_LEARN,F_M_LOW
+        BTFSC F_LEARN,F_M_SEL
+ ;       GOTO PLUS_SAVE
+         ;GOTO INT_TIMEB_RET
+		 RETFIE
+        
+;       INCFSZ TF_COUNTL,F  ;用作测量码间隔
+;         GOTO INT_TIMEB_RET
+;	     INCF TF_COUNTH,F      
+;         GOTO INT_TIMEB_RET
+
+PLUS_SAVE:
+        MOVWF W_BAK
+		MOVFW STATUS
+		MOVWF STATUS_BAK
+
+         BSF F_LEARN,F_M_SEL
+		MOVFW DAT0 ;载波个数存入缓存区
+		MOVWF IND1
+        INCF FRS1,F
+		MOVFW DAT1
+		MOVWF IND1
+        INCF FRS1,F
+
+        CLRF DAT0
+		CLRF DAT1
+	    BCF INTE,TMBIE ;zzzzzzzzzzzzzzzzzzzzzzzz
+          CLRF  TSETB
+          MOVLW 00001011B ;定时器B选32分频测量间隔 992us/6.4us=155
+		  MOVWF TCCONB
+
+    ;  BSF F_LEARN,F_TF
+        CLRF TF_COUNTL
+        CLRF TF_COUNTH
+INT_TIMEB_RET:
+		MOVFW STATUS_BAK
+		MOVWF STATUS
+	 	MOVFW W_BAK
+		RETFIE
+
+
+
+;-------------------------
+INT_EXT:
+       BCF INTF,E0IF 
+       RETFIE
+ 
+
+
+
+
+
+;========================
+LEARN_START:
+	CALL SysIni
+;MAIN:
+   	;	MOVLW		PT1_SEL ;开硬件按键扫描								;PT1.7--PT1.3 IO
+	;	MOVWF		PT1SEL
+	;	MOVLW		PT2_SEL							    ;PT2.7--PT2.0 IO
+	;	MOVWF		PT2SEL
+
+ ;根据学习设置键位置PT1.4-GND，设定对应位置的输入输出   
+		MOVLW		00000000B									    
+		MOVWF		PT1EN									;0-Input 1-Output													
+		MOVLW		10111000b
+		MOVWF	    PT1
+
+		MOVLW		11101111B									    
+		MOVWF		PT2EN									;0-Input 1-Output													
+		MOVLW		11111000b
+		MOVWF		PT2													
+
+       ; BSF PT2EN,LED_Z ;LED设为输出口
+       ; BSF PT1EN,LED_F ;LED设为输出口
+		;BSF PT2,LED_Z
+	;	BSF PT1,LED_F
+REMOTE_LEARN:
+        CALL RamsClearALL ;ram初始化
+    
+LEARN_CSH:
+       CLRF INTE
+	   BCF     RMTCTR,TX_EN			 ;RX_EN=0,TX_EN=0 禁止发射，禁止接收
+       BSF     RMTCTR,RX_EN				
+;	   BSF INTE,GIE
+  ;     BSF F_LEARN,F_CARRY 
+       BSF F_LEARN,F_HEAD 
+       CLRF DAT0
+	   CLRF DAT1
+        MOVLW 00H
+		MOVWF CARRY_COUNT
+	  	CLRF  PWMCON
+
+ 		CLRF TSETAH	
+		CLRF TSETAL		;Instruction Cycle 110-MCK/4 010-mck/12.5
+;		MOVLW		00100010B	;step=0.8us	开滤波       ;timer时钟源
+		MOVLW		00100111B	;step=0.8us	开滤波       ;timer时钟源
+		MOVWF		TCCONA							        ;000:tcc(PT1.1)
+        BSF TCCONA,TCENA
+		BCF TCCONA,TCRSTA    ;2 第二个脉冲tima=0 开始测载波  0=清0
+
+  		  MOVLW 00 ;206
+          MOVWF TSETB
+          MOVLW 00000000B ;111B  ;定时器B选1分频
+		  MOVWF TCCONB
+;	      BSF TCCONB,TCENB
+          BCF F_LEARN,F_TIMB
+        BSF INTE,CAPIE
+
+;********************************
+;测载波周期和第一个载波脉冲长度
+;********************************
+LEARN_SAA: 
+       CLRF DAT0
+       BCF INTF,CAPIF
+LEARN_S: 
+	  BCF INTF,TMBIF  ;     BCF INTE,CAPIE
+
+
+      BTFSS PT1,5  ;PT14-  ;学习设置键判别
+	  GOTO	LEARN_ABOUT
+	;  GOTO POTINI
+
+
+
+  
+      MOVLW 1
+	  ADDWF LED_TIML,F
+      MOVLW 0
+	 ADDWFC LED_TIMM,F
+
+      MOVLW 120 ;60 ;RET_10SH
+	 SUBWFC LED_TIMH,W
+      BTFSC STATUS,C
+	  GOTO LEARN_ABOUT 
+
+   ;    BSF INTE,CAPIE
+
+      BTFSC INTF,CAPIF
+      GOTO LEARN_S1
+
+;      BSF PT1,LED_F  ;<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+;      movlw 042
+;	  subwf sys1,w
+;	  btfss status,c
+;	  goto lled
+;	  clrf sys0
+;	  clrf sys1
+;	  incf ledjs,f
+;	  btfsc ledjs,0 
+
+      MOVLW 051 ;45
+      SUBWF LED_TIMM,W
+      BTFSS STATUS,C
+	  GOTO LED_SS
+;	  CLRF LED_TIML
+	  CLRF LED_TIMM
+      INCF LED_TIMH,F
+LED_SS:
+	  BTFSC LED_TIMH,0
+	  GOTO LED_CLR
+LED_SET:
+ ;     MOVLW 120 ;105 ;98
+ ;     SUBWF LED_TIML,W
+;	  BTFSC STATUS,C
+;	  GOTO LED_CLR
+	  _LED_SET  ;<<<<<<<<<<<<<<<<<<<<<<<<
+      GOTO LEARN_S
+
+LED_CLR:
+	  _LED_CLR  ;<<<<<<<<<<<<<<<<<<<<<<<<
+ ;     BTFSS INTF,CAPIF
+ lled:
+      GOTO LEARN_S
+
+LEARN_S1: 
+ 	 _LED_SET  ;<<<<<<<<<<<<<<<<<<<<<<<<
+     
+      BCF INTF,CAPIF
+	  INCF DAT0,F ;0
+      BCF TCCONA,TCRSTA    ; 第1个脉冲tima=0 开始测载波  0=清0 
+
+;	  BTFSC RMTCTR,RMT_IN
+;      GOTO $-1
+;	  MOVFW TCOUTB       ;第一个脉冲的宽度，无载波用
+;	  MOVWF FIRST_PLUS
+
+     ; BSF   F_LEARN,F_HEAD
+
+
+  	  MOVLW 156  ;206
+      MOVWF TSETB ;40us中断，检测载波结束标志
+	    BCF TCCONB,TCRSTB
+ 	      BSF TCCONB,TCENB
+       BSF INTE,TMBIE
+      
+	  BTFSC INTF,TMBIF     
+	   GOTO LEARN_SAA   ;LOW_VOLTAGE
+      BTFSS INTF,CAPIF
+       GOTO $-3
+	    BCF TCCONB,TCRSTB
+      MOVFW TCOUTAL
+	  MOVWF CARRY_SL  ;记录起始值，消除误差
+      MOVFW TCOUTAH
+	  MOVWF CARRY_SH  ;
+      BCF INTF,CAPIF
+	  INCF DAT0,F  ;1
+
+	  BTFSC INTF,TMBIF     
+	   GOTO LOW_VOLTAGE
+      BTFSS INTF,CAPIF
+       GOTO $-3
+	    BCF TCCONB,TCRSTB
+      MOVFW TCOUTAL
+	  MOVWF CARRY_L
+      MOVFW TCOUTAH
+	  MOVWF CARRY_H
+      BCF INTF,CAPIF
+	  INCF DAT0,F   ;2
+      INCF CARRY_COUNT,F ;1
+
+
+	  BTFSC INTF,TMBIF     
+	  GOTO LOW_VOLTAGE
+      BTFSS INTF,CAPIF
+      GOTO $-3
+	  BCF TCCONB,TCRSTB
+      MOVFW TCOUTAL
+	  MOVWF CARRY_L
+      MOVFW TCOUTAH
+	  MOVWF CARRY_H
+      BCF INTF,CAPIF
+	  INCF DAT0,F    ;3
+      INCF CARRY_COUNT,F ;2
+
+	  BTFSC INTF,TMBIF     
+	  GOTO LOW_VOLTAGE
+      BTFSS INTF,CAPIF
+      GOTO $-3
+      BCF INTF,CAPIF
+	  INCF DAT0,F   ;4
+       BCF TCCONB,TCRSTB
+
+
+	  BTFSC INTF,TMBIF     
+	  GOTO LOW_VOLTAGE
+      BTFSS INTF,CAPIF
+      GOTO $-3
+	  BCF TCCONB,TCRSTB
+      MOVFW TCOUTAL
+	  MOVWF CARRY_L
+      MOVFW TCOUTAH
+	  MOVWF CARRY_H
+      BCF INTF,CAPIF
+	  INCF DAT0,F  ;5
+      INCF CARRY_COUNT,F ;3
+
+	  BTFSC INTF,TMBIF     
+	  GOTO LOW_VOLTAGE
+      BTFSS INTF,CAPIF
+      GOTO $-3
+      BCF INTF,CAPIF
+	  INCF DAT0,F ;6
+       BCF TCCONB,TCRSTB
+
+	  BTFSC INTF,TMBIF     
+	  GOTO LOW_VOLTAGE
+      BTFSS INTF,CAPIF
+      GOTO $-3
+      BCF INTF,CAPIF
+	  INCF DAT0,F ;7
+	   BCF TCCONB,TCRSTB
+
+
+	  BTFSC INTF,TMBIF     
+	  GOTO LOW_VOLTAGE
+      BTFSS INTF,CAPIF
+      GOTO $-3
+      BCF INTF,CAPIF
+	  INCF DAT0,F ;8
+	   BCF TCCONB,TCRSTB
+
+
+	  BTFSC INTF,TMBIF     
+	  GOTO LOW_VOLTAGE
+      BTFSS INTF,CAPIF
+      GOTO $-3
+	  BCF TCCONB,TCRSTB
+      MOVFW TCOUTAL
+	  MOVWF CARRY_L
+      MOVFW TCOUTAH
+	  MOVWF CARRY_H
+      BCF INTF,CAPIF
+	  INCF DAT0,F ;9
+      INCF CARRY_COUNT,F ;4
+      
+	;   BSF INTE,GIE
+    ;  BTFSS F_LEARN,F_TIMB  ;至此测量完第一个高电平时间
+    ;  GOTO $-1              
+HEAD0_LOOP:
+	  BTFSC INTF,TMBIF     
+	  GOTO LOW_VOLTAGE
+      BTFSS INTF,CAPIF
+      GOTO $-3
+	  BCF TCCONB,TCRSTB
+      BCF INTF,CAPIF
+	  MOVLW 1
+	  ADDWF DAT0,F
+	  MOVLW 0
+	  ADDWFC DAT1,F
+      GOTO HEAD0_LOOP
+;********************
+;接收遥控信号码值测量
+;********************
+LOW_VOLTAGE:
+		MOVLW		10101010B	;step=0.8us	开滤波       ;timer时钟源
+;		MOVLW		10001010B	;step=0.8us	开滤波       ;timer时钟源
+		MOVWF		TCCONA							        ;000:tcc(PT1.1)
+       BCF TCCONA,TCRSTA  ;TMA清零开始测 低电平
+
+
+      BCF   F_LEARN,F_HEAD
+	  BCF INTF,TMBIF  ;     BCF INTE,CAPIE
+
+	  MOVFW DAT1        ;第一个高电平保存
+	  MOVWF HEAD0_TIMH   ;默认在第0串码保存
+;	  MOVWF TMPH
+	  MOVFW DAT0
+	  MOVWF HEAD0_TIML
+;	  MOVWF TMPL
+
+	   BSF INTE,GIE
+    ;   BCF F_LEARN,F_CARRY ;GGGGGGGGGGGGGGG
+      
+	  MOVLW BUFER_START  ;脉冲周期数据存放缓冲区首址
+	  MOVWF FRS1
+	  MOVLW BUFER_START_A  ;脉冲周期数据存放缓冲区实际首址
+	  MOVWF FRS0
+	  CLRF  REC_CYCLE_COUNT ;接收到的周期编号计数
+      CLRF  CYCLE_REC_NUM   ;接收到的周期种类数
+
+	   BCF F_LEARN,F_M_LOW ;测量低电平标志
+
+;	  MOVFW DAT1        ;第一个高电平保存
+;	  MOVWF HEAD0_TIMH   ;默认在第0串码保存
+;	  MOVWF TMPH
+;	  MOVFW DAT0
+;	  MOVWF HEAD0_TIML
+;	  MOVWF TMPL
+
+;   MOVLW 2  ;引导电平修掉2个脉冲
+;   SUBWF TMPL,F
+;   MOVLW 0
+;   SUBWFC TMPH,F
+;   BTFSS STATUS,C
+;   GOTO CARRY_M
+;   MOVFW TMPL
+;   MOVWF HEAD0_TIML
+;   MOVFW TMPH
+;   MOVWF HEAD0_TIMH
+
+CARRY_M:
+      MOVFW CARRY_SL    ;载波终止值-初始值
+	  SUBWF CARRY_L,F
+	  MOVFW CARRY_SH
+	  SUBWFC CARRY_H,F
+	  BSF F_LEARN,F_PLUS
+	  MOVFW CARRY_COUNT
+	  ADDPCW
+      GOTO CARRY_NONE
+      GOTO CARRY_P1
+      GOTO CARRY_P2 ;/2
+      GOTO CARRY_P3 ;/4
+CARRY_P4: ;/8
+      BCF STATUS,C
+	  RRF CARRY_H,F
+	  RRF CARRY_L,F
+CARRY_P3:
+      BCF STATUS,C
+	  RRF CARRY_H,F
+	  RRF CARRY_L,F
+CARRY_P2:
+      BCF STATUS,C
+	  RRF CARRY_H,F
+	  RRF CARRY_L,F
+CARRY_P1:
+       MOVFW CARRY_L
+	   MOVWF CARRY_TIM      ;完成载波运算
+
+	   BCF F_LEARN,F_C56
+	   SUBLW 110 ;25 45K载波频率做为分界点
+	   BTFSC STATUS,C
+	   BSF F_LEARN,F_C56
+
+	   BCF F_LEARN,F_PLUS
+	   GOTO CARRY_END
+CARRY_NONE:
+	 ;  GOTO LEARN_START
+CARRY_END:
+     ;  BCF F_LEARN,F_CARRY ;GGGGGGGGGGGGGGG
+;LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
+CYCLE_LOOP:
+
+FRAMEND_CHK: ;一帧码结束测量
+;       BTFSS F_LEARN,F_TF
+;	   GOTO CYCLE_CHK
+       MOVFW REC_FRAME_COUNT
+	   XORLW 4
+	   BTFSC STATUS,Z
+	   GOTO DATA_MATCH
+
+       BTFSS TCCONB,0
+	   GOTO CYCLE_CHK
+	   
+       MOVFW TCOUTB
+	   MOVWF TMPL 
+       MOVLW 155
+	   SUBWF TMPL,W
+	   BTFSS STATUS,C
+       GOTO F_C56K
+	   MOVWF TSETB
+
+        BCF TCCONB,TCRSTB ;TIMEB重新计数
+;	   MOVFW TMPL
+       MOVLW 155
+	   ADDWF TF_COUNTL,F
+	   MOVLW 0
+	   ADDWFC TF_COUNTH,F
+	   
+F_C56K:
+	   BTFSS F_LEARN,F_C56
+        GOTO F_C38K
+	   MOVLW TIMA_5MSL 
+       SUBWF TF_COUNTL,W
+	   MOVLW TIMA_5MSH
+	  SUBWFC TF_COUNTH,W
+	   BTFSS STATUS,C  
+        GOTO CYCLE_CHK 
+        GOTO TF_CHECK
+
+F_C38K:
+;	   MOVFW CYCLE1_LH    ;++++
+;       XORLW 0FFH         ;++++
+;	   BTFSC STATUS,Z     ;++++
+;        GOTO CYCLE_CHK    ;++++
+       MOVLW LV_4MSL      ;++++
+	   SUBWF CYCLE1_LL,W  ;++++
+       MOVLW LV_4MSH      ;++++
+	   SUBWFC CYCLE1_LH,W ;++++
+
+       BTFSC STATUS,C
+       GOTO MEASURE_15MS
+MEASURE_6MS:
+	   MOVLW TIMA_6MSL 
+       SUBWF TF_COUNTL,W
+	   MOVLW TIMA_6MSH
+	  SUBWFC TF_COUNTH,W
+	   BTFSS STATUS,C  
+        GOTO CYCLE_CHK 
+        GOTO TF_CHECK
+
+MEASURE_15MS:
+	   MOVLW TIMA_15MSL 
+       SUBWF TF_COUNTL,W
+	   MOVLW TIMA_15MSH
+	  SUBWFC TF_COUNTH,W
+	   BTFSS STATUS,C  
+        GOTO CYCLE_CHK 
+       ; GOTO TF_CHECK
+
+
+;****************************
+;准备接收下一帧数据初始化   
+;****************************     
+TF_CHECK: ;码间隔测量
+       MOVFW TCOUTB
+	   MOVWF TMPL 
+       MOVLW 155
+	   SUBWF TMPL,W
+       MOVWF TMPL
+	   BTFSS STATUS,C
+       GOTO TF_CHECK0
+	   MOVWF TSETB
+       BCF TCCONB,TCRSTB ;TIMEB重新计数
+;	   MOVFW TMPL
+       MOVLW 155
+	   ADDWF TF_COUNTL,F
+	   MOVLW 0
+	   ADDWFC TF_COUNTH,F
+TF_CHECK0:
+        MOVLW TIMA_200MSL 
+        SUBWF TF_COUNTL,W
+	    MOVLW TIMA_200MSH
+	   SUBWFC TF_COUNTH,W
+	    BTFSC STATUS,C  
+		 GOTO DATA_MATCH ;间隔超过200ms 认为用户停止按键，进入数据计算整理程序
+       
+TF_CHECK_NEXT:
+        BTFSC F_LEARN,F_M_LOW 
+        GOTO TF_CHECK
+		 
+        MOVFW TF_COUNTL
+		MOVWF TF_TMPL
+        MOVFW TF_COUNTH
+		MOVWF TF_TMPH
+
+        
+
+	   MOVFW TMPL
+;       MOVLW 155
+	   ADDWF TF_TMPL,F
+	   MOVLW 0
+	   ADDWFC TF_TMPH,F
+
+        MOVFW TF_TMPL
+		MOVWF TF_L 
+        MOVFW TF_TMPH
+		MOVWF TF_H 
+        
+;		GOTO TF_CHECK_END
+		MOVLW 01CH
+		SUBWF TF_TMPH,W
+		BTFSC STATUS,C
+		GOTO TF_CHECK_END
+        MOVFW FRS0
+		MOVWF TMPL
+        
+        SETDP 0
+
+		MOVFW IND0
+		MOVWF TF_TMPL
+		INCF FRS0,F
+		MOVFW IND0
+		MOVWF TF_TMPH
+        MOVFW TMPL
+		MOVWF FRS0
+
+        SETDP 1
+
+		BCF STATUS,C
+		RRF TF_TMPH,F
+		RRF TF_TMPL,F
+		BCF STATUS,C
+		RRF TF_TMPH,F
+		RRF TF_TMPL,F
+		BCF STATUS,C
+		RRF TF_TMPH,F
+		RRF TF_TMPL,F
+        MOVFW TF_TMPL
+		MOVWF TF_L 
+        MOVFW TF_TMPH
+		MOVWF TF_H 
+
+        
+TF_CHECK_END:
+
+	  MOVLW BUFER_START  ;脉冲周期数据存放缓冲区
+	  MOVLW 22H  ;脉冲周期数据存放缓冲区
+	  MOVWF FRS1
+;	  MOVLW BUFER_START_A  ;脉冲周期数据存放缓冲区
+      MOVLW 24H
+	  MOVWF FRS0
+      CLRF  REC_CYCLE_COUNT
+
+SEC_HEAD:;第二个引导电平测量
+      BSF   F_LEARN,F_HEAD
+      BTFSS F_LEARN,F_TIMB  ;引导电平
+      GOTO $-1
+	             
+	  			    
+      MOVFW REC_FRAME_COUNT
+      ADDPCW
+	  GOTO FRAME_TF0 
+	  GOTO FRAME_TF1 
+	  GOTO FRAME_TF2 
+	  GOTO FRAME_TF3 
+;	  GOTO FRAME_TF4 
+FRAME_TF4:
+      MOVFW TF_L
+	  MOVWF TF4_TL
+      MOVFW TF_H
+	  MOVWF TF4_TH
+	  GOTO  FRAME_TF
+FRAME_TF3:
+      MOVFW TF_L
+	  MOVWF TF3_TL
+      MOVFW TF_H
+	  MOVWF TF3_TH
+	  GOTO  FRAME_TF
+FRAME_TF2:
+      MOVFW TF_L
+	  MOVWF TF2_TL
+      MOVFW TF_H
+	  MOVWF TF2_TH
+	  GOTO  FRAME_TF
+
+FRAME_TF1:
+      MOVFW TF_L
+	  MOVWF TF1_TL
+      MOVFW TF_H
+	  MOVWF TF1_TH
+	  GOTO  FRAME_TF
+FRAME_TF0:
+      MOVFW TF_L
+	  MOVWF TF0_TL
+      MOVFW TF_H
+	  MOVWF TF0_TH
+FRAME_TF:
+        INCF REC_FRAME_COUNT,F  ;接收帧计数+1
+        MOVFW REC_FRAME_COUNT
+		SUBLW 4
+		BTFSC STATUS,C
+		GOTO FRAME_HEAD_SAVE
+		MOVLW 4
+		MOVWF REC_FRAME_COUNT ;只保存0123帧和最后一帧数据 
+
+FRAME_HEAD_SAVE:
+;      MOVFW DAT0
+;	  MOVWF HEAD4_TIML
+;      MOVFW DAT1
+;	  MOVWF HEAD4_TIMH
+
+      MOVFW DAT0
+	  MOVWF TMPL
+      MOVFW DAT1
+	  MOVWF TMPH
+
+   BTFSS F_LEARN,F_C56
+   GOTO FRAME_HEAD_SAVE_NOR
+
+   MOVLW 1  ;第二个引导电平 1个脉冲
+   ADDWF TMPL,F
+   MOVLW 0
+  ADDWFC TMPH,F
+;   BTFSC STATUS,Z
+;    GOTO FRAME_HEAD_SAVE1
+   MOVFW TMPL
+   MOVWF DAT0
+   MOVFW TMPH
+   MOVWF DAT1
+    GOTO FRAME_HEAD_SAVE1
+
+
+FRAME_HEAD_SAVE_NOR:
+;   MOVLW 0 ;1  ;第二个引导电平修掉1个脉冲
+;   SUBWF TMPL,F
+;   MOVLW 0
+;  SUBWFC TMPH,F
+;   BTFSS STATUS,C
+;    GOTO FRAME_HEAD_SAVE1
+;   MOVFW TMPL
+;   MOVWF DAT0
+;   MOVFW TMPH
+;   MOVWF DAT1
+
+
+
+FRAME_HEAD_SAVE1:
+      MOVFW REC_FRAME_COUNT
+      ADDPCW
+	  GOTO FRAME_HEAD0 
+	  GOTO FRAME_HEAD1 
+	  GOTO FRAME_HEAD2 
+	  GOTO FRAME_HEAD3 
+;	  GOTO FRAME_TF4 
+FRAME_HEAD4:
+      MOVFW DAT0
+	  MOVWF HEAD4_TIML
+      MOVFW DAT1
+	  MOVWF HEAD4_TIMH
+	  GOTO  FRAME_HEAD
+FRAME_HEAD3:
+      MOVFW DAT0
+	  MOVWF HEAD3_TIML
+      MOVFW DAT1
+	  MOVWF HEAD3_TIMH
+	  GOTO  FRAME_HEAD
+FRAME_HEAD2:
+      MOVFW DAT0
+	  MOVWF HEAD2_TIML
+      MOVFW DAT1
+	  MOVWF HEAD2_TIMH
+	  GOTO  FRAME_HEAD
+FRAME_HEAD1:
+      MOVFW DAT0
+	  MOVWF HEAD1_TIML
+      MOVFW DAT1
+	  MOVWF HEAD1_TIMH
+	  GOTO  FRAME_HEAD
+FRAME_HEAD0:
+      MOVFW DAT0
+	  MOVWF HEAD0_TIML
+      MOVFW DAT1
+	  MOVWF HEAD0_TIMH
+FRAME_HEAD:
+      CLRF DAT0
+	  CLRF DAT1 
+       BCF F_LEARN,F_HEAD
+
+;***********************
+;脉冲周期检测记录
+;***********************
+CYCLE_CHK:
+        ;MOVFW FRS1
+		;MOVWF TMPL
+        ;MOVLW BUFER_OFF
+		;SUBWF TMPL,W
+        MOVLW BUFER_OFF
+		SUBWF FRS1,W
+		BTFSC STATUS,C
+		GOTO DSP_ERR1 ;采样周期个数超过48个出错
+;		GOTO CYCLE_LOOP ;CHK
+;        MOVLW 5 ;0
+;		CALL DLY
+;		GOTO CYCLE_LOOP ;CHK
+
+        MOVLW 24H
+		SUBWF FRS1,W
+		BTFSS STATUS,C
+		GOTO CYCLE_CHK_END  ;不需计算返回      
+
+ ;	GOTO CYCLE_LOOP   ;CYCLE_CHK
+
+		MOVFW FRS0
+		SUBWF FRS1,W
+		BTFSS STATUS,C
+		GOTO DSP_ERR2
+		SUBLW 3 ;两指针大于3，进行计算
+		BTFSC STATUS,C
+		GOTO CYCLE_CHK_END  ;不需计算返回      
+         
+        SETDP 0
+		MOVFW IND0   ;取待比较的取样数据
+		MOVWF CYCLE_LL
+;		MOVWF CYCLE_LL_TMP
+        MOVWF TMPL
+		INCF FRS0,F
+		MOVFW IND0
+		MOVWF CYCLE_LH
+;		MOVWF CYCLE_LH_TMP
+        MOVWF TMPH
+
+		INCF FRS0,F
+		MOVFW IND0
+		MOVWF CYCLE_HL
+		MOVWF CYCLE_HL_TMP
+		INCF FRS0,F
+		MOVFW IND0
+		MOVWF CYCLE_HH
+		MOVWF CYCLE_HH_TMP
+		INCF FRS0,F
+
+        MOVFW FRS0
+		MOVWF FRS0_BAK ;当前取周期数据指针 保存
+DAT_BC: ;数据补偿  
+        MOVFW CYCLE_REC_NUM
+        XORLW 0
+		BTFSS STATUS,Z
+		GOTO DAT1_7_BC
+DAT0_BC:
+   MOVLW 10  ;引导电平的低电平加上8us
+   ADDWF TMPL,F
+   MOVLW 0
+   ADDWFC TMPH,F
+   MOVFW TMPL
+   MOVWF CYCLE_LL
+   MOVFW TMPH
+   MOVWF CYCLE_LH
+   GOTO DAT_BC_END
+DAT1_7_BC:        
+   MOVLW 25  
+   SUBWF TMPL,F
+   MOVLW 0
+   SUBWFC TMPH,F
+   BTFSS STATUS,C
+   GOTO DAT_BC_END
+   MOVFW TMPL
+   MOVWF CYCLE_LL
+   MOVFW TMPH
+   MOVWF CYCLE_LH
+DAT_BC_END:
+		MOVFW CYCLE_LL
+		MOVWF CYCLE_LL_TMP
+		MOVFW CYCLE_LH
+		MOVWF CYCLE_LH_TMP
+        
+        MOVLW 4
+		SUBWF CYCLE_HH,W
+		BTFSC STATUS,C
+		GOTO  DSP_ERR
+DAT_BC_END1:
+	;    BTFSS F_LEARN,F_C56 ;大于45k载波，补上丢失的一个载波
+	;	GOTO DAT_SEARCH
+		MOVLW 1
+		ADDWF CYCLE_HL,F
+		MOVLW 0
+		ADDWFC CYCLE_HH,F
+
+
+;*********************************
+;数据依次比较,求出相同值，保存新值
+;*********************************
+DAT_SEARCH:
+		 CLRF SMJS    ;周期特征代号的临时值 
+        SETDP 1
+        MOVLW CYCLE0_LL
+		MOVWF FRS0   
+REC_CYCLE_SAVE_LOOP:
+        MOVFW SMJS
+		XORWF CYCLE_REC_NUM,W
+		BTFSC STATUS,Z
+		 GOTO REC_CYCLE_SAVE ;循环值和已保存数据相等则没找到相似数据，作为新数据保存 
+;**************************
+        ;数据依次比较
+;**************************
+CYCLE_COMPARE:
+
+        MOVFW IND0    ;1.比较双字节低电平
+		MOVWF TMPL    
+         INCF FRS0,F   
+        MOVFW IND0
+		MOVWF TMPH    
+         INCF FRS0,F
+CYCLE_COMPARE_L:
+        MOVFW CYCLE_LL_TMP 
+        SUBWF TMPL,F
+        MOVFW CYCLE_LH_TMP
+        SUBWFC TMPH,F
+        BTFSS STATUS,C
+		CALL ABS
+        MOVLW PLUS_TIME_PC
+        SUBWF TMPL,F
+		MOVLW 0
+		SUBWFC TMPH,F  ;TMPH.TMPL - 固定偏差值
+         BTFSS STATUS,C
+		 GOTO CYCLE_COMPARE_H
+         INCF FRS0,F
+         INCF FRS0,F
+  	     GOTO CYCLE_COMPARE_N     ;超出阈值 
+
+CYCLE_COMPARE_H:
+        MOVFW IND0    ;2.比较双字节高电平
+		MOVWF TMPL    
+         INCF FRS0,F
+        MOVFW IND0
+		MOVWF TMPH    
+         INCF FRS0,F
+
+        MOVFW CYCLE_HL_TMP 
+        SUBWF TMPL,F
+        MOVFW CYCLE_HH_TMP
+       SUBWFC TMPH,F
+        BTFSS STATUS,C
+		CALL ABS
+        MOVLW PLUS_COUNT_PC
+        SUBWF TMPL,F
+		MOVLW 0
+		SUBWFC TMPH,F  ;TMPH.TMPL - 固定偏差值
+        BTFSS STATUS,C
+		GOTO  CYCLE_COMPARE_END     
+		       
+CYCLE_COMPARE_N:    ;超出阈值 取下一组数据比较
+        INCF SMJS,F 
+		MOVLW 8
+		SUBWF SMJS,W
+		BTFSC STATUS,C
+		GOTO DSP_ERR3 ;超出8组特征周期->出错   
+        GOTO REC_CYCLE_SAVE_LOOP
+CYCLE_COMPARE_END: 
+        MOVFW SMJS
+        MOVWF SM_BUFL  ;保存搜索代码
+         GOTO REC_DATA_SAVE ;待比较数据为旧，直接存储周期编号
+;--------------------
+REC_CYCLE_SAVE: ;接收周期数据存储 
+
+         INCF CYCLE_REC_NUM,F
+        MOVFW SMJS
+        MOVWF SM_BUFL  ;保存搜索代码
+        MOVLW CYCLE0_LL  ;???????????初始化位置
+        MOVWF FRS0
+	    SETDP 1   ;100H
+
+RECCYCLE_ADD_SEARCH: ;周期数据存储地址搜索 
+		MOVLW 1
+		SUBWF SMJS,F
+		BTFSS STATUS,C
+		GOTO RECCYCLE_SAVE
+        MOVLW 04
+		ADDWF FRS0,F
+		GOTO RECCYCLE_ADD_SEARCH ;RECDATA_ADD_SEARCH        
+RECCYCLE_SAVE:
+        MOVFW CYCLE_LL
+        MOVWF IND0
+        INCF FRS0,F
+        MOVFW CYCLE_LH
+        MOVWF IND0
+        INCF FRS0,F
+        MOVFW CYCLE_HL
+        MOVWF IND0
+        INCF FRS0,F
+        MOVFW CYCLE_HH
+        MOVWF IND0
+
+;**************************
+;保存搜索到的周期序号
+;**************************
+REC_DATA_SAVE:
+        MOVFW REC_FRAME_COUNT ;取第0-4帧码的首地址
+		                      ;一帧码结束判定 if REC_FRAME_COUNT>3 THEN REC_FRAME_COUNT=4 
+        ADDPCW
+        GOTO FRAME0
+        GOTO FRAME1
+        GOTO FRAME2
+        GOTO FRAME3
+FRAME4:
+       MOVLW DAT4_00
+       GOTO  FRAME_SET
+FRAME3:
+       MOVLW DAT3_00
+       GOTO  FRAME_SET
+FRAME2:
+       MOVLW DAT2_00
+       GOTO  FRAME_SET
+FRAME1:
+       MOVLW DAT1_00
+       GOTO  FRAME_SET
+FRAME0:
+       MOVLW DAT0_00
+FRAME_SET:
+       MOVWF FRS0
+ ;       MOVWF SM_BUFL  ;保存搜索代码
+/*
+   脉冲数据周期编号存储格式
+   HL HL HL HL HL
+   01 23 45 67 89 .......
+   0-接收的第一个周期 1-第二个周期 依次类推
+*/      
+RECDATA_ADD_SEARCH:
+       MOVFW REC_CYCLE_COUNT ;搜索->接收到的脉冲周期编号 待存储的起始地址
+       MOVWF SMJS
+REC_DATA_SAVE_LOOP:
+       MOVLW 1
+	   SUBWF SMJS,F
+	   BTFSS STATUS,C
+	   GOTO SAVE_RECDAT_H ;存储在数据高位
+       MOVLW 1
+	   SUBWF SMJS,F
+	   BTFSS STATUS,C
+	   GOTO SAVE_RECDAT_L ;存储在数据低位
+       INCF FRS0,F ;指向下一地址
+	   GOTO REC_DATA_SAVE_LOOP
+
+SAVE_RECDAT_H: ;存储在数据高位
+	   RLF SM_BUFL,F
+	   RLF SM_BUFL,F
+	   RLF SM_BUFL,F
+	   RLF SM_BUFL,F
+       MOVLW 0F0H
+	   ANDWF SM_BUFL,F
+       MOVFW IND0
+	   ANDLW 0FH
+       XORWF SM_BUFL,W
+	   MOVWF IND0
+	   GOTO SAVE_REDAT_N
+
+SAVE_RECDAT_L: ;存储在数据低位
+       MOVLW 0FH
+	   ANDWF SM_BUFL,F
+       MOVFW IND0
+	   ANDLW 0F0H
+       XORWF SM_BUFL,W
+	   MOVWF IND0
+SAVE_REDAT_N:
+       INCF REC_CYCLE_COUNT,F
+       MOVFW REC_CYCLE_COUNT
+	   SUBLW 49 ;48
+	   BTFSS STATUS,C
+	   GOTO DSP_ERR4 ;记录数>48出错
+	   MOVFW FRS0_BAK ;保存的周期数据指针恢复
+       MOVWF FRS0
+CYCLE_CHK_END:  
+       GOTO CYCLE_LOOP
+
+
+DATA_MATCH:
+   BCF INTE,GIE ;CAPIE
+       NOP
+       CALL MATCH ;接收数据整理计算程序
+	   NOP
+   		MOVLW		11111000B;PT1_SEL ;开硬件按键扫描								;PT1.7--PT1.3 IO
+		MOVWF		PT1SEL
+;	   CALL SAVE_TO_EEPROM
+   		MOVLW		PT1_SEL ;开硬件按键扫描								;PT1.7--PT1.3 IO
+		MOVWF		PT1SEL
+
+	   NOP
+	   NOP
+
+       BCF FLAG,FTIM
+
+
+
+		GOTO	LEARN_ABOUT
+;	   GOTO POTINI 
+	  ; GOTO LEARN_START
+
+
+ DSP_ERR1: ;采样周期个数超过48个出错
+    NOP
+	NOP
+	NOP
+ DSP_ERR2:
+    NOP ;两指针
+	NOP                                                    
+	NOP
+ DSP_ERR3: ;超出8组特征周期->出错  
+    NOP
+	NOP
+	NOP
+ DSP_ERR4: ;记录数>48出错
+    NOP
+    NOP
+	NOP
+
+ DSP_ERR:
+ ;  BCF INTE,GIE ;CAPIE
+    NOP
+	NOP
+	
+  GOTO LEARN_START
+
+
+
+LEARN_ABOUT:
+	MOVLW	01h
+	MOVWF	_LEARN_FLAG
+	SETDP	00h
+	GOTO	SleepMode
+;	   GOTO $-1

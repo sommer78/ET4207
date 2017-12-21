@@ -8,8 +8,8 @@
 
 RECEIVER_START:
 		SETDP	02h
-		CLRF	flag
-		CLRF	flag1
+		CLRF	state_flag
+		CLRF	FLAG
 		BCF		PT1EN,REC
 REC_SET_REG:
 		MOVLW	ADDRESS_PartIndexCount
@@ -47,7 +47,7 @@ REC_WAIT_UP_EDGE:
 		BCF		TCCONA,TCRSTA
 		_ET4207_BUSY_
 REC_WAIT_DOWN_EDGE:
-		BTFSC	flag1,bLearnEnd
+		BTFSC	FLAG,bLearnEnd
 		GOTO	REC_LEARN_END
 		BTFSC	PT1,REC
 		GOTO	REC_WAIT_DOWN_EDGE
@@ -84,26 +84,23 @@ PUSH_TIME_REG:
 ;==========================================
 ;采集输入rmt时间信号
 ;========================================== 
-Learn_rmt:
+LEARN_RMT:
 			SETDP	02h
-			;CLRF	flag
-			CLRF	flag1
+
+			CLRF	FLAG
 			BSF     RMTCTR,RX_EN				
 			BCF     RMTCTR,TX_EN				;RX_EN=1,TX_EN=0 接收模式
 			CLRF    PWMCON
 			BSF		PWMCON,PWM_SEL				;PWM OUT = 1为高电平，进入学习模式
-		
+			BSF		state_flag,isLearnP14
 			CLRF    TSETAL
             CLRF    TSETAH
-			BCF		flag1,bLearnEnd
-			BSF		flag1,isHighLow
+			BCF		FLAG,bLearnEnd
+			BSF		FLAG,isHighLow
 
 			MOVLW	5
 			ADDWF	new_nHighLevel_L,f
 			
-		;	CALL	DELAY150ms
-		;	CALL	DELAY150ms
-		;	CALL	DELAY150ms
 
 			MOVLW	ADDRESS_PartIndexCount
 			MOVWF	p_PartIndexCount
@@ -118,16 +115,18 @@ Learn_rmt:
 ;============================================
 			BCF		INTE,TMAIE
 			BCF		INTE,GIE
-			;BCF		WDTCTR,3
+		
 	        BCF		PWMCON,TCOUTA_DIR			;TIMER UP 16bit型
-			BTFSS	FLAG,isLearnRec
-			GOTO	$+4
-	    	MOVLW	01010110b					;timera时钟源,内部时钟源mclk(111-5MHz)
+LRN_INPUT_SELECT:
+			BTFSS	state_flag,isLearnP14
+			GOTO	LRN_INPUT_1
+	    	MOVLW	01110110b					;	INPUT RMT timera时钟源,内部时钟源mclk(111-5MHz)
 			MOVWF	TCCONA
-			GOTO	$+3
-			MOVLW	00000110B
+			GOTO	LRN_INPUT_END_1
+LRN_INPUT_1:
+			MOVLW	00100110B				; INPUT PT14
 			MOVWF	TCCONA
-
+LRN_INPUT_END_1:
 			NOP
 			CLRF	TSETAL
 			CLRF	TSETAH
@@ -136,7 +135,7 @@ Learn_rmt:
 			MOVWF	TCCONB
 			CLRF	TSETB
 			BCF		TCCONB,TCRSTB
-			;BSF		TCCONA,CAPSEL
+
 			CLRF	INTF
 			BCF		INTE,TMAIE
 			BSF		INTE,TMBIE
@@ -145,21 +144,18 @@ Learn_rmt:
 			BCF		INTE,GIE
 			BSF		TCCONA,TCENA ;ADD BY SUNSIBING
 			BSF     TCCONA,CAPDEB
-	        CLRF	temp
+
 			MOVLW	78H
 			MOVWF	TSETB
 LEARN_CAP_WAIT:
-			MOVLW	08h
-			MOVWF	WDTCTR
-			CLRWDT
-	
+			_WDT_DIS
+
 			BTFSC	INTF,I2CIE
-			GOTO	Learn_Error
+			GOTO	LEARN_ERR_TIMEOUT
 			BTFSS	INTF,CAPIF			;等待第1个载波
 			GOTO	$-3
 
-			MOVLW	0dh
-			MOVWF	WDTCTR
+			_WDT_DIS			;	_WDT_EN
 			CLRWDT
 
 			MOVFW	TCOUTAL
@@ -169,6 +165,7 @@ LEARN_CAP_WAIT:
 			CLRF	INTF
 			BSF		TCCONB,TCENB
 			BSF		TCCONB,TCRSTB
+
 			BTFSC	INTF,TMBIF
 			GOTO	LEARN_CAP_WAIT
 			BTFSS	INTF,CAPIF			;等待第2个载波
@@ -194,24 +191,24 @@ LEARN_CAP_WAIT:
 			COMF	FreqL,W
 			MOVWF	TSETB
 			CLRF	INTF
-			BTFSS	FLAG,isLearnRec
-			GOTO	$+4
+			BTFSS	state_flag,isLearnP14
+			GOTO	LRN_INPUT_2
 	    	MOVLW	01010100b					;timera时钟源,内部时钟源mclk(111-5MHz)
 			MOVWF	TCCONA
-			GOTO	$+3
+			GOTO	LRN_INPUT_END_2
+LRN_INPUT_2:
 			MOVLW	00000100B
 			MOVWF	TCCONA
-			;BSF		TCCONA,CAPSEL
-			;BSF     TCCONA,CAPDEB
+LRN_INPUT_END_2:
 			BSF		TCCONB,TCENB
 			BSF     INTE,TMAIE
 			BSF		INTE,GIE
 
-			BTFSC	flag1,isHighLow
+			BTFSC	FLAG,isHighLow
 			GOTO	$-1
-			BTFSS	flag1,isHighLow
+			BTFSS	FLAG,isHighLow
 			GOTO	$-1
-			BTFSC	flag1,isHighLow
+			BTFSC	FLAG,isHighLow
 			GOTO	$-1
 
 			
@@ -255,16 +252,16 @@ LEARN_CAP_WAIT:
 			;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-	SampleCompare_loop:
-			BTFSC	flag1,bLearnEnd
+SampleCompare_loop:
+			BTFSC	FLAG,bLearnEnd
 			GOTO	Learn_next
-			BTFSS	flag1,isHighLow
+			BTFSS	FLAG,isHighLow
 			GOTO	$-1
-			BTFSC	flag1,bLearnEnd
+			BTFSC	FLAG,bLearnEnd
 			GOTO	SampleCompare_0
-			BTFSC	flag1,isHighLow
+			BTFSC	FLAG,isHighLow
 			GOTO	$-1
-	SampleCompare_0:
+SampleCompare_0:
 			MOVFW	Sample0_nHighLevel_L
 			SUBWF	nHighLevel_L,w
 			MOVWF	DELTA_ABS_L
@@ -310,7 +307,7 @@ LEARN_CAP_WAIT:
 			DECF	nPartIndexCount,f
 			GOTO	StoreNewSample
 			;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	SampleCompare_1:
+SampleCompare_1:
 			MOVFW	Sample1_nHighLevel_L
 			SUBWF	nHighLevel_L,w
 			MOVWF	DELTA_ABS_L
@@ -356,7 +353,7 @@ LEARN_CAP_WAIT:
 			DECF	nPartIndexCount,f
 			;GOTO	StoreNewSample
 			;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	StoreNewSample:
+StoreNewSample:
 			MOVFW	p_PartIndexCount
 			MOVWF	FRS0
 			MOVFW	nPartIndexCount
@@ -456,15 +453,52 @@ learn_end:
 
 		CLRF	_crc_learn
 
-		MOVLW	0
-		MOVWF	_LENGTH_h_learn
-		MOVFW	n_PartIndexCount
-		MOVWF	_LENGTH_l_learn
+	;	MOVLW	0
+	;	MOVWF	_LENGTH_h_learn
+	;	MOVFW	n_PartIndexCount
+	;	MOVWF	_LENGTH_l_learn
 		SETDP	00h
 		MOVLW	ADDRESS_PartIndexCount
+		ADDWFC  n_PartIndexCount,W
+		BTFSS	STATUS,C
+		GOTO	$+2
+		SETDP	01h
 		MOVWF	FRS0
-		CALL	Learn_xCal_crc
-		
+		MOVFW	n_Index
+		MOVWF	p_Index
+		MOVLW	ADDRESS_Index
+		MOVWF	FRS1
+MOV_INDEX_TO_PART:
+		MOVFW	IND1
+		MOVWF	IND0
+		INCF	FRS1,F
+		INCF	FRS0,F
+		DECFSZ  p_Index,F
+		GOTO	MOV_INDEX_TO_PART
+
+		MOVFW	n_Index
+		ADDWFC  FRS0,F
+		BTFSS	STATUS,C
+		GOTO	$+2
+		SETDP	01h
+	;	MOVWF	FRS0
+		MOVFW	n_Sample
+		MOVWF	p_Sample
+		MOVLW	ADDRESS_Index
+		SETDP	02h
+		MOVLW	ADDRESS_Sample
+		MOVWF	FRS1
+MOV_SAMPLE_TO_PART:
+		MOVFW	IND1
+		MOVWF	IND0
+		INCF	FRS1,F
+		INCFSZ	FRS0,F
+		GOTO	$+2
+		SETDP	03h
+		DECFSZ  p_Sample,F
+		GOTO	MOV_SAMPLE_TO_PART
+	;	CALL	Learn_xCal_crc
+/*	    	
 		MOVLW	0
 		MOVWF	_LENGTH_h_learn
 		MOVFW	n_Sample
@@ -481,7 +515,7 @@ learn_end:
 		MOVLW	ADDRESS_Index
 		MOVWF	FRS0
 		CALL	Learn_xCal_crc
-		
+*/		
 
 		MOVFW	_crc_learn
 		MOVWF	n_Crc
@@ -494,6 +528,13 @@ learn_end:
 Learn_Error:
 		MOVLW	00h
 		MOVWF	_LEARN_FLAG
+		
+		SETDP	00h
+		GOTO	SleepMode
+LEARN_ERR_TIMEOUT:
+		MOVLW	00h
+		MOVWF	_LEARN_FLAG
+		BSF		LEARN_ERR,L_TIMEOUT
 		SETDP	00h
 		GOTO	SleepMode
 Learn_OUT:

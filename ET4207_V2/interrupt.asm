@@ -2,7 +2,7 @@
 ; ET4207 interrupt
 ;===================================
 ; jiangs
-; 2016.1.5
+; 2017.12.15
 
 ;===================================
 
@@ -20,18 +20,18 @@ Interrupt_0ch:
 ;--------- IIC write start
 		BTFSS	I2CCON, I2C_READY ;i2c data is ready?
 		GOTO	I2cInterruptEnd
-		BTFSS	flag1,isCmdByte
+		BTFSS	FLAG,isCmdByte
 		GOTO	CmdDeal
 		GOTO	I2cWriteData
 
 I2cReadData:
 		BTFSC	I2CCON, I2C_READY ;i2c data is ready?
 		GOTO	I2cReadDataEnd
-	;	INCFSZ	FRS0,F
-	;	GOTO	$+2
-	;	SETDP	01h
+		INCFSZ	FRS0,F
+		GOTO	$+2
+		SETDP	01h
 		
-		INCF	FRS0,F
+	;	INCF	FRS0,F
 		MOVFW	IND0
 		BSF		I2CCON, I2C_READY
 		CLRF	INTF
@@ -51,10 +51,10 @@ I2cWriteData:
 		CLRF	INTF
 		RETFIE
 CmdDeal:
-		BSF		flag1,isCmdByte
+		BSF		FLAG,isCmdByte
 		MOVI2CW
-		MOVWF	temp
-		SWAPF	temp,w
+		MOVWF	I2C_CMD
+		SWAPF	I2C_CMD,w
 		ANDLW	0FH	
 		ADDPCW
 		GOTO	ERROR				; 0x00
@@ -81,7 +81,7 @@ ERROR:
 		
 		BCF		INTE,GIE
 		CLRF	INTF
-		BSF		flag,isError
+		BSF		state_flag,isError
 		RETFIE
 I2cInterruptEnd:
 		CLRF	INTF
@@ -90,20 +90,72 @@ I2cInterruptEnd:
 ;  TIMEB INTERRUPT
 ;=======================================================================     
 TIMBInterrupt:
+
 		CLRF	INTF
 		BCF		TCCONA,TCRSTA
 		BSF		TCCONA,TCENA
 		BCF		TCCONB,TCENB
 		BCF		TCCONB,TCRSTB
-		BCF		flag1,isHighLow
+		BCF		FLAG,isHighLow
 		RETFIE
+
+/*
+		BCF INTF,TMBIF
+		
+;		BTFSC F_LEARN,F_TIMB
+
+		BSF F_LEARN,F_TIMB
+		 BTFSC F_LEARN,F_HEAD 
+		RETFIE 
+MEASURE_HIGH_CYCLE:
+        BSF F_LEARN,F_M_LOW
+        BTFSC F_LEARN,F_M_SEL
+ ;       GOTO PLUS_SAVE
+         ;GOTO INT_TIMEB_RET
+		 RETFIE
+        
+;       INCFSZ TF_COUNTL,F  ;用作测量码间隔
+;         GOTO INT_TIMEB_RET
+;	     INCF TF_COUNTH,F      
+;         GOTO INT_TIMEB_RET
+
+PLUS_SAVE:
+        MOVWF W_BAK
+		MOVFW STATUS
+		MOVWF STATUS_BAK
+
+         BSF F_LEARN,F_M_SEL
+		MOVFW DAT0 ;载波个数存入缓存区
+		MOVWF IND1
+        INCF FRS1,F
+		MOVFW DAT1
+		MOVWF IND1
+        INCF FRS1,F
+
+        CLRF DAT0
+		CLRF DAT1
+	    BCF INTE,TMBIE ;zzzzzzzzzzzzzzzzzzzzzzzz
+          CLRF  TSETB
+          MOVLW 00001011B ;定时器B选32分频测量间隔 992us/6.4us=155
+		  MOVWF TCCONB
+
+    ;  BSF F_LEARN,F_TF
+        CLRF TF_COUNTL
+        CLRF TF_COUNTH
+INT_TIMEB_RET:
+		MOVFW STATUS_BAK
+		MOVWF STATUS
+	 	MOVFW W_BAK
+		RETFIE
+
+*/
 
 ;=======================================================================
 ; GPIO DOWN TRIG 
 ;=======================================================================     
 Interrupt_EXT:
 		_DIS_InterruptEXT_
-		GOTO	START
+		RETFIE
 
 
 		
@@ -124,11 +176,11 @@ Interrupt_TimerA:
 			MOVWF	nHighLevel_L
 			MOVFW	new_nHighLevel_H
 			MOVWF	nHighLevel_H
-			BSF		flag1,isHighLow
-			BSF		flag1,bLearnEnd
+			BSF		FLAG,isHighLow
+			BSF		FLAG,bLearnEnd
 			RETFIE
 Interrupt_Capture:
-			BTFSC	flag1,isHighLow
+			BTFSC	FLAG,isHighLow
 			GOTO	Interrupt_Capture_Inc
 			MOVFW	TCOUTAL
 			MOVWF	nLowLevel_L
@@ -140,7 +192,7 @@ Interrupt_Capture:
 			MOVWF	nHighLevel_H
 			CLRF	new_nHighLevel_L
 			CLRF	new_nHighLevel_H
-			BSF		flag1,isHighLow
+			BSF		FLAG,isHighLow
 			BCF		TCCONA,TCENA
 			BSF		TCCONB,TCENB
 Interrupt_Capture_Inc:
@@ -150,4 +202,62 @@ Interrupt_Capture_Inc:
 			BCF		TCCONB,TCRSTB
 			CLRF	INTF
 			RETFIE
+	
+/*
+INT_TIMEA:
+INT_TIMEA_CAPIF: ;脉冲上升沿中断
 
+        BCF TCCONB,TCRSTB ;TIMEB重新计数，作为载波结束计算用
+
+MEASURE_LOW_CYCLE:
+        MOVWF W_BAK
+		MOVFW STATUS
+		MOVWF STATUS_BAK
+
+        BCF F_LEARN,F_M_SEL ;上升沿中断，tmb下一步测是否高电平结束
+
+        BTFSC F_LEARN,F_M_LOW
+        GOTO PLUS_COUNT_L
+PLUS_COUNT:
+          BCF TCCONA,TCRSTA  ;TMA清零开始测 低电平
+       INCFSZ DAT0,F
+         GOTO INT_TIMEA_RET1
+	     INCF DAT1,F      
+INT_TIMEA_RET1:
+		MOVFW STATUS_BAK
+		MOVWF STATUS
+	 	MOVFW W_BAK
+		 BCF INTF,CAPIF
+       RETFIE  ;25*0.8=20US 小于20us会少算一个周期
+    
+PLUS_COUNT_L:	      
+  		  MOVLW 156 ;206
+          MOVWF TSETB
+          MOVLW 00001000B ;111B  ;定时器B选1分频
+		  MOVWF TCCONB
+   ;      BCF F_LEARN,F_M_SEL ;上升沿中断，tmb下一步测是否高电平结束
+		 BCF F_LEARN,F_TIMB ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	     BSF INTE,TMBIE    ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+;	        BTFSS F_LEARN,F_M_LOW
+;         GOTO PLUS_COUNT
+          BCF F_LEARN,F_M_LOW
+		MOVFW TCOUTAL
+		MOVWF IND1
+         INCF FRS1,F
+		MOVFW TCOUTAH
+		MOVWF IND1
+         INCF FRS1,F
+		MOVFW STATUS_BAK
+		MOVWF STATUS
+	 	MOVFW W_BAK
+		 BCF INTF,CAPIF
+       RETFIE  ;25*0.8=20US 小于20us会少算一个周期
+*/
+
+
+
+
+
+
+ 

@@ -22,6 +22,12 @@
 #define ET4207_ADDRESS 0xe0			//		0xe0
 
 
+typedef struct {
+	u16 freq;
+	u16 datas[512];
+	u16 length;
+
+}Consumer_IR_T;
 					  
 
 void ET4207_Init(void); //初始化IIC
@@ -29,8 +35,17 @@ void ET4207_Init(void); //初始化IIC
 
 u8 ET4207SendCode(u8 *etcode,int length);
 
+u8 ET4207ReadCode(u8 *etcode);
+
+u8 ET4207ReadVersion(u8 *etcode);
+
+
+u8 ET4207StartLearn(void);
+
+
 u8  Hard_IIC_WriteNByte(I2C_TypeDef * IICx, u8 SlaveAdd, u8 WriteAdd, u16 NumToWrite, u8 * pBuffer);
 
+u8 Hard_IIC_PageRead(I2C_TypeDef* IICx, u8 SlaveAdd, u8 ReadAdd, u16 NumToRead, u8 * pBuffer);
 
 
 #endif

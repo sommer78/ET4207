@@ -68,9 +68,7 @@ int main(void)
 	//IIC_Init();
 
 
-	for(t=0;t<512;t++){
-		etcode[t] = t;
-		}
+	
 	
 	
 	while(1)
@@ -78,18 +76,27 @@ int main(void)
 	key=KEY_Scan(0);
 		if(key==KEY1_PRES)//KEY0按下了
 		{
-		printf("KEY PUSH OK.......\r\n");
+		printf("START LEARN.......\r\n");
+		for(t=0;t<512;t++){
+				etcode[t] = t;
+				}
 
-		ET4207SendCode(etcode,440);
+		//ET4207SendCode(etcode,440);
 		
-		
+		ET4207StartLearn();
 		}   
 		if(key==KEY0_PRES)//KEY0按下了
 		{
-		printf("KEY PUSH OK.......\r\n");
-		
-		
-		
+	for(t=0;t<512;t++){
+		etcode[t] = 0xff;
+		}
+		ET4207ReadCode(etcode);
+		//ET4207ReadVersion(etcode);
+			
+		for(t=0;t<440;t++){
+			printf("0x%02x,",etcode[t]);
+		}
+		printf("\r\n");
 		
 		}   
 		t++;

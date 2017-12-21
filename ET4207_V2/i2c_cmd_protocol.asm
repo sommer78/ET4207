@@ -24,11 +24,11 @@ RomTab:
 ;=======================================================================       
 
 IniVersion:
-		MOVLW	02AH
+		MOVLW	042H
 		MOVWF	nVersion1
 		MOVLW	007H
 		MOVWF	nVersion2
-		MOVLW	000H
+		MOVLW	018H
 		MOVWF	nVersion3
 		MOVLW	001H
 		MOVWF	nVersion4
@@ -37,22 +37,22 @@ IniVersion:
 ;	版本号首地址给read程序
 ;=======================================================================       
 ReadVersion:
-		CALL	IniVersion
-		MOVLW	025h
+	;	CALL	IniVersion
+		MOVLW	nVersion1
 		MOVWF	FRS0
-		SETDP	00h
-;		MOVFW	IND0
+		SETDP	01h
+		MOVFW	IND0
 		GOTO	I2cInterruptEnd 
 
 ;=======================================================================
 ;	read首地址给read程序
 ;=======================================================================   
 ReadCode:
-		CALL	GetAddressIndex	
-		MOVFW	IND0		
-		GOTO	I2cInterruptEnd 
-ReadEnd:
+		GOTO	GetAddressIndex	
+	;	MOVFW	IND0		
+	;	GOTO	I2cInterruptEnd 
 
+ReadEnd:
 		GOTO	I2cInterruptEnd 
 
 
@@ -61,15 +61,15 @@ ReadEnd:
 ;=======================================================================   
 WriteCode:
 	;	INCF	ncount,f
-	;	MOVFW	TEMP
+	;	MOVFW	I2C_CMD
 	;	ANDLW	0FH
-	;	MOVWF	TEMP
+	;	MOVWF	I2C_CMD
 	;	CALL	RomTab
 	;	MOVLW	40H
 	;	MOVWF	FRS0
 	/*	
 		MOVLW	6
-		SUBWF	TEMP,W
+		SUBWF	I2C_CMD,W
 		BTFSC	STATUS,C
 		GOTO	WriteCode1
 		SETDP	00h
@@ -78,48 +78,44 @@ WriteCode1:
 		SETDP	01h
 ;		MOVFW	IND0
 */
-		CALL	GetAddressIndex	
-		GOTO	I2cInterruptEnd 
-		
-		
-		
+		GOTO	GetAddressIndex	
 WriteEnd:
-		BSF		flag1,isCmdEnd
+		BSF		FLAG,isCmdEnd
 		SETDP	00h
 		GOTO	I2cInterruptEnd	
 		
 StartRMTLearn:
-		BSF		flag1,isCmdEnd
-		BCF		flag1,bLearnEnd
-		BCF		flag,isLearnRec
+		BSF		FLAG,isCmdEnd
+		BCF		FLAG,bLearnEnd
+		BCF		state_flag,isLearnP14
 		MOVLW	40H
 		MOVWF	_WRITE_CMD_DATA
 		GOTO	I2cInterruptEnd		
 		
 StartRECLearn:
-		BSF		flag1,isCmdEnd
-		BCF		flag1,bLearnEnd
-		BSF		flag,isLearnRec
+		BSF		FLAG,isCmdEnd
+		BCF		FLAG,bLearnEnd
+		BSF		state_flag,isLearnP14
 	
 		MOVLW	40H
 		MOVWF	_WRITE_CMD_DATA
 		GOTO	I2cInterruptEnd			
 StopRMTLearn:
-		BSF		flag1,bLearnEnd
+		BSF		FLAG,bLearnEnd
 		GOTO	I2cInterruptEnd	
 SetCurrent:
-		MOVFW	TEMP
-		BTFSC	TEMP,0
+		MOVFW	I2C_CMD
+		BTFSC	I2C_CMD,0
 		GOTO	$+3
 		BCF		RMTCTR,PWM_CURT0
 		GOTO	$+2
 		BSF		RMTCTR,PWM_CURT0
-		BTFSC	TEMP,1
+		BTFSC	I2C_CMD,1
 		GOTO	$+3
 		BCF		RMTCTR,PWM_CURT1
 		GOTO	$+2
 		BSF		RMTCTR,PWM_CURT1
-		BTFSC	TEMP,2
+		BTFSC	I2C_CMD,2
 		GOTO	$+3
 		BCF		RMTCTR,PWM_CURT
 		GOTO	$+2
@@ -128,13 +124,13 @@ SetCurrent:
 		GOTO	I2cInterruptEnd	
 
 SetLearn:
-		MOVFW	TEMP
-		BTFSC	TEMP,0
+		MOVFW	I2C_CMD
+		BTFSC	I2C_CMD,0
 		GOTO	$+3
 		BCF		RMTCTR,SENS_CURT0
 		GOTO	$+2
 		BSF		RMTCTR,SENS_CURT0
-		BTFSC	TEMP,1
+		BTFSC	I2C_CMD,1
 		GOTO	$+3
 		BCF		RMTCTR,SENS_CURT1
 		GOTO	$+2
@@ -142,22 +138,24 @@ SetLearn:
 
 
 		GOTO	I2cInterruptEnd	
+
 GetAddressIndex:
-		MOVFW	TEMP
+		MOVFW	I2C_CMD
 		ANDLW	0FH
-		MOVWF	TEMP
+		MOVWF	I2C_CMD
 		CALL	RomTab
 		MOVWF	FRS0
 		MOVLW	6
-		SUBWF	TEMP,W
+		SUBWF	I2C_CMD,W
 		BTFSC	STATUS,C
 		GOTO	GetAddressIndex1
 		SETDP	00h	
-		GOTO	GetAddressIndex2 	
+		MOVFW	IND0
+		GOTO	I2cInterruptEnd 
 GetAddressIndex1:
-		SETDP	01h			
-GetAddressIndex2:		
-		RETURN
+		SETDP	01h	
+		MOVFW	IND0			
+		GOTO	I2cInterruptEnd 
 
 
 

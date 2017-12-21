@@ -62,6 +62,12 @@ _LED_CLR			macro
 _LED_SET			macro
 					BCF		PT2,LED
 					endm
+_WDT_EN				macro
+					BSF		WDTCTR,WDTEN
+					endm
+_WDT_DIS			macro
+					BCF		WDTCTR,WDTEN
+					endm
 
 ;-------------------------------------------
 ; Value define for programing
@@ -87,20 +93,23 @@ _index			equ		64
 ;BUFFER_ADDRESS		equ		80h
 
 
-TEMP			equ		20h
+I2C_CMD			equ		20h
 
-flag			equ		21h	
+state_flag			equ		21h	
 	isError		equ	0		
-	isLearnRec		equ	2
+	isLearnP14		equ	1
 
 
-flag1					equ		22h
+FLAG					equ		22h
 	bTIMERB_CALCULATE	equ	0
 	bRMTOUT_LEARN		equ	1
 	isHighLow			equ	2		;为1说明正处于高电平,为0处于低电平
 	bLearnEnd			equ	3
 	isCmdByte		equ 4
 	isCmdEnd		equ	5
+
+LEARN_ERR		equ 25h
+	L_TIMEOUT	EQU 1
 
 	
 ;-------------------------------------------
@@ -113,10 +122,10 @@ DELAYCT1		equ	24h
 ; version rom  
 ;-------------------------------------------
 
-nVersion1		equ	25h
-nVersion2		equ	26h
-nVersion3		equ	27h
-nVersion4		equ	28h
+nVersion1		equ	1f8h
+nVersion2		equ	1f9h
+nVersion3		equ	1fah
+nVersion4		equ	1fbh
 
 ncount			equ	29h
 nWriteByteCount_h equ	2ah
@@ -126,7 +135,9 @@ nWriteByteCount_L equ	2bh
 ; Memory define 
 ;===========================================
 
-
+;===========================================
+; Learn ram
+;===========================================
 nLowLevel_H			equ	2ah
 nLowLevel_L			equ	2bh
 nHighLevel_H		equ	2ch
@@ -174,20 +185,22 @@ _LEARN_FLAG			EQU 4AH
 n_Crc				equ	4bh
 n_PartIndexCount	equ	4ch
 n_Sample			equ	4dh
-n_Index				equ	4eh	;同一个地址
-FreqH				equ 4eh	;同一个地址
+n_Index				equ	4eh	
+FreqH				equ 4eh	
 FreqL				equ	4fh
 
-FreqH1				equ 60h	;同一个地址
+FreqH1				equ 60h	
 FreqL1				equ	61h
-FreqH2				equ 62h	;同一个地址
+FreqH2				equ 62h	
 FreqL2				equ	63h
-FreqH3				equ 64h	;同一个地址
+FreqH3				equ 64h	
 FreqL3				equ	65h
-FreqH4				equ 66h	;同一个地址
+FreqH4				equ 66h	
 FreqL4				equ	67h
 
-;;------------send ram-----------------------------------
+;===========================================
+; send ram
+;===========================================
 _WRITE_CMD_DATA	EQU		40H
 _LENGTH_h		equ		41h
 _LENGTH_l		equ		42h
@@ -220,48 +233,9 @@ tianjia_temp2		equ   2Dh
 
 tianjia_temp5		equ   31h
 
-;nWriteByteCount_h		equ		34h
-;nWriteByteCount_l		equ		35h
-
-;TMPL	    EQU	  0E9H
-;TMPH	    EQU   0EAH
-;DAT0        EQU   0EBH
-;DAT1        EQU   0ECH
-
-;KEYCOUNT		EQU	 0EDH
-;GNDBUFFL		EQU	 0EEH
-;GNDBUFFH		EQU	 0EFH
-;KEYBUFFL		EQU	 0F0H
-;KEYBUFFH		EQU  0F1H
-
-;CYCLE_LL_TMP    EQU  0EEH
-;CYCLE_LH_TMP    EQU  0EFH
-;CYCLE_HL_TMP    EQU  0F0H
-;CYCLE_HH_TMP    EQU  0F1H
-
-
-
-;SMJS		EQU  0F2H
-;SM_BUFH		EQU  0F3H
-;SM_BUFL		EQU  0F4H
-
-;SYS0    EQU    0F5H
-;SYS1    EQU    0F6H
-;SYS2    EQU    0F7H
-;SYS3    EQU    0F8H
-
-;TF_COUNTL       EQU 0F7H
-;TF_COUNTH       EQU 0F8H
-;FRS0_BAK        EQU 0F9H
-;CYCLE_REC_NUM   EQU 0FAH ;特征周期代号的已记录数
-;DP_BAK          EQU 0FBH
-;E_BUF           EQU 0FCH
-
-;KEY_OLD         EQU 0FDH
-;CTR_JS           EQU 0FEH
-;LEARN_KEY_NUM   EQU 0FEH ;待学习键号
-;FLAG   EQU    0FFH
-;RAM D0-FF
+;===========================================
+; other ram
+;===========================================
 ledjs equ 1cfh
 FIRST_PLUS EQU 1D0H ;记录第一个脉冲时间，可用为无载波型
 W_BAK      EQU 1D1H
@@ -288,8 +262,7 @@ CYCLE_LL       EQU 1DCH ;周期的低电平低位 低电平记录测量时间
 CYCLE_LH       EQU 1DDH ;周期的低电平高位
 CYCLE_HL       EQU 1DEH ;周期的高电平低位 高电平记录载波个数
 CYCLE_HH       EQU 1DFH ;周期的高电平高位
-EE_ADDL      EQU 1DCH  ;EEPROM地址
-EE_ADDH      EQU 1DDH
+
 
 
 
@@ -611,42 +584,7 @@ PT2_SEL EQU		10110000b							    ;PT2.7--PT2.0 IO
 RET_10SL   EQU 00 ;05ah ;02DH
 RET_10SM   EQU 0ach ;0E6H
 RET_10SH   EQU 12h ;00AH
-;---------------------------
-KEY1_EE_ADDL EQU 000H  ;被学习键1在eeprom存储地址
-KEY1_EE_ADDH EQU 000H  ;被学习键1在eeprom存储地址
 
-KEY2_EE_ADDL EQU 060H ;05CH  ;被学习键2在eeprom存储地址
-KEY2_EE_ADDH EQU 000H  ;被学习键2在eeprom存储地址
-
-KEY3_EE_ADDL EQU 0C0H ;0B8H  ;被学习键3在eeprom存储地址
-KEY3_EE_ADDH EQU 000H  ;被学习键3在eeprom存储地址
-
-KEY4_EE_ADDL EQU 020H ;014H  ;被学习键4在eeprom存储地址
-KEY4_EE_ADDH EQU 001H  ;被学习键4在eeprom存储地址
-
-KEY5_EE_ADDL EQU 080H ;070H  ;被学习键5在eeprom存储地址
-KEY5_EE_ADDH EQU 001H  ;被学习键5在eeprom存储地址
-
-KEY6_EE_ADDL EQU 0E0H ;0CCH  ;被学习键6在eeprom存储地址
-KEY6_EE_ADDH EQU 001H  ;被学习键6在eeprom存储地址
-
-KEY7_EE_ADDL EQU 040H ;028H  ;被学习键7在eeprom存储地址
-KEY7_EE_ADDH EQU 002H  ;被学习键7在eeprom存储地址
-
-KEY8_EE_ADDL EQU 0A0H ;084H  ;被学习键8在eeprom存储地址
-KEY8_EE_ADDH EQU 002H  ;被学习键8在eeprom存储地址
-
-;KEY9_EE_ADDL EQU 000H  ;0E0H  ;被学习键9在eeprom存储地址
-;KEY9_EE_ADDH EQU 003H ;002H  ;被学习键9在eeprom存储地址
-
-;KEY10_EE_ADDL EQU 060H ;03CH  ;被学习键10在eeprom存储地址
-;KEY10_EE_ADDH EQU 003H  ;被学习键10在eeprom存储地址
-
-;KEY11_EE_ADDL EQU 0C0H  ;被学习键11在eeprom存储地址
-;KEY11_EE_ADDH EQU 003H  ;被学习键11在eeprom存储地址
-
-RF_EE_ADDL	EQU 000H	;RF sn 存储地址
-RF_EE_ADDH	EQU 003H	;RF sn 存储地址
 
 ;---------------------------------------------------
 
@@ -719,21 +657,7 @@ SPEC_FRAME_PC_H EQU 10 ;8   ;特殊数据的高电平允许误差
 PLUS_TIME_PC   EQU 100 ;50 ;25 ;25*0.8=20US 定时数据偏差
 PLUS_COUNT_PC  EQU 5  ;5个载波周期 载波计数偏差
 
-LSET_KEY       EQU  80H  ;0CH ;学习设置键键号
-LEARN_KEY1     EQU  81H  ;0DH ;学习键1
-LEARN_KEY2     EQU  82H  ;0EH ;学习键2
-LEARN_KEY3     EQU  83H  ;0FH ;学习键3
-LEARN_KEY4     EQU  84H  ;10H ;学习键4
-STANDBY_KEY       EQU  0CAH  ;0CH ;发射红外码
 
-EPROM_CLR		 EQU  0C0H  ;0DH ;清空eeprom
-;LEARN_KEY5     EQU  0FFH  ;11H ;学习键5
-;LEARN_KEY6     EQU 0FFH ;12H ;学习键6
-;LEARN_KEY7     EQU 0FFH ;13H ;学习键7
-;LEARN_KEY8     EQU 0FFH ;14H ;学习键8
-;LEARN_KEY9     EQU 0FFH ;12H ;学习键9
-;LEARN_KEY10    EQU 0FFH ;13H ;学习键10
-;LEARN_KEY11    EQU 0FFH ;14H ;学习键11
 
 
 FAST_LSET_KEY EQU 90 

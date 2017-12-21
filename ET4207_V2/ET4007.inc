@@ -138,7 +138,7 @@ cclkA_sel2		equ		2
 TCENA			equ		3
 CAPPHA			equ		4 ;//RMT phase select
 CAPDEB			equ		5 ;//RMT debounce time select
-CAPSEL			EQU		6
+CAPSEL			EQU		6	; RMT INPUT PIN 0 RMT 1 P14
 TCRSTA			equ		7
 
 ;cclkA_sel0		equ		0

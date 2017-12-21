@@ -9,120 +9,7 @@
 
 
 
-INT_TIMEA:
-INT_TIMEA_CAPIF: ;脉冲上升沿中断
 
-         BCF TCCONB,TCRSTB ;TIMEB重新计数，作为载波结束计算用
-
-
-
-MEASURE_LOW_CYCLE:
-        MOVWF W_BAK
-		MOVFW STATUS
-		MOVWF STATUS_BAK
-
-         BCF F_LEARN,F_M_SEL ;上升沿中断，tmb下一步测是否高电平结束
-
-        BTFSC F_LEARN,F_M_LOW
-         GOTO PLUS_COUNT_L
-PLUS_COUNT:
-          BCF TCCONA,TCRSTA  ;TMA清零开始测 低电平
-       INCFSZ DAT0,F
-         GOTO INT_TIMEA_RET1
-	     INCF DAT1,F      
-INT_TIMEA_RET1:
-		MOVFW STATUS_BAK
-		MOVWF STATUS
-	 	MOVFW W_BAK
-		 BCF INTF,CAPIF
-       RETFIE  ;25*0.8=20US 小于20us会少算一个周期
-    
-PLUS_COUNT_L:	      
-  		  MOVLW 156 ;206
-          MOVWF TSETB
-          MOVLW 00001000B ;111B  ;定时器B选1分频
-		  MOVWF TCCONB
-   ;      BCF F_LEARN,F_M_SEL ;上升沿中断，tmb下一步测是否高电平结束
-		 BCF F_LEARN,F_TIMB ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	     BSF INTE,TMBIE    ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
-;	        BTFSS F_LEARN,F_M_LOW
-;         GOTO PLUS_COUNT
-          BCF F_LEARN,F_M_LOW
-		MOVFW TCOUTAL
-		MOVWF IND1
-         INCF FRS1,F
-		MOVFW TCOUTAH
-		MOVWF IND1
-         INCF FRS1,F
-		MOVFW STATUS_BAK
-		MOVWF STATUS
-	 	MOVFW W_BAK
-		 BCF INTF,CAPIF
-       RETFIE  ;25*0.8=20US 小于20us会少算一个周期
-
-;-------------------------
-INT_TIMEB:
-        BTFSS INTF,I2CIF
-		GOTO INT_TIMEB1
-        BCF INTF,I2CIF
-        RETFIE
-INT_TIMEB1:
-		BCF INTF,TMBIF
-		
-;		BTFSC F_LEARN,F_TIMB
-
-		BSF F_LEARN,F_TIMB
-		 BTFSC F_LEARN,F_HEAD 
-		RETFIE 
-MEASURE_HIGH_CYCLE:
-        BSF F_LEARN,F_M_LOW
-        BTFSC F_LEARN,F_M_SEL
- ;       GOTO PLUS_SAVE
-         ;GOTO INT_TIMEB_RET
-		 RETFIE
-        
-;       INCFSZ TF_COUNTL,F  ;用作测量码间隔
-;         GOTO INT_TIMEB_RET
-;	     INCF TF_COUNTH,F      
-;         GOTO INT_TIMEB_RET
-
-PLUS_SAVE:
-        MOVWF W_BAK
-		MOVFW STATUS
-		MOVWF STATUS_BAK
-
-         BSF F_LEARN,F_M_SEL
-		MOVFW DAT0 ;载波个数存入缓存区
-		MOVWF IND1
-        INCF FRS1,F
-		MOVFW DAT1
-		MOVWF IND1
-        INCF FRS1,F
-
-        CLRF DAT0
-		CLRF DAT1
-	    BCF INTE,TMBIE ;zzzzzzzzzzzzzzzzzzzzzzzz
-          CLRF  TSETB
-          MOVLW 00001011B ;定时器B选32分频测量间隔 992us/6.4us=155
-		  MOVWF TCCONB
-
-    ;  BSF F_LEARN,F_TF
-        CLRF TF_COUNTL
-        CLRF TF_COUNTH
-INT_TIMEB_RET:
-		MOVFW STATUS_BAK
-		MOVWF STATUS
-	 	MOVFW W_BAK
-		RETFIE
-
-
-
-;-------------------------
-INT_EXT:
-       BCF INTF,E0IF 
-       RETFIE
- 
 
 
 
@@ -130,34 +17,11 @@ INT_EXT:
 
 ;========================
 LEARN_START:
-	CALL SysIni
-;MAIN:
-   	;	MOVLW		PT1_SEL ;开硬件按键扫描								;PT1.7--PT1.3 IO
-	;	MOVWF		PT1SEL
-	;	MOVLW		PT2_SEL							    ;PT2.7--PT2.0 IO
-	;	MOVWF		PT2SEL
-
- ;根据学习设置键位置PT1.4-GND，设定对应位置的输入输出   
-		MOVLW		00000000B									    
-		MOVWF		PT1EN									;0-Input 1-Output													
-		MOVLW		10111000b
-		MOVWF	    PT1
-
-		MOVLW		11101111B									    
-		MOVWF		PT2EN									;0-Input 1-Output													
-		MOVLW		11111000b
-		MOVWF		PT2													
-
-       ; BSF PT2EN,LED_Z ;LED设为输出口
-       ; BSF PT1EN,LED_F ;LED设为输出口
-		;BSF PT2,LED_Z
-	;	BSF PT1,LED_F
-REMOTE_LEARN:
-        CALL RamsClearALL ;ram初始化
+       
     
 LEARN_CSH:
        CLRF INTE
-	   BCF     RMTCTR,TX_EN			 ;RX_EN=0,TX_EN=0 禁止发射，禁止接收
+	   BCF     RMTCTR,TX_EN			 ;RX_EN=0,TX_EN=0 禁止发射，启动接收
        BSF     RMTCTR,RX_EN				
 ;	   BSF INTE,GIE
   ;     BSF F_LEARN,F_CARRY 
@@ -192,12 +56,10 @@ LEARN_SAA:
        BCF INTF,CAPIF
 LEARN_S: 
 	  BCF INTF,TMBIF  ;     BCF INTE,CAPIE
+	  BTFSC	INTF,I2CIE	;学习模式退出
+      GOTO	LEARN_ABOUT
 
-
-      BTFSS PT1,5  ;PT14-  ;学习设置键判别
-	  GOTO	LEARN_ABOUT
-	;  GOTO POTINI
-
+  
 
 
   
@@ -1075,7 +937,7 @@ DATA_MATCH:
 	   NOP
 	   NOP
 
-       BCF FLAG,FTIM
+       BCF state_flag,FTIM
 
 
 

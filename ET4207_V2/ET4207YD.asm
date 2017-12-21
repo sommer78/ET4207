@@ -35,13 +35,12 @@ MAIN:
 		NOP
 		BTFSC	STATUS,TO
 		GOTO	WDTC_STATUS
-		MOVLW	04h				;; disable wdog
-		MOVWF	WDTCTR
-		CLRWDT
+		_WDT_DIS
+
 MAIN_START:
 		CAll	SysIni
 		CALL	RamsClearALL
-		CALL	IniVersion
+	;	CALL	IniVersion
 	
 
 
@@ -60,12 +59,9 @@ SleepMode:
 		BSF		I2CCON,I2C_EN				;enable I2C port(PT1_4(SCL), PT1_3(SDA))
 		BCF		INTE,TMBIE
 SleepMode_1:		
-		;MOVLW	06h
-		;MOVWF	WDTCTR
-		;CLRWDT
-		CLRF	flag1
-		MOVLW	04h
-		MOVWF	WDTCTR
+	
+		CLRF	FLAG
+		_WDT_DIS
 		CLRWDT
 
 
@@ -74,14 +70,12 @@ SleepMode_1:
 		BCF		INTE,I2CIE ;disable I2C interrput
 		BCF		INTE,GIE
 		CLRF	INTF
-		BCF		flag1,isCmdByte
-	;	BsF		FLAG,isLearnRec
+		BCF		FLAG,isCmdByte
 		SLEEP
 	;	GOTO	Learn_rmt
 		NOP
 		NOP
-		MOVLW	04h							;0dh
-		MOVWF	WDTCTR
+		_WDT_DIS				;_WDT_EN
 		_ET4207_BUSY_
 	
 
@@ -98,9 +92,9 @@ I2cWatingForStop:
 		GOTO	I2cWatingForStop
 		BCF		INTE,I2CIE ;DISABLE I2C interrput
 		BCF		INTE,GIE
-		BCF		flag1,isCmdByte
+		BCF		FLAG,isCmdByte
 			
-		BTFSC	flag1,isCmdEnd
+		BTFSC	FLAG,isCmdEnd
 		GOTO	MainStart
 
 		GOTO	SleepMode_1

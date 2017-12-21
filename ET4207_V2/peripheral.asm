@@ -119,12 +119,11 @@ DLOOP1:
 ;======================================================================
 RamsClearALL:
 		MOVLW		20h
-		CALL		ClearRams
-		RETURN
+		GOTO		ClearRams
 LEARN_RAM_CLR:
 		MOVLW		40h
-		CALL		ClearRams
-		RETURN
+		GOTO		ClearRams
+
 ClearRams:
 		MOVWF		FRS0
 ClearRamLoop_l:
@@ -139,6 +138,14 @@ ClearRamLoop_h:
         INCFSZ		FRS0,f
         GOTO		ClearRamLoop_h
         SETDP       00h
+		MOVLW	042H
+		MOVWF	nVersion1
+		MOVLW	007H
+		MOVWF	nVersion2
+		MOVLW	018H
+		MOVWF	nVersion3
+		MOVLW	001H
+		MOVWF	nVersion4
 		RETURN
 
 ;=================================================================		

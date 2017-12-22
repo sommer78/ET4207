@@ -80,27 +80,33 @@ WriteCode1:
 */
 		GOTO	GetAddressIndex	
 WriteEnd:
-		BSF		FLAG,isCmdEnd
+		BSF	FLAG,isCmdEnd
 		SETDP	00h
 		GOTO	I2cInterruptEnd	
 		
-StartRMTLearn:
-		BSF		FLAG,isCmdEnd
-		BCF		FLAG,bLearnEnd
-		BCF		state_flag,isLearnP14
-		MOVLW	40H
+StartETLearn:
+
+		BSF	FLAG,isCmdEnd
+		BCF	FLAG,bLearnEnd
+	    BTFSC	I2C_CMD,isP14
+	    GOTO	$+3
+	    BCF		state_flag,isLearnP14
+	    GOTO	$+2
+	    BSF		state_flag,isLearnP14
+		MOVLW	30H
 		MOVWF	_WRITE_CMD_DATA
+		MOVFW	I2C_CMD
+		ANDLW	07H	
+		MOVWF	LEARN_MODE
 		GOTO	I2cInterruptEnd		
 		
 StartRECLearn:
 		BSF		FLAG,isCmdEnd
 		BCF		FLAG,bLearnEnd
-		BSF		state_flag,isLearnP14
-	
-		MOVLW	40H
+		MOVLW	I2C_CMD
 		MOVWF	_WRITE_CMD_DATA
 		GOTO	I2cInterruptEnd			
-StopRMTLearn:
+StopETLearn:
 		BSF		FLAG,bLearnEnd
 		GOTO	I2cInterruptEnd	
 SetCurrent:

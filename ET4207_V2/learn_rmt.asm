@@ -84,17 +84,18 @@ PUSH_TIME_REG:
 ;==========================================
 ;采集输入rmt时间信号
 ;========================================== 
-LEARN_RMT:
+LEARN_RMT_ZIP:
+			
+			CLRF	_LEARN_FLAG
 			SETDP	02h
-
 			CLRF	FLAG
 			BSF     RMTCTR,RX_EN				
 			BCF     RMTCTR,TX_EN				;RX_EN=1,TX_EN=0 接收模式
 			CLRF    PWMCON
 			BSF		PWMCON,PWM_SEL				;PWM OUT = 1为高电平，进入学习模式
-			BSF		state_flag,isLearnP14
+		;	BSF		state_flag,isLearnP14
 			CLRF    TSETAL
-            CLRF    TSETAH
+           	CLRF    TSETAH
 			BCF		FLAG,bLearnEnd
 			BSF		FLAG,isHighLow
 
@@ -115,7 +116,6 @@ LEARN_RMT:
 ;============================================
 			BCF		INTE,TMAIE
 			BCF		INTE,GIE
-		
 	        BCF		PWMCON,TCOUTA_DIR			;TIMER UP 16bit型
 LRN_INPUT_SELECT:
 			BTFSS	state_flag,isLearnP14
@@ -150,12 +150,12 @@ LRN_INPUT_END_1:
 LEARN_CAP_WAIT:
 			_WDT_DIS
 
-			BTFSC	INTF,I2CIE
-			GOTO	LEARN_ERR_TIMEOUT
+			BTFSC	FLAG,bLearnEnd
+			GOTO	Learn_OUT
 			BTFSS	INTF,CAPIF			;等待第1个载波
 			GOTO	$-3
 
-			_WDT_DIS			;	_WDT_EN
+			_WDT_DIS			;	_WDT_EN  sommer
 			CLRWDT
 
 			MOVFW	TCOUTAL
@@ -254,7 +254,7 @@ LRN_INPUT_END_2:
 
 SampleCompare_loop:
 			BTFSC	FLAG,bLearnEnd
-			GOTO	Learn_next
+			GOTO	Learn_OUT
 			BTFSS	FLAG,isHighLow
 			GOTO	$-1
 			BTFSC	FLAG,bLearnEnd
@@ -404,8 +404,6 @@ StoreNewSample:
 			INCF	nIndexCount_h,f
 			;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 			GOTO	SampleCompare_loop
-			
-	
 
 Learn_next:
 			MOVFW	p_PartIndexCount
@@ -422,124 +420,123 @@ Learn_next:
 			RRF		FreqL,F
 
 
-
-;************************************************ 
-;************************************************ 
-;************************************************ 
-learn_decode:
-			
-
 ;************************************************
 ;      remoter learn restone         ;
 ;************************************************   				
 remoter_code_restone:	
-		GOTO	learn_end
+	;	GOTO	learn_end
 
-learn_end:
-		MOVLW	ADDRESS_PartIndexCount
-		SUBWF	p_PartIndexCount,w
-		MOVWF	n_PartIndexCount
+;learn_end:
+			MOVLW	ADDRESS_PartIndexCount
+			SUBWF	p_PartIndexCount,w
+			MOVWF	n_PartIndexCount
+	
+			MOVLW	4
+			ADDWF	p_Sample,f
+			MOVLW	ADDRESS_Sample
+			SUBWF	p_Sample,w
+			MOVWF	n_Sample
+	
+			INCF	p_Index,f
+			MOVLW	ADDRESS_Index
+			SUBWF	p_Index,w
+			MOVWF	n_Index
+	
+			CLRF	_crc_learn
 
-		MOVLW	4
-		ADDWF	p_Sample,f
-		MOVLW	ADDRESS_Sample
-		SUBWF	p_Sample,w
-		MOVWF	n_Sample
 
-		INCF	p_Index,f
-		MOVLW	ADDRESS_Index
-		SUBWF	p_Index,w
-		MOVWF	n_Index
-
-		CLRF	_crc_learn
-
-	;	MOVLW	0
-	;	MOVWF	_LENGTH_h_learn
-	;	MOVFW	n_PartIndexCount
-	;	MOVWF	_LENGTH_l_learn
-		SETDP	00h
-		MOVLW	ADDRESS_PartIndexCount
-		ADDWFC  n_PartIndexCount,W
-		BTFSS	STATUS,C
-		GOTO	$+2
-		SETDP	01h
-		MOVWF	FRS0
-		MOVFW	n_Index
-		MOVWF	p_Index
-		MOVLW	ADDRESS_Index
-		MOVWF	FRS1
+;-----------------------------------------
+; push index after pindex
+;-----------------------------------------
+			SETDP	00h
+			MOVLW	ADDRESS_PartIndexCount
+			ADDWF  n_PartIndexCount,W
+			BTFSS	STATUS,C
+			GOTO	$+2
+			SETDP	01h
+			MOVWF	FRS0
+			MOVFW	n_Index
+			MOVWF	p_Index
+			MOVLW	ADDRESS_Index
+			MOVWF	FRS1
 MOV_INDEX_TO_PART:
-		MOVFW	IND1
-		MOVWF	IND0
-		INCF	FRS1,F
-		INCF	FRS0,F
-		DECFSZ  p_Index,F
-		GOTO	MOV_INDEX_TO_PART
+			MOVFW	IND1
+			MOVWF	IND0
+			INCF	FRS1,F
+			INCF	FRS0,F
+			DECFSZ  p_Index,F
+			GOTO	MOV_INDEX_TO_PART
 
-		MOVFW	n_Index
-		ADDWFC  FRS0,F
-		BTFSS	STATUS,C
-		GOTO	$+2
-		SETDP	01h
-	;	MOVWF	FRS0
-		MOVFW	n_Sample
-		MOVWF	p_Sample
-		MOVLW	ADDRESS_Index
-		SETDP	02h
-		MOVLW	ADDRESS_Sample
-		MOVWF	FRS1
+;-----------------------------------------
+; push sample after index
+;-----------------------------------------
+			MOVFW	n_Sample
+			MOVWF	p_Sample
+			MOVLW	ADDRESS_Index
+			SETDP	02h
+			MOVLW	ADDRESS_Sample
+			MOVWF	FRS1
 MOV_SAMPLE_TO_PART:
-		MOVFW	IND1
-		MOVWF	IND0
-		INCF	FRS1,F
-		INCFSZ	FRS0,F
-		GOTO	$+2
-		SETDP	03h
-		DECFSZ  p_Sample,F
-		GOTO	MOV_SAMPLE_TO_PART
-	;	CALL	Learn_xCal_crc
-/*	    	
-		MOVLW	0
-		MOVWF	_LENGTH_h_learn
-		MOVFW	n_Sample
-		MOVWF	_LENGTH_l_learn
-		SETDP	01h
-		MOVLW	ADDRESS_Sample
-		MOVWF	FRS0
-		CALL	Learn_xCal_crc
-		MOVLW	0
-		MOVWF	_LENGTH_h_learn
-		MOVFW	n_Index
-		MOVWF	_LENGTH_l_learn
-		SETDP	00h
-		MOVLW	ADDRESS_Index
-		MOVWF	FRS0
-		CALL	Learn_xCal_crc
-*/		
-
-		MOVFW	_crc_learn
-		MOVWF	n_Crc
-		GOTO	Learn_OUT
-		;BCF		WDTCTR,3
-
+			MOVFW	IND1
+			MOVWF	IND0
+			INCF	FRS1,F
+			INCFSZ	FRS0,F
+			GOTO	$+2
+			SETDP	03h
+			DECFSZ  p_Sample,F
+			GOTO	MOV_SAMPLE_TO_PART
 		
+			CLRF	_LENGTH_h_learn
+			CLRF	_LENGTH_l_learn
+			MOVFW	n_PartIndexCount
+			ADDWF	_LENGTH_l_learn,F
+			BTFSS	STATUS,C
+			GOTO	$+2
+			INCF	_LENGTH_h_learn,F
+			MOVFW	n_Index
+			ADDWF	_LENGTH_l_learn,F
+			BTFSS	STATUS,C
+			GOTO	$+2
+			INCF	_LENGTH_h_learn,F
+			MOVFW	n_Sample
+			ADDWF	_LENGTH_l_learn,F
+			BTFSS	STATUS,C
+			GOTO	$+2
+			INCF	_LENGTH_h_learn,F
+			MOVFW	_LENGTH_h_learn
+			MOVWF	_CRC_LEN_H
+			MOVFW	_LENGTH_L_learn
+			MOVWF	_CRC_LEN_L
+			SETDP	00h
+			MOVLW	ADDRESS_PartIndexCount
+			MOVWF	FRS0
+			CALL	ET_xCal_crc
+			MOVFW	_CRC_CODE
+			MOVWF	n_Crc
+			MOVLW	31H
+			MOVWF	LEARN_TYPE
+			GOTO	Learn_OK	
 
+
+
+;-----------------------------------------
+; out info
+;-----------------------------------------
 
 Learn_Error:
-		MOVLW	00h
-		MOVWF	_LEARN_FLAG
 		
+		BSF		_LEARN_FLAG,L_DATA
 		SETDP	00h
 		GOTO	SleepMode
 LEARN_ERR_TIMEOUT:
-		MOVLW	00h
-		MOVWF	_LEARN_FLAG
-		BSF		LEARN_ERR,L_TIMEOUT
+		BSF		_LEARN_FLAG,L_TIMEOUT
 		SETDP	00h
 		GOTO	SleepMode
 Learn_OUT:
-		MOVLW	01h
-		MOVWF	_LEARN_FLAG
+		BSF		_LEARN_FLAG,L_OUT
+		SETDP	00h
+		GOTO	SleepMode
+Learn_OK:
 		SETDP	00h
 		GOTO	SleepMode
 

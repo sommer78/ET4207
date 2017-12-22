@@ -126,22 +126,7 @@ Learn_rmt:
 			MOVFW	FreqH
 			SUBWFC	TCOUTAH,W
 			MOVWF	FreqH
-			/*
-			MOVFW	tempL
-			MOVWF	FreqL
-			MOVFW	tempH
-			MOVWF	FreqH
-			BTFSS	temp,2
-			GOTO	$-1
-			BCF		INTE,CAPIE
-			MOVFW	FreqL
-			SUBWF	tempL,W
-			MOVWF	FreqL
-			MOVFW	FreqH
-			SUBWFC	tempH,W
-			MOVWF	FreqH
-			BSF		flag,isCarrierEnd
-			*/
+			
 			BCF		STATUS,C
 			RRF		FreqH,F
 			RRF		FreqL,F

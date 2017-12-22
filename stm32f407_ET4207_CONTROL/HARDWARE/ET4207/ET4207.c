@@ -19,6 +19,8 @@
 
 #define COMPARE_OFFSET 2
 
+#define ET_DEBUG 1
+
 //////////////////////////////////////////////////////////////////////////////////	 
 
 //ET4207 驱动代码	   
@@ -32,7 +34,7 @@ Consumer_IR_T comsumer_ir;
 //#define CONSUMER_IR_CHAR
 /******************************************************/
 /*Funcation: et_xCal_crc                      	        				*/
-/*Input:  	char *ptr	uint32_t len						*/
+/*Input:  	char *ptr	u32 len						*/
 /*Output: 	char crc 	  								 */
 /*Desc: 		get whole ptr data array crc					*/
 
@@ -419,6 +421,101 @@ int et_compress_original_data(Consumer_IR_T consumer_ir ,u8 *et_data) {
 	return length;
 
 }
+
+char ET4003_Learndata_UnCompress(u8 *learn_buffer, u32 *IrBuffer, u16 *freq) {
+    u32 i, m, n;
+    u32 temp;
+    u8 stauts = 1;
+    u8 n_ADDRESS_INDEX_LIST;
+    u8 v_SAMPLING_VALUE_Tmp;
+    u8 v_INDEX_LIST_Tmp;
+    u8 count_total = 200;
+    u8 cycle = learn_buffer[120];
+    u8 ADDRESS_SAMPLING_VALUE[200];
+
+    //u8 FreqL = learn_buffer[121];
+    u8 *ADDRESS_INDEX_VALUE = &learn_buffer[0];
+    u8 *ADDRESS_INDEX_LIST = &learn_buffer[14];
+
+    memset(ADDRESS_SAMPLING_VALUE, 0, 200);
+    //memset(IrBuffer,0x00,sizeof(IrBuffer));
+    for (i = 0; i < 256; i++) {
+        IrBuffer[i] = 0x00;
+    }
+    cycle++;
+
+    temp = (u32) cycle * 4 * 10 / 5;
+    if (temp == 0) {
+//		LOGE("ET4003_Learndata_UnCompress temp equal zero \n");
+        return 0;
+    }
+    *freq = (1000000 * 5) / (cycle * 4);
+    if (*freq == 0) {
+        return 0;
+    }
+    if (count_total != 0xff) {
+        n_ADDRESS_INDEX_LIST = 0;
+        v_SAMPLING_VALUE_Tmp = 0;
+        v_INDEX_LIST_Tmp = 0;
+
+        for (n_ADDRESS_INDEX_LIST = 0; n_ADDRESS_INDEX_LIST != count_total;
+             n_ADDRESS_INDEX_LIST++) {
+            v_INDEX_LIST_Tmp = ADDRESS_INDEX_LIST[n_ADDRESS_INDEX_LIST / 2];
+            if ((n_ADDRESS_INDEX_LIST & 0x01) == 0) {
+                v_INDEX_LIST_Tmp >>= 4;
+            } else {
+                v_INDEX_LIST_Tmp &= 0x0f;
+            }
+
+            if (v_INDEX_LIST_Tmp == 0x0f) {
+                v_SAMPLING_VALUE_Tmp = 0xff;
+            } else {
+                if (v_INDEX_LIST_Tmp == 0x0e) {
+                    v_SAMPLING_VALUE_Tmp = 0x7f;
+                } else {
+                    v_SAMPLING_VALUE_Tmp =
+                            ADDRESS_INDEX_VALUE[v_INDEX_LIST_Tmp];
+                }
+            }
+
+            ADDRESS_SAMPLING_VALUE[n_ADDRESS_INDEX_LIST] = v_SAMPLING_VALUE_Tmp;
+        }
+
+    }
+
+    if ((ADDRESS_SAMPLING_VALUE[0] == 0xff)
+        && (ADDRESS_SAMPLING_VALUE[1] == 0xff)
+        && (ADDRESS_SAMPLING_VALUE[2] == 0xff)
+        && (ADDRESS_SAMPLING_VALUE[3] == 0xff)
+        && (ADDRESS_SAMPLING_VALUE[4] == 0xff)) {
+        return 0;
+    }
+
+    for (count_total = 200, i = 0, n = 0; count_total != 0;
+         count_total--, i++) {
+        if (0 == ADDRESS_SAMPLING_VALUE[i])
+            return 0;
+        m = ADDRESS_SAMPLING_VALUE[i] & 0x7f;
+        if (0x80 == (ADDRESS_SAMPLING_VALUE[i] & 0x80)) {
+            if (0 == stauts) {
+                n++;
+                stauts = 1;
+            }
+
+            IrBuffer[n] += m * 47 * 10 / temp;
+        } else {
+            if (1 == stauts) {
+                n++;
+                stauts = 0;
+            }
+
+            IrBuffer[n] += m * 45 * 10 / temp;
+        }
+    }
+
+    return n + 1;
+}
+
 u8 et4207_UnCompress(u8 *datas, u16 *ircode, u16 *freq) {
     u8  n_Crc;
     u8  n_PartIndexCount;
@@ -426,7 +523,9 @@ u8 et4207_UnCompress(u8 *datas, u16 *ircode, u16 *freq) {
     u8  n_Index;
     u8  n_Freq;
 //    u8 n_flag;
-    int i;
+    u32 i;
+	u8 n_type;
+	u16 data_len;
 
 //    int temp;
     u8 learn_buffer[512];
@@ -446,48 +545,84 @@ u8 et4207_UnCompress(u8 *datas, u16 *ircode, u16 *freq) {
 
     int  n;
     u8 shift = 0x80;
+	data_len = datas[8]+datas[9];
+
 //    u8 crc;
 //    n_flag = datas[10];
     n_Crc = datas[11];
     n_PartIndexCount = datas[12];
     n_Sample = datas[13];
-    n_Index = datas[14];
+    n_Index = datas[14]; 
     n_Freq = datas[15];
+	n_type = datas[1];
+	if(n_type!=0x31){
+		 printf("n_type  error \r\n" );
+        return 0;
+		}
+#ifdef ET_DEBUG
+	 printf("len = %d \r\n  ",data_len );
+
+	 printf("type = %x \r\n  ",n_type );
+
+	 printf("state = %x \r\n  ",datas[10] );
+	 printf("n_PartIndexCount = %d  n_Sample = %d n_Index = %d \r\n",n_PartIndexCount,n_Sample,n_Index );
+#endif
+		
     if((n_Freq>0x3e)&&(n_Freq<0x15)){
-        printf("n_Freq  error" );
+        printf("n_Freq  error \r\n" );
         return 0;
     }
 
-//    n_Freq++;
+
     n_Freq--;
     *freq = 2500000 / n_Freq;
-  //  *freq = n_Freq;
+
     printf("n_Freq = %d \r\n", 2500000 / n_Freq );
+
+	if( n_Crc != xCal_crc(&datas[16], data_len )){
+		   printf("n_Crc  error \r\n" );
+		   return 1;
+	   }
+	
+	if( data_len != n_PartIndexCount + n_Sample + n_Index ){
+			printf("n length  error \r\n" );
+			return 2;
+		}
+
+
 
     for(i=0;i<n_PartIndexCount;i++){
         learn_buffer[i] =datas[i+16];
-     //   LOGD("partIndex[%d] = 0x%x", i,learn_buffer[i] );
+       printf("partIndex[%d] = 0x%02x \r\n", i,learn_buffer[i] );
     }
+   
     for(i=0;i<n_Sample;i++){
-        learn_buffer[n_PartIndexCount+i] =datas[i+192];
-      //  LOGD("n_Sample[%d] = 0x%x", i,learn_buffer[n_PartIndexCount+i] );
+        learn_buffer[n_PartIndexCount+i] =datas[i+16+n_PartIndexCount+n_Index];
+       printf("sample[%d] = 0x%02x \r\n", i,learn_buffer[n_PartIndexCount+i] );
     }
 
-    for(i=0;i<n_Index;i++){
-        learn_buffer[n_PartIndexCount+n_Sample+i] =datas[i+128];
-     //   LOGD("index[%d] = 0x%x", i,learn_buffer[n_PartIndexCount+n_Sample+i] );
-    }
-    //	if( n_Crc != xCal_crc(learn_buffer, n_PartIndexCount + n_Sample + n_Index )) return false;
-//    crc = xCal_crc(learn_buffer, n_PartIndexCount + n_Sample + n_Index );
-//    LOGD("CRC VALUE = %x   %x",crc,n_Crc);
-    if( n_Crc != xCal_crc(learn_buffer, n_PartIndexCount + n_Sample + n_Index )){
-        printf("n_Crc  error" );
-        return 1;
-    }
+	
+	for(i=0;i<n_Index;i++){
+		   learn_buffer[n_PartIndexCount+n_Sample+i] =datas[i+16+n_PartIndexCount];
+		 printf("n_Index[%d] = 0x%02x \r\n", i,learn_buffer[n_PartIndexCount+n_Sample+i] );
+	   }
+	
+   
+
+	
     n = 0;
 	n_PartIndexCount_p = 0;
 	n_Sample_p = n_PartIndexCount;
 	n_Index_p = n_PartIndexCount + n_Sample;
+	
+#ifdef ET_DEBUG
+
+	for(i=0;i<data_len;i++)
+		{
+		printf("0x%02x,",learn_buffer[i]);
+		}
+	printf("\r\n");
+#endif
 
 	PartIndexCount = learn_buffer[n_PartIndexCount_p];
 	Sample0_nHighLevel = 0x00000000;
@@ -500,6 +635,8 @@ u8 et4207_UnCompress(u8 *datas, u16 *ircode, u16 *freq) {
 	Sample1_nLowLevel |= (int) learn_buffer[n_Sample_p + 3];
 
 	dat_temp = learn_buffer[n_Index_p];
+
+	
 	while (PartIndexCount--) {
 		if (0x00 == shift) {
 			n_Index_p++;
@@ -516,16 +653,22 @@ u8 et4207_UnCompress(u8 *datas, u16 *ircode, u16 *freq) {
 				unzip_end = 0;
 				break;
 			}
+			
 		} else {
             ircode[n] = Sample0_nHighLevel;
 			n++;
             ircode[n] = Sample0_nLowLevel * 8 / n_Freq;
             ircode[n]++;
 			n++;
+			if(n>1000){
+				 printf("index out error \r\n" );
+       				 return 2;
+				}
 		}
 		shift >>= 1;
 	}
 	n_PartIndexCount_p++;
+
 
 	while (unzip_end) {
 		PartIndexCount = learn_buffer[n_PartIndexCount_p];
@@ -544,9 +687,15 @@ u8 et4207_UnCompress(u8 *datas, u16 *ircode, u16 *freq) {
 		while (PartIndexCount--) {
 			if (0x00 == shift) {
 				n_Index_p++;
+				
 				dat_temp = learn_buffer[n_Index_p];
 				shift = 0x80;
 			}
+			if(n_Index_p>data_len)
+				{
+					 printf("n_Index_p out error \r\n" );
+       				 return 4;
+				}
 			if (dat_temp & shift) {
                 ircode[n] = Sample1_nHighLevel;
 				n++;
@@ -557,12 +706,20 @@ u8 et4207_UnCompress(u8 *datas, u16 *ircode, u16 *freq) {
 					unzip_end = 0;
 					break;
 				}
+				if(n>1000){
+				 printf("index out error \r\n" );
+       				 return 3;
+				}
 			} else {
                 ircode[n] = Sample0_nHighLevel;
 				n++;
                 ircode[n] = Sample0_nLowLevel * 8 / n_Freq;
                 ircode[n]++;
 				n++;
+				if(n>1000){
+				 printf("index out error \r\n" );
+       				 return 3;
+				}
 			}
 			shift >>= 1;
 		}
@@ -642,11 +799,32 @@ u8 ET4207SendCode(u8 *etcode,int length){
 }
 
 
-u8 ET4207StartLearn(void){
+/**
+  *****************************************************************************
+  * @Name   : ET4207 学习开始
+  *
+  * @Brief  : none
+  *
+  * @Input  : mode:       0为从rmt脚学习红外码 为1从P14学习红外码
+  *           algorithm:   算法 0 为标准不压缩 1为高度压缩 2为简约压缩
+  *
+  * @Output : err:     返回的错误值 0 为成功 
+  *
+  * @Return : none
+  *****************************************************************************
+**/
+
+
+u8 ET4207StartLearn(u8 mode,u8 algorithm){
 	
 	u8 err=0;
-	
-	err = Hard_IIC_WriteNByte(I2C1,ET4207_ADDRESS,_ET4207_CONTROL_START_LEARND_REC_,0,NULL);
+	u8 cmd;
+	cmd = _ET4207_CONTROL_START_LEARND_RMT_;
+	if(mode!=0){
+		cmd |= 0x08;
+		}
+	cmd += algorithm;
+	err = Hard_IIC_WriteNByte(I2C1,ET4207_ADDRESS,cmd,0,NULL);
 	if(err!=0){
 		return err;
 		}
@@ -663,7 +841,7 @@ u8 ET4207ReadCode(u8 *etcode){
 	int length = 440;
 	int i;
 	u16 freq;
-	u16 ircode[128];
+	u16 ircode[1024];
 	u32 irpulse;
 	if(length >440){
 		return 0xf0;
@@ -673,6 +851,12 @@ u8 ET4207ReadCode(u8 *etcode){
 		return err;
 		}
 	
+#ifdef ET_DEBUG
+	for(i=0;i<440;i++){
+		printf("0x%02x,",etcode[i]);
+		}
+		printf("\r\n");
+#endif
 	err =  et4207_UnCompress(etcode, ircode, &freq) ;
 	if(err==1){
 		 printf("crc  error" );

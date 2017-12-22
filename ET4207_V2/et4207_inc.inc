@@ -94,10 +94,11 @@ _index			equ		64
 
 
 I2C_CMD			equ		20h
-
+	isP14		equ	3
+	
 state_flag			equ		21h	
 	isError		equ	0		
-	isLearnP14		equ	1
+	isLearnP14	equ	1
 
 
 FLAG					equ		22h
@@ -107,17 +108,25 @@ FLAG					equ		22h
 	bLearnEnd			equ	3
 	isCmdByte		equ 4
 	isCmdEnd		equ	5
-
-LEARN_ERR		equ 25h
-	L_TIMEOUT	EQU 1
-
-	
 ;-------------------------------------------
 ; Delay time  
 ;-------------------------------------------
 
 DELAYCT0		equ	23h
 DELAYCT1		equ	24h
+
+;-------------------------------------------
+; LEARN MODE 0 
+;-------------------------------------------
+
+LEARN_MODE		equ 25h
+;-------------------------------------------
+; CRC RAM
+;-------------------------------------------
+_CRC_LEN_H		equ 26h
+_CRC_LEN_L		equ 27h	
+_CRC_CODE		equ 28h	
+_CRC_COUNT		equ	47h
 ;-------------------------------------------
 ; version rom  
 ;-------------------------------------------
@@ -149,12 +158,6 @@ DELTA_ABS_L			equ	30h
 DELTA_ABS_H			equ	31h
 
 
-;W_BACKUP			equ	34h
-;STATUS_BACKUP		equ	35h
-
-;pPackPointer			equ	37h
-
-
 
 p_PartIndexCount	equ			32h
 p_Sample			equ			33h
@@ -175,13 +178,21 @@ Sample1_nHighLevel_L	equ	42h
 Sample1_nLowLevel_H		equ	43h
 Sample1_nLowLevel_L		equ	44h
 
+
+LEARN_RESULT			EQU 40H
+LEARN_TYPE				EQU 41H
+
 Index_Bit				equ	45h
 
 _crc_learn				equ	46h
-_learn1					equ	47h
+
 _LENGTH_h_learn			equ	48h
 _LENGTH_l_learn			equ	49h
 _LEARN_FLAG			EQU 4AH
+	L_OUT		EQU 0
+	L_TIMEOUT	EQU 1
+	L_DATA		EQU 2
+	
 n_Crc				equ	4bh
 n_PartIndexCount	equ	4ch
 n_Sample			equ	4dh

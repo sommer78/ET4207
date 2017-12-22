@@ -83,7 +83,7 @@ int main(void)
 
 		//ET4207SendCode(etcode,440);
 		
-		ET4207StartLearn();
+		ET4207StartLearn(1,0);
 		}   
 		if(key==KEY0_PRES)//KEY0╟╢обак
 		{
@@ -93,10 +93,7 @@ int main(void)
 		ET4207ReadCode(etcode);
 		//ET4207ReadVersion(etcode);
 			
-		for(t=0;t<440;t++){
-			printf("0x%02x,",etcode[t]);
-		}
-		printf("\r\n");
+		
 		
 		}   
 		t++;

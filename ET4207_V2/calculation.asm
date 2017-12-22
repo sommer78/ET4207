@@ -1,3 +1,13 @@
+
+
+
+
+
+
+
+
+
+
 xCal_crc:
 			MOVFW	_LENGTH_h
 			MOVWF	_LENGTH_h_temp
@@ -70,48 +80,55 @@ ABS:
 	   MOVLW 0
 	   ADDWFC TMPH,F
 	   RETURN
+;==============================================================
+;crc CALCULATION
+;INPUT FRS0
+;RETURN _CRC_CODE
+;==============================================================
 
-
-Learn_xCal_crc:
-Learn_xCal_crc_loop:
+ET_xCal_crc:
+		CLRF	_CRC_CODE
+ET_xCal_crc_loop:
 		MOVFW	IND0
-		XORWF	_crc_learn,f
+		XORWF	_CRC_CODE,f
 		INCFSZ	FRS0,F
 		GOTO	$+2
 		SETDP	01h
 		MOVLW	8
-		MOVWF	_learn1
-	Learn_xCal_crc_loop_loop_8times:
-		MOVFW	_crc_learn
+		MOVWF	_CRC_COUNT
+ET_xCal_crc_loop_loop_8times:
+		MOVFW	_CRC_CODE
 		ANDLW	01h
 		SUBLW	00h
 		BTFSC	STATUS,Z
-		GOTO	Learn_xCal_crc_loop_8times_reasult_0
-		BCF		STATUS,C
-		RRF		_crc_learn,w
+		GOTO	ET_xCal_crc_loop_8times_reasult_0
+		BCF	STATUS,C
+		RRF	_CRC_CODE,w
 		XORLW	8ch
-		MOVWF	_crc_learn
-		GOTO	Learn_xCal_crc_loop_loop_8times_end
-	Learn_xCal_crc_loop_8times_reasult_0:
+		MOVWF	_CRC_CODE
+		GOTO	ET_xCal_crc_loop_loop_8times_end
+ET_xCal_crc_loop_8times_reasult_0:
 		BCF		STATUS,C
-		RRF		_crc_learn,f
-	Learn_xCal_crc_loop_loop_8times_end:
-		DECFSZ	_learn1,f
-		GOTO	Learn_xCal_crc_loop_loop_8times
+		RRF		_CRC_CODE,f
+ET_xCal_crc_loop_loop_8times_end:
+		DECFSZ	_CRC_COUNT,f
+		GOTO	ET_xCal_crc_loop_loop_8times
 		MOVLW	01h
-		SUBWF	_LENGTH_l_learn,f
+		SUBWF	_CRC_LEN_L,f
 		MOVLW	00h
-		SUBWFC	_LENGTH_h_learn,f
-		MOVFW	_LENGTH_h_learn
+		SUBWFC	_CRC_LEN_H,f
+		MOVFW	_CRC_LEN_H
 		SUBLW	00h
 		BTFSS	STATUS,Z
-		GOTO	Learn_xCal_crc_loop
-		MOVFW	_LENGTH_l_learn
+		GOTO	ET_xCal_crc_loop
+		MOVFW	_CRC_LEN_L
 		SUBLW	00h
 		BTFSS	STATUS,Z
-		GOTO	Learn_xCal_crc_loop
+		GOTO	ET_xCal_crc_loop
 		RETURN
-
+;====================================================
+;;È¡¾ø¶ÔÖµ
+;====================================================
 Neg:
 		BTFSC		Status,C
 		RETURN

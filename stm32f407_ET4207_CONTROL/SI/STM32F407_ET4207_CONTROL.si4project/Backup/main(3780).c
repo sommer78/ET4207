@@ -82,8 +82,8 @@ int main(void)
 				}
 
 		//ET4207SendCode(etcode,440);
-	//	ET4207SendTest();
-		ET4207StartLearn(1,0);
+		//ET4207SendTest();
+		ET4207StartLearn(1,1);
 		}   
 		if(key==KEY0_PRES)//KEY0╟╢обак
 		{
@@ -98,7 +98,7 @@ int main(void)
 		}   
 		t++;
 		delay_ms(10);
-	LED0=1;
+	LED0=0;
 		
 	if(t==20)
 		{

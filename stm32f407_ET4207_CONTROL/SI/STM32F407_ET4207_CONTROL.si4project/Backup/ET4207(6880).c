@@ -981,46 +981,39 @@ int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
 	while (unzip_end) {
 		
 			
-			dIndex = datas[index];
+			dIndex = datas[index++];
 			dIndex = (dIndex>>4)&0x0f;
-		//	printf("index  = %d \r\n",index );
-		//	printf("dIndex  = %d \r\n",dIndex );
             irpluse[n++] = nHighLevel[dIndex];
 		
             irpluse[n++] =(nLowLevel[dIndex] * 8 / n_Freq)  +1;
 			partIndexCount++;
 			if(partIndexCount==allDataIndex){
-				 printf("allDataIndex  out \r\n" );
 				return n;
 				}
 			if (0x0000ffff == nLowLevel[dIndex]) {
-				 printf("nLowLevel  out \r\n" );
 				return n;
 			}
 			if(index>data_len){
 				 printf("data_len  out \r\n" );
 				return n;
 				}
-		
-			dIndex = datas[index];
+
+			dIndex = datas[index++];
 			dIndex = (dIndex)&0x0f;
-		//	printf("dIndex  = %d \r\n",dIndex );
             irpluse[n++] = nHighLevel[dIndex];
             irpluse[n++] =(nLowLevel[dIndex] * 8 / n_Freq)  +1;
 			partIndexCount++;
 			if(partIndexCount==allDataIndex){
-				 printf("allDataIndex  out \r\n" );
 				return n;
 				}
 			if (0x0000ffff == nLowLevel[dIndex]) {
-				 printf("nLowLevel  out \r\n" );
 				return n;
 			}
 			if(index>data_len){
 				 printf("data_len  out \r\n" );
 				return n;
 				}
-			index++;
+			
 			
 		
 	}

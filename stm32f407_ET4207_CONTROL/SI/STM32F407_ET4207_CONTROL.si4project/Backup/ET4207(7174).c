@@ -793,7 +793,7 @@ int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
 	u8	t_crc;
 
 
-    //u8 PartIndexCount;
+    u8 PartIndexCount;
   
 	int index;
     int  n;
@@ -848,8 +848,9 @@ int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
 	
     n = 0;
 
+
 	
-	while (n_Index--) {
+	while (PartIndexCount--) {
 		
 			
 			nHighLevel = (u16) datas[index++];
@@ -877,158 +878,6 @@ int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
 
 	return n;
 }
-
-
-
-/******************************************************/
-/*Funcation: et4207_UnCompress_normal                        	        */
-/*Input:  	u8 array datas			   */
-/*Output: 	state < 0 error u16 freq u16 array irpluse	   */
-/*Desc: 	translate original consumerit data to ET compress data	   */
-
-/******************************************************/
-
-int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
-    u8  n_Crc;
-    u8  n_Index;
-    u8  n_Freq;
-//    u8 n_flag;
-
-	u8 n_type;
-	u16 data_len;
-
-    u8 unzip_end = 1;
-	u8	t_crc;
-
-
-    u16 partIndexCount;
-  
-	int index;
-    int  n;
-	int i;
-	int sIndex;
-	u8 dIndex;
-	u16 allDataIndex;
-
-	u16 nHighLevel[16] ;
-	u16 nLowLevel[16] ;
-
-	data_len = (u16)(datas[8]*256+datas[9]);
-	allDataIndex = (u16)(datas[2]*256+datas[3]);
-//    u8 crc;
-//    n_flag = datas[10];
-    n_Crc = datas[11];
-  
-    n_Index = datas[14]; 
-    n_Freq = datas[15];
-	n_type = datas[1];
-	if(n_type!=0x32){
-		 printf("n_type  error \r\n" );
-        return -1;
-		}
-#ifdef ET_DEBUG
-	 printf("len = %d \r\n  ",data_len );
-	 printf("allDataIndex = %d \r\n	",allDataIndex );
-
-
-	 printf("type = %x \r\n  ",n_type );
-
-	 printf("state = %x \r\n  ",datas[10] );
-	 printf(" n_Index = %d \r\n",n_Index );
-#endif
-		
-    if((n_Freq>0x3e)&&(n_Freq<0x15)){
-        printf("n_Freq  error \r\n" );
-        return -2;
-    }
-
-	index = 16;
-
-    n_Freq--;
-    *freq = 2500000 / n_Freq;
-
-    printf("n_Freq = %d \r\n", 2500000 / n_Freq );
-	t_crc = xCal_crc(&datas[16], data_len );
-	printf("code crc  =%x \r\n",t_crc );
-
-	if( n_Crc != t_crc){
-		   printf("n_Crc  error \r\n" );
-		   return -3;
-	   }
-	
-
-	if(n_Index>16){
-		 printf("n_Index  error \r\n" );
-        return -4;
-		}
-
-	for( sIndex=0; sIndex<n_Index;sIndex++){
-		nHighLevel[sIndex] = (u16) datas[index++];
-		nHighLevel[sIndex] <<= 8;
-		nHighLevel[sIndex] |= (u16) datas[index++];
-		nLowLevel[sIndex] = (u16) datas[index++];
-		nLowLevel[sIndex] <<= 8;
-		nLowLevel[sIndex] |= (u16) datas[index++];
-		 printf("sample[%d] nHighLevel = %d nLowLevel = %d  \r\n",sIndex, nHighLevel[sIndex],nLowLevel[sIndex] );
-	//	nLowLevel[sIndex] = (nLowLevel[sIndex] * 8 / n_Freq)  +1;
-		}
-	data_len += 16;
-    n = 0;
-
-	partIndexCount = 0;
-
-	
-	while (unzip_end) {
-		
-			
-			dIndex = datas[index];
-			dIndex = (dIndex>>4)&0x0f;
-		//	printf("index  = %d \r\n",index );
-		//	printf("dIndex  = %d \r\n",dIndex );
-            irpluse[n++] = nHighLevel[dIndex];
-		
-            irpluse[n++] =(nLowLevel[dIndex] * 8 / n_Freq)  +1;
-			partIndexCount++;
-			if(partIndexCount==allDataIndex){
-				 printf("allDataIndex  out \r\n" );
-				return n;
-				}
-			if (0x0000ffff == nLowLevel[dIndex]) {
-				 printf("nLowLevel  out \r\n" );
-				return n;
-			}
-			if(index>data_len){
-				 printf("data_len  out \r\n" );
-				return n;
-				}
-		
-			dIndex = datas[index];
-			dIndex = (dIndex)&0x0f;
-		//	printf("dIndex  = %d \r\n",dIndex );
-            irpluse[n++] = nHighLevel[dIndex];
-            irpluse[n++] =(nLowLevel[dIndex] * 8 / n_Freq)  +1;
-			partIndexCount++;
-			if(partIndexCount==allDataIndex){
-				 printf("allDataIndex  out \r\n" );
-				return n;
-				}
-			if (0x0000ffff == nLowLevel[dIndex]) {
-				 printf("nLowLevel  out \r\n" );
-				return n;
-			}
-			if(index>data_len){
-				 printf("data_len  out \r\n" );
-				return n;
-				}
-			index++;
-			
-		
-	}
-	
-
-	return n;
-}
-
 
 
 //初始化IIC接口
@@ -1149,22 +998,11 @@ u8 ET4207StartLearn(u8 mode,u8 algorithm){
 
 }
 
-void printIrFormat(u16 *irpulse,int len){
-	int i = 0;
-	for(i=0;i<len;i++){
-		if(i%2==1){
-			printf("L%d\r\n",irpulse[i]);
-			}else{
-			printf("H%d\r\n",irpulse[i]);
-				}
-		}
-	
-}
 
 
 u8 ET4207ReadCode(u8 *etcode){
 	
-	int len=0;
+	int err=0;
 	int length = 440;
 	int i;
 	u16 freq;
@@ -1173,63 +1011,42 @@ u8 ET4207ReadCode(u8 *etcode){
 	if(length >440){
 		return 0xf0;
 		}
-	len = Hard_IIC_PageRead(I2C1,ET4207_ADDRESS,_ET4207_CONTROL_READ_CODE_,length,etcode);
-	if(len!=0){
-		return len;
+	err = Hard_IIC_PageRead(I2C1,ET4207_ADDRESS,_ET4207_CONTROL_READ_CODE_,length,etcode);
+	if(err!=0){
+		return err;
 		}
 	
 #ifdef ET_DEBUG
-	for(i=16;i<304;i++){
-	//	printf("	RETLW 0%02xH ; %d \r\n",etcode[i],i-16);
+	for(i=0;i<440;i++){
+		printf("0x%02x,",etcode[i]);
 		}
-	
+		printf("\r\n");
 #endif
-	len =  et4207_UnCompress_zip(etcode, ircode, &freq) ;
+	err =  et4207_UnCompress_zip(etcode, ircode, &freq) ;
 	
-	if(len>0){
-		for(i=0;i<len;i++){
+	if(err>0){
+		for(i=0;i<err;i++){
 			 irpulse = (u32)ircode[i] *1000000/freq;
 			 printf("%d,",irpulse);
 			}
 		 printf("\r\n" );
 		}else {
-		 printf("learn err =  %d",len);
+		 printf("learn err =  %d",err);
 			}
 		
 
-	len =  et4207_UnCompress_normal(etcode, ircode, &freq) ;
+	err =  et4207_UnCompress_normal(etcode, ircode, &freq) ;
 	
-	if(len>0){
-		for(i=0;i<len;i++){
+	if(err>0){
+		for(i=0;i<err;i++){
 			 irpulse = (u32)ircode[i] *1000000/freq;
 			 printf("%d,",irpulse);
 			}
 		}else {
-		 printf("learn err =  %d",len);
+		 printf("learn err =  %d",err);
 			}
 		 printf("\r\n" );
-		
-	len =  et4207_UnCompress_ZIP2(etcode, ircode, &freq) ;
-	
-	if(len>0){
-		for(i=0;i<len;i++){
-			 irpulse = (u32)ircode[i] *1000000/freq;
-			 if(i%2==1){
-				printf("L%d\r\n",irpulse);
-				}else{
-				printf("H%d\r\n",irpulse);
-				}
-			}
-		}else {
-		 printf("learn err =  %d",len);
-			}
-		
-	
-
-
-
-		 
-	return len;
+	return err;
 
 }
 

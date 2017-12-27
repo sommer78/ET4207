@@ -26,8 +26,6 @@ typedef struct {
 
 void ET4207_Init(void); //≥ı ºªØIIC
 
-u8 ET4207SendTest(void);
-
 
 u8 ET4207SendCode(u8 *etcode,int length);
 

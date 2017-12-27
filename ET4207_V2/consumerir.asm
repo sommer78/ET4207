@@ -3,23 +3,46 @@ CONSUMERIR_START:
 		MOVLW          0002H        
 		SUBWFC         _LENGTH_h,w 
 		BTFSC	STATUS,c
-		GOTO	SleepMode
-		CALL	xCal_crc
-		MOVFW	_crc_temp
+		GOTO	Send_len_err
+		MOVFW	_LENGTH_h
+		MOVWF	_CRC_LEN_H
+		MOVFW	_LENGTH_l
+		MOVWF	_CRC_LEN_L
+		MOVLW	10
+		SUBWF	_CRC_LEN_L,f
+		MOVLW	0
+		SUBWFC	_CRC_LEN_H,f
+		SETDP	00h
+		MOVLW	POINTER0
+		MOVWF	FRS0
+		CALL	ET_xCal_crc
+	;	CALL	xCal_crc
+		MOVFW	_CRC_CODE
 		SUBWF	_CRC,w
 		BTFSS	STATUS,Z
-		GOTO	SleepMode
+		GOTO	Send_crc_err
 		GOTO	CONSUMERIR_REMOTE
 TIANJIA_START:
 		MOVLW          0002H        
 		SUBWFC         _LENGTH_h,w 
 		BTFSC	STATUS,c
-		GOTO	SleepMode
-		CALL	xCal_crc
-		MOVFW	_crc_temp
+		GOTO	Send_len_err
+		MOVFW	_LENGTH_h
+		MOVWF	_CRC_LEN_H
+		MOVFW	_LENGTH_l
+		MOVWF	_CRC_LEN_L
+		MOVLW	10
+		SUBWF	_CRC_LEN_L,f
+		MOVLW	0
+		SUBWFC	_CRC_LEN_H,f
+		SETDP	00h
+		MOVLW	POINTER0
+		MOVWF	FRS0
+		CALL	ET_xCal_crc
+		MOVFW	_CRC_CODE
 		SUBWF	_CRC,w
 		BTFSS	STATUS,Z
-		GOTO	SleepMode
+		GOTO	Send_crc_err
 TIANJIA000:
       CLRWDT 
 	  MOVLW          003FH        
@@ -84,7 +107,7 @@ TIANJIA005:
       MOVFW          tianjia_temp5        
       XORLW          00D5H        
       MOVWF          tianjia_temp5  
-      TIANJIA003:      
+TIANJIA003:      
       MOVFW          IND0        
       XORWF          tianjia_temp5,W      
       MOVWF          IND0        
@@ -92,8 +115,7 @@ TIANJIA005:
       INCFSZ         FRS0,F      
       GOTO               TIANJIA004    
       SETDP          0001H   
-      TIANJIA004:    
-  
+TIANJIA004:    
       MOVLW          0001H        
       ADDWF          nWriteByteCount_l,F      
       MOVLW          0000H        
@@ -107,11 +129,12 @@ TIANJIA005:
       BTFSS          STATUS,Z      
       GOTO              TIANJIA005     
       CLRWDT   
-	  TIANJIAEND:   
+TIANJIAEND:   
 
 
 ;CONSUMERIR remote sender CONSUMERIR protol
 CONSUMERIR_REMOTE:
+			CLRF		_FORM_h
 			BSF		PWMCON,PWM_PORT_SEL_1
 			BSF		PWMCON,TCOUTA_DIR			;TCOUTA_DIR写1是8位递减计数
 			BCF		STATUS,C
@@ -287,167 +310,14 @@ CONSUMERIR_Decode_end:
 			
 
 
+Send_len_err:
+			BSF	_FORM_h,0
+			GOTO	SleepMode
 
+Send_crc_err:
+			BSF	_FORM_h,1
+			GOTO	SleepMode
 
-;Base time including carrier
-Timer_Delay_Base:
-			MOVFW	DELAYCT1
-			ADDPCW
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			RETURN
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			RETURN
-
-
-
-
-			
-	
 
 
 

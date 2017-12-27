@@ -79,8 +79,11 @@ WriteCode1:
 ;		MOVFW	IND0
 */
 		GOTO	GetAddressIndex	
+
 WriteEnd:
 		BSF	FLAG,isCmdEnd
+		BSF	FLAG,isSend
+		
 		SETDP	00h
 		GOTO	I2cInterruptEnd	
 		

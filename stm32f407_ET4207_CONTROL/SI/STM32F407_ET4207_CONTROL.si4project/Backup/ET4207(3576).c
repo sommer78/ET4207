@@ -31,31 +31,7 @@ u8	 send_etcode[]  ={0x54, 0x00 ,0x83 ,0x20 ,0x00 ,0x72 ,0x00 ,0x00 ,0x01 ,0xca 
 		  0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00,
 		  0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x01 ,0x12 ,0x22 ,0x12 ,0x21 ,0x12 ,0x12 ,0x21 ,0x12 ,0x11 ,0x22 ,0x12,
 		  0x21 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x12 ,0x22 ,0x22 ,0x12 ,0x22 ,0x21 ,0x21 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x21 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22,
-		  0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x12 ,0x22 ,0x22 ,0x13 };
-
-u8 normal_learn[] = {0x56,0x30,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x30,0x00,0x14,0x00,0x00,0x4c,0x43,0x01,
-	0x40,0x05,0x0e,0x00,0x14,0x01,0xde,0x00,0x14,0x00,0x94,0x00,0x14,0x00,0x94,0x00,0x14,0x00,0x95,0x00,0x14,
-	0x00,0x94,0x00,0x14,0x00,0x95,0x00,0x14,0x00,0x96,0x00,0x14,0x00,0x95,0x00,0x14,0x05,0x0e,0x00,0x14,0x00,
-	0x95,0x00,0x14,0x01,0xdd,0x00,0x14,0x01,0xdd,0x00,0x14,0x01,0xdd,0x00,0x14,0x00,0x95,0x00,0x14,0x00,0x95,
-	0x00,0x14,0x00,0x96,0x00,0x14,0x00,0x95,0x00,0x14,0x1d,0x77,0x01,0x40,0x05,0x0d,0x00,0x14,0x01,0xde,0x00,
-	0x14,0x00,0x95,0x00,0x14,0x00,0x95,0x00,0x14,0x00,0x94,0x00,0x14,0x00,0x94,0x00,0x14,0x00,0x96,0x00,0x14,
-	0x00,0x95,0x00,0x14,0x00,0x95,0x00,0x14,0x05,0x0f,0x00,0x14,0x00,0x96,0x00,0x14,0x01,0xde,0x00,0x14,0x01,
-	0xdd,0x00,0x14,0x01,0xdd,0x00,0x14,0x00,0x95,0x00,0x14,0x00,0x96,0x00,0x14,0x00,0x95,0x00,0x14,0x00,0x95,
-	0x00,0x14,0x1d,0x77,0x01,0x40,0x05,0x0d,0x00,0x14,0x01,0xdd,0x00,0x14,0x00,0x95,0x00,0x14,0x00,0x96,0x00,
-	0x14,0x00,0x95,0x00,0x14,0x00,0x95,0x00,0x14,0x00,0x96,0x00,0x14,0x00,0x96,0x00,0x14,0x00,0x95,0x00,0x14,
-	0x05,0x0e,0x00,0x14,0x00,0x95,0x00,0x14,0x01,0xdd,0x00,0x14,0x01,0xde,0x00,0x14,0x01,0xde,0x00,0x14,0x00,
-	0x95,0x00,0x14,0x00,0x95,0x00,0x14,0x00,0x96,0x00,0x14,0x00,0x95,0x00,0x14,0x1d,0x76,0x01,0x40,0x05,0x0e,
-	0x00,0x14,0x01,0xde,0x00,0x14,0x00,0x95,0x00,0x14,0x00,0x95,0x00,0x14,0x00,0x96,0x00,0x14,0x00,0x95,0x00,
-	0x14,0x00,0x95,0x00,0x14,0x00,0x96,0x00,0x14,0x00,0x95,0x00,0x14,0x05,0x0f,0x00,0x14,0x00,0x96,0x00,0x14,
-	0x01,0xde,0x00,0x14,0x01,0xde,0x00,0x14,0x01,0xde,0x00,0x14,0x00,0x95,0x00,0x14,0x00,0x95,0x00,0x14,0x00,
-	0x94,0x00,0x14,0x00,0x94,0x00,0x14,0xff,0xff,};
-
-u8 nec6122[]= {0x54,0x00,0x5c,0x20,0x00,0x24,0x00,0x00,0x01,0xaf,0x01,0x5d,0x00,0xab,0x00,0x17,
-0x00,0x14,0x00,0x16,0x00,0x3f,0x00,0x17,0x06,0x2d,0x01,0x5d,0x00,0x55,0x00,0x17,
-0x1e,0x06,0x00,0x46,0x0f,0x02,0x00,0x16,0x0f,0x03,0x00,0x00,0x00,0x00,0x00,0x00,
-0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x11,0x11,0x11,0x12,0x22,
-0x22,0x21,0x22,0x12,0x21,0x12,0x11,0x21,0x12,0x21,0x23,0x45};
+		  0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x22 ,0x12 ,0x22 ,0x22 ,0x13,0x00 };
 
 Consumer_IR_T comsumer_ir;
 
@@ -451,10 +427,6 @@ int et_compress_original_data(Consumer_IR_T consumer_ir ,u8 *et_data) {
 
 }
 
-
-
-
-
 char ET4003_Learndata_UnCompress(u8 *learn_buffer, u32 *IrBuffer, u16 *freq) {
     u32 i, m, n;
     u32 temp;
@@ -549,17 +521,7 @@ char ET4003_Learndata_UnCompress(u8 *learn_buffer, u32 *IrBuffer, u16 *freq) {
     return n + 1;
 }
 
-
-
-/******************************************************/
-/*Funcation: et4207_UnCompress_zip                        	        */
-/*Input:  	u8 array datas			   */
-/*Output: 	state < 0 error u16 freq u16 array irpluse	   */
-/*Desc: 	translate original consumerit data to ET compress data	   */
-
-/******************************************************/
-
-int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
+int et4207_UnCompress(u8 *datas, u16 *ircode, u16 *freq) {
     u8  n_Crc;
     u8  n_PartIndexCount;
     u8  n_Sample;
@@ -577,10 +539,10 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
     u8 dat_temp;
 
     u8 PartIndexCount;
-    u16 Sample0_nHighLevel;
-    u16 Sample0_nLowLevel;
-    u16 Sample1_nHighLevel;
-    u16 Sample1_nLowLevel;
+    int Sample0_nHighLevel;
+    int Sample0_nLowLevel;
+    int Sample1_nHighLevel;
+    int Sample1_nLowLevel;
 
     u8 n_PartIndexCount_p;
     u8 n_Sample_p;
@@ -588,7 +550,7 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
 
     int  n;
     u8 shift = 0x80;
-	data_len = (u16)(datas[8]*256+datas[9]);
+	data_len = datas[8]+datas[9];
 
 //    u8 crc;
 //    n_flag = datas[10];
@@ -687,10 +649,10 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
 			shift = 0x80;
 		}
 		if (dat_temp & shift) {
-            irpluse[n] = Sample1_nHighLevel;
+            ircode[n] = Sample1_nHighLevel;
 			n++;
-            irpluse[n] = Sample1_nLowLevel * 8 / n_Freq;
-            irpluse[n]++;
+            ircode[n] = Sample1_nLowLevel * 8 / n_Freq;
+            ircode[n]++;
 			n++;
 			if (0x0000ffff == Sample1_nLowLevel) {
 				unzip_end = 0;
@@ -698,10 +660,10 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
 			}
 			
 		} else {
-            irpluse[n] = Sample0_nHighLevel;
+            ircode[n] = Sample0_nHighLevel;
 			n++;
-            irpluse[n] = Sample0_nLowLevel * 8 / n_Freq;
-            irpluse[n]++;
+            ircode[n] = Sample0_nLowLevel * 8 / n_Freq;
+            ircode[n]++;
 			n++;
 			if(n>1000){
 				 printf("index out error \r\n" );
@@ -740,10 +702,10 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
        				 return -6;
 				}
 			if (dat_temp & shift) {
-                irpluse[n] = Sample1_nHighLevel;
+                ircode[n] = Sample1_nHighLevel;
 				n++;
-                irpluse[n] = Sample1_nLowLevel * 8 / n_Freq;
-                irpluse[n]++;
+                ircode[n] = Sample1_nLowLevel * 8 / n_Freq;
+                ircode[n]++;
 				n++;
 				if (0x0000ffff == Sample1_nLowLevel) {
 					unzip_end = 0;
@@ -754,10 +716,10 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
        				 return -7;
 				}
 			} else {
-                irpluse[n] = Sample0_nHighLevel;
+                ircode[n] = Sample0_nHighLevel;
 				n++;
-                irpluse[n] = Sample0_nLowLevel * 8 / n_Freq;
-                irpluse[n]++;
+                ircode[n] = Sample0_nLowLevel * 8 / n_Freq;
+                ircode[n]++;
 				n++;
 				if(n>1000){
 				 printf("index out error \r\n" );
@@ -769,263 +731,6 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
 		n_PartIndexCount_p++;
 		n_Sample_p += 4;
 	}
-	return n;
-}
-
-/******************************************************/
-/*Funcation: et4207_UnCompress_normal                        	        */
-/*Input:  	u8 array datas			   */
-/*Output: 	state < 0 error u16 freq u16 array irpluse	   */
-/*Desc: 	translate original consumerit data to ET compress data	   */
-
-/******************************************************/
-
-int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
-    u8  n_Crc;
-    u8  n_Index;
-    u8  n_Freq;
-//    u8 n_flag;
-
-	u8 n_type;
-	u16 data_len;
-
-    
-	u8	t_crc;
-
-
-    //u8 PartIndexCount;
-  
-	int index;
-    int  n;
-
-	u16 nHighLevel ;
-	u16 nLowLevel ;
-
-	data_len = (u16)(datas[8]*256+datas[9]);
-	
-//    u8 crc;
-//    n_flag = datas[10];
-    n_Crc = datas[11];
-  
-    n_Index = datas[14]; 
-    n_Freq = datas[15];
-	n_type = datas[1];
-	if(n_type!=0x30){
-		 printf("n_type  error \r\n" );
-        return -1;
-		}
-#ifdef ET_DEBUG
-	 printf("len = %d \r\n  ",data_len );
-
-	 printf("type = %x \r\n  ",n_type );
-
-	 printf("state = %x \r\n  ",datas[10] );
-	 printf(" n_Index = %d \r\n",n_Index );
-#endif
-		
-    if((n_Freq>0x3e)&&(n_Freq<0x15)){
-        printf("n_Freq  error \r\n" );
-        return -2;
-    }
-
-	index = 16;
-
-    n_Freq--;
-    *freq = 2500000 / n_Freq;
-
-    printf("n_Freq = %d \r\n", 2500000 / n_Freq );
-	t_crc = xCal_crc(&datas[16], data_len );
-	printf("code crc  =%x \r\n",t_crc );
-
-	if( n_Crc != t_crc){
-		   printf("n_Crc  error \r\n" );
-		   return -3;
-	   }
-	
-
-
-
-	
-    n = 0;
-
-	
-	while (n_Index--) {
-		
-			
-			nHighLevel = (u16) datas[index++];
-			nHighLevel <<= 8;
-			nHighLevel |= (u16) datas[index++];
-			nLowLevel = (u16) datas[index++];
-			nLowLevel <<= 8;
-			nLowLevel |= (u16) datas[index++];
-		
-            irpluse[n] = nHighLevel;
-			n++;
-            irpluse[n] =(nLowLevel * 8 / n_Freq)  +1;
-			n++;
-			if (0x0000ffff == nLowLevel) {
-				return n;
-			}
-			if(index>data_len){
-				 printf("data_len  out \r\n" );
-				return n;
-				}
-			
-		
-	}
-	
-
-	return n;
-}
-
-
-
-/******************************************************/
-/*Funcation: et4207_UnCompress_normal                        	        */
-/*Input:  	u8 array datas			   */
-/*Output: 	state < 0 error u16 freq u16 array irpluse	   */
-/*Desc: 	translate original consumerit data to ET compress data	   */
-
-/******************************************************/
-
-int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
-    u8  n_Crc;
-    u8  n_Index;
-    u8  n_Freq;
-//    u8 n_flag;
-
-	u8 n_type;
-	u16 data_len;
-
-    u8 unzip_end = 1;
-	u8	t_crc;
-
-
-    u16 partIndexCount;
-  
-	int index;
-    int  n;
-	int i;
-	int sIndex;
-	u8 dIndex;
-	u16 allDataIndex;
-
-	u16 nHighLevel[16] ;
-	u16 nLowLevel[16] ;
-
-	data_len = (u16)(datas[8]*256+datas[9]);
-	allDataIndex = (u16)(datas[2]*256+datas[3]);
-//    u8 crc;
-//    n_flag = datas[10];
-    n_Crc = datas[11];
-  
-    n_Index = datas[14]; 
-    n_Freq = datas[15];
-	n_type = datas[1];
-	if(n_type!=0x32){
-		 printf("n_type  error \r\n" );
-        return -1;
-		}
-#ifdef ET_DEBUG
-	 printf("len = %d \r\n  ",data_len );
-	 printf("allDataIndex = %d \r\n	",allDataIndex );
-
-
-	 printf("type = %x \r\n  ",n_type );
-
-	 printf("state = %x \r\n  ",datas[10] );
-	 printf(" n_Index = %d \r\n",n_Index );
-#endif
-		
-    if((n_Freq>0x3e)&&(n_Freq<0x15)){
-        printf("n_Freq  error \r\n" );
-        return -2;
-    }
-
-	index = 16;
-
-    n_Freq--;
-    *freq = 2500000 / n_Freq;
-
-    printf("n_Freq = %d \r\n", 2500000 / n_Freq );
-	t_crc = xCal_crc(&datas[16], data_len );
-	printf("code crc  =%x \r\n",t_crc );
-
-	if( n_Crc != t_crc){
-		   printf("n_Crc  error \r\n" );
-		   return -3;
-	   }
-	
-
-	if(n_Index>16){
-		 printf("n_Index  error \r\n" );
-        return -4;
-		}
-
-	for( sIndex=0; sIndex<n_Index;sIndex++){
-		nHighLevel[sIndex] = (u16) datas[index++];
-		nHighLevel[sIndex] <<= 8;
-		nHighLevel[sIndex] |= (u16) datas[index++];
-		nLowLevel[sIndex] = (u16) datas[index++];
-		nLowLevel[sIndex] <<= 8;
-		nLowLevel[sIndex] |= (u16) datas[index++];
-		 printf("sample[%d] nHighLevel = %d nLowLevel = %d  \r\n",sIndex, nHighLevel[sIndex],nLowLevel[sIndex] );
-	//	nLowLevel[sIndex] = (nLowLevel[sIndex] * 8 / n_Freq)  +1;
-		}
-	data_len += 16;
-    n = 0;
-
-	partIndexCount = 0;
-
-	
-	while (unzip_end) {
-		
-			
-			dIndex = datas[index];
-			dIndex = (dIndex>>4)&0x0f;
-		//	printf("index  = %d \r\n",index );
-		//	printf("dIndex  = %d \r\n",dIndex );
-            irpluse[n++] = nHighLevel[dIndex];
-		
-            irpluse[n++] =(nLowLevel[dIndex] * 8 / n_Freq)  +1;
-			partIndexCount++;
-			if(partIndexCount==allDataIndex){
-				 printf("allDataIndex  out \r\n" );
-				return n;
-				}
-			if (0x0000ffff == nLowLevel[dIndex]) {
-				 printf("nLowLevel  out \r\n" );
-				return n;
-			}
-			if(index>data_len){
-				 printf("data_len  out \r\n" );
-				return n;
-				}
-		
-			dIndex = datas[index];
-			dIndex = (dIndex)&0x0f;
-		//	printf("dIndex  = %d \r\n",dIndex );
-            irpluse[n++] = nHighLevel[dIndex];
-            irpluse[n++] =(nLowLevel[dIndex] * 8 / n_Freq)  +1;
-			partIndexCount++;
-			if(partIndexCount==allDataIndex){
-				 printf("allDataIndex  out \r\n" );
-				return n;
-				}
-			if (0x0000ffff == nLowLevel[dIndex]) {
-				 printf("nLowLevel  out \r\n" );
-				return n;
-			}
-			if(index>data_len){
-				 printf("data_len  out \r\n" );
-				return n;
-				}
-			index++;
-			
-		
-	}
-	
-
 	return n;
 }
 
@@ -1084,9 +789,7 @@ void ET4207_Init(void)
 u8 ET4207SendTest(void){
 	
 	u8 err=0;
-
-	//	err =	ET4207SendCode(send_etcode,sizeof(send_etcode));
-	err =	ET4207SendCode(normal_learn,sizeof(normal_learn));
+	err =	ET4207SendCode(send_etcode,sizeof(send_etcode));
 	return err;
 
 }
@@ -1149,22 +852,11 @@ u8 ET4207StartLearn(u8 mode,u8 algorithm){
 
 }
 
-void printIrFormat(u16 *irpulse,int len){
-	int i = 0;
-	for(i=0;i<len;i++){
-		if(i%2==1){
-			printf("L%d\r\n",irpulse[i]);
-			}else{
-			printf("H%d\r\n",irpulse[i]);
-				}
-		}
-	
-}
 
 
 u8 ET4207ReadCode(u8 *etcode){
 	
-	int len=0;
+	u8 err=0;
 	int length = 440;
 	int i;
 	u16 freq;
@@ -1173,63 +865,29 @@ u8 ET4207ReadCode(u8 *etcode){
 	if(length >440){
 		return 0xf0;
 		}
-	len = Hard_IIC_PageRead(I2C1,ET4207_ADDRESS,_ET4207_CONTROL_READ_CODE_,length,etcode);
-	if(len!=0){
-		return len;
+	err = Hard_IIC_PageRead(I2C1,ET4207_ADDRESS,_ET4207_CONTROL_READ_CODE_,length,etcode);
+	if(err!=0){
+		return err;
 		}
 	
 #ifdef ET_DEBUG
-	for(i=16;i<304;i++){
-	//	printf("	RETLW 0%02xH ; %d \r\n",etcode[i],i-16);
+	for(i=0;i<440;i++){
+		printf("0x%02x,",etcode[i]);
 		}
-	
+		printf("\r\n");
 #endif
-	len =  et4207_UnCompress_zip(etcode, ircode, &freq) ;
+	err =  et4207_UnCompress(etcode, ircode, &freq) ;
 	
-	if(len>0){
-		for(i=0;i<len;i++){
-			 irpulse = (u32)ircode[i] *1000000/freq;
-			 printf("%d,",irpulse);
-			}
-		 printf("\r\n" );
-		}else {
-		 printf("learn err =  %d",len);
-			}
-		
-
-	len =  et4207_UnCompress_normal(etcode, ircode, &freq) ;
-	
-	if(len>0){
-		for(i=0;i<len;i++){
+	if(err>0){
+		for(i=0;i<err;i++){
 			 irpulse = (u32)ircode[i] *1000000/freq;
 			 printf("%d,",irpulse);
 			}
 		}else {
-		 printf("learn err =  %d",len);
+		 printf("learn err =  %d",err);
 			}
 		 printf("\r\n" );
-		
-	len =  et4207_UnCompress_ZIP2(etcode, ircode, &freq) ;
-	
-	if(len>0){
-		for(i=0;i<len;i++){
-			 irpulse = (u32)ircode[i] *1000000/freq;
-			 if(i%2==1){
-				printf("L%d\r\n",irpulse);
-				}else{
-				printf("H%d\r\n",irpulse);
-				}
-			}
-		}else {
-		 printf("learn err =  %d",len);
-			}
-		
-	
-
-
-
-		 
-	return len;
+	return err;
 
 }
 

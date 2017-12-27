@@ -5,7 +5,7 @@
 
 
 
-
+/*
 
 
 xCal_crc:
@@ -51,14 +51,7 @@ xCal_crc_loop_loop_8times_end:
 			SUBWF	_LENGTH_l_temp,f
 			MOVLW	00h
 			SUBWFC	_LENGTH_h_temp,f
-			/*
-			MOVLW	118
-			SUBWF	_LENGTH_l_temp,w
-			MOVLW	0
-			SUBWFC	_LENGTH_h_temp,w
-			BTFSC	STATUS,C
-			SETDP	01h
-			*/
+		
 			MOVFW	_LENGTH_h_temp
 			SUBLW	00h
 			BTFSS	STATUS,Z
@@ -68,18 +61,11 @@ xCal_crc_loop_loop_8times_end:
 			BTFSS	STATUS,Z
 			GOTO	xCal_crc_loop
 			RETURN
-
+*/
 ;--------------------
 ;;È¡¾ø¶ÔÖµ
 ;-----------------------
-ABS:  
-       COMF   TMPL,F
-       COMF   TMPH,F
-       MOVLW  1
-	   ADDWF TMPL,F
-	   MOVLW 0
-	   ADDWFC TMPH,F
-	   RETURN
+
 ;==============================================================
 ;crc CALCULATION
 ;INPUT FRS0
@@ -139,7 +125,3 @@ Neg:
 		MOVLW		0
 		ADDWFC		DELTA_ABS_H,f
 		RETURN
-
-
-
-

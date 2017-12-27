@@ -22,13 +22,15 @@ include et4207_inc.inc
 	include delay.asm
 	include	learn_rmt.asm
 	include	learn_rmt_normal.asm
+	include	learn_rmt_zip2.asm
 	include consumerir.asm
 	include i2c_cmd_protocol.asm
 	include peripheral.asm
 	include interrupt.asm
 	include calculation.asm
-	include learn_new.asm
-	include data_match.asm
+	include learn_send.asm
+;	include learn_new.asm
+;	include data_match.asm
 
 ;===================================
 ; main subroutine entrance
@@ -44,6 +46,7 @@ MAIN:
 MAIN_START:
 		CAll	SysIni
 		CALL	RamsClearALL
+	;	CALL	Push_Learn_Ram
 	;	CALL	IniVersion
 	
 
@@ -69,7 +72,6 @@ SleepMode:
 		CLRF	FLAG
 		_WDT_DIS
 		CLRWDT
-
 
 		_ET4207_NOT_BUSY_
 
@@ -109,6 +111,9 @@ MainStart:
 		SUBLW	30H
 		BTFSC	STATUS,Z
 		GOTO	RMT_LEARN_START
+		BTFSS	FLAG,isSend
+		GOTO	SleepMode
+		BCF	FLAG,isSend	
 		MOVFW	_WRITE_CMD_DATA
 		SUBLW	054H
 		BTFSC	STATUS,Z
@@ -117,6 +122,10 @@ MainStart:
 		SUBLW	055H
 		BTFSC	STATUS,Z
 		CALL	TIANJIA_START
+		MOVFW	_WRITE_CMD_DATA
+		SUBLW	056H
+		BTFSC	STATUS,Z
+		CALL	LEARN_SEND
 		NOP
 		GOTO	SleepMode	
 RMT_LEARN_START:
@@ -126,11 +135,16 @@ RMT_LEARN_START:
 		MOVFW	LEARN_MODE
 		SUBLW	00H
 		BTFSC	STATUS,Z
-		GOTO	LEARN_RMT_NORMAL
+	;	GOTO	LEARN_RMT_NORMAL
+		GOTO	LEARN_RMT_ZIP2
 		MOVFW	LEARN_MODE
 		SUBLW	01H
 		BTFSC	STATUS,Z
 		GOTO	LEARN_RMT_ZIP
+		MOVFW	LEARN_MODE
+		SUBLW	02H
+		BTFSC	STATUS,Z
+		GOTO	LEARN_RMT_ZIP2
 		
 		GOTO	SleepMode
 	

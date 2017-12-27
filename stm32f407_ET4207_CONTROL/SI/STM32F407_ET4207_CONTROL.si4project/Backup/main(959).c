@@ -78,11 +78,11 @@ int main(void)
 		{
 		printf("START LEARN.......\r\n");
 		for(t=0;t<512;t++){
-			//	etcode[t] = t;
+				etcode[t] = t;
 				}
 
 		//ET4207SendCode(etcode,440);
-	//	ET4207SendTest();
+		
 		ET4207StartLearn(1,0);
 		}   
 		if(key==KEY0_PRES)//KEY0°´ÏÂÁË
@@ -98,7 +98,7 @@ int main(void)
 		}   
 		t++;
 		delay_ms(10);
-	LED0=1;
+	LED0=0;
 		
 	if(t==20)
 		{

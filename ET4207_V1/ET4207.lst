@@ -1272,7 +1272,7 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
 0035  04E7    0000         S    		NOP
 0036  04E8    E604         S    		BTFSC	STATUS,TO
 0037  04E9    A526         S    		GOTO	WDTC_STATUS
-0038  04EA    4004         S    		MOVLW	04H	;	0EH
+0038  04EA    400E         S    		MOVLW	0EH
 0039  04EB    221D         S    		MOVWF	WDTCTR
 0040  04EC    0006         S    		CLRWDT
 0041                       S    MAIN_START:
@@ -1319,7 +1319,7 @@ LINE  ADDR    CODE       FLAG  INSTRUCTION
 0080                       S    	;	GOTO	LEARN_RMT
 0081  0506    0000         S    		NOP
 0082  0507    0000         S    		NOP
-0083  0508    4004         S    		MOVLW	04H		;0DH
+0083  0508    400D         S    		MOVLW	0DH
 0084  0509    221D         S    		MOVWF	WDTCTR
  M    050A    DA14         S    BSF       0014H  0005H
  M    050B    CA13         S    BCF       0013H  0005H

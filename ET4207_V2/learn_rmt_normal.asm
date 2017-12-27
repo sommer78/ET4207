@@ -4,7 +4,7 @@
 LEARN_RMT_NORMAL:
 			
 			CLRF	_LEARN_FLAG
-			SETDP	02h
+			SETDP	00h
 			CLRF	FLAG
 			BSF     RMTCTR,RX_EN				
 			BCF     RMTCTR,TX_EN				;RX_EN=1,TX_EN=0 接收模式
@@ -18,16 +18,10 @@ LEARN_RMT_NORMAL:
 
 			MOVLW	5
 			MOVWF	new_nHighLevel_L
-			
-
 			MOVLW	ADDRESS_PartIndexCount
-			MOVWF	p_PartIndexCount
-			MOVLW	ADDRESS_Sample
-			MOVWF	p_Sample
-			MOVLW	ADDRESS_Index
-			MOVWF	p_Index
-			CLRF	nIndexCount_h
+			MOVWF	FRS0
 			CLRF	nIndexCount_l
+
 ;============================================
 ;获取载波频率，存放在Freq寄存器
 ;============================================
@@ -108,15 +102,16 @@ LEARNN_CAP_WAIT:
 			COMF	FreqL,W
 			MOVWF	TSETB
 			CLRF	INTF
+		;	BCF	TCCONA,1			;改变采样率
 			BTFSS	state_flag,isLearnP14
-			GOTO	LRNN_INPUT_2
+			GOTO	LRNn_INPUT_2
 	    	MOVLW	01010100b					;timera时钟源,内部时钟源mclk(111-5MHz)
 			MOVWF	TCCONA
-			GOTO	LRNN_INPUT_END_2
-LRNN_INPUT_2:
+			GOTO	LRNn_INPUT_END_2
+LRNn_INPUT_2:
 			MOVLW	00000100B
 			MOVWF	TCCONA
-LRNN_INPUT_END_2:
+LRNn_INPUT_END_2:	
 			BSF		TCCONB,TCENB
 			BSF     INTE,TMAIE
 			BSF		INTE,GIE
@@ -129,205 +124,81 @@ LRNN_INPUT_END_2:
 			GOTO	$-1
 
 			
-			CLRF	nPartIndexCount
-			INCF	nPartIndexCount,f
-			CLRF	Sample0_nHighLevel_H
-			CLRF	Sample0_nHighLevel_L
-			CLRF	Sample0_nLowLevel_H
-			CLRF	Sample0_nLowLevel_L
-			MOVFW	p_Sample
-			MOVWF	FRS1
-			MOVFW	nHighLevel_H
-			MOVWF	IND1
-			MOVWF	Sample1_nHighLevel_H
-			INCF	FRS1,f
-			MOVFW	nHighLevel_L
-			MOVWF	IND1
-			MOVWF	Sample1_nHighLevel_L
-			INCF	FRS1,f
-			MOVFW	nLowLevel_H
-			MOVWF	IND1
-			MOVWF	Sample1_nLowLevel_H
-			INCF	FRS1,f
-			MOVFW	nLowLevel_L
-			MOVWF	IND1
-			MOVWF	Sample1_nLowLevel_L
-			;;;;;;;Index移位存放程序;;;;;;;;;;;;;;
-			BSF		status,c	;;;;;;与其他不同
-			RRF		Index_Bit,f
-			BTFSS	status,c
-			GOTO	$+3
-			BSF		Index_Bit,7
-			INCF	p_Index,f
-			MOVFW	p_Index
-			MOVWF	FRS0
-			MOVFW	Index_Bit
-			IORWF	IND0,f
-			INCFSZ	nIndexCount_l,f
-			GOTO	$+2
-			INCF	nIndexCount_h,f
-			;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-SampleNCompare_loop:
-			BTFSC	FLAG,bLearnEnd
-			GOTO	Learn_OUT
-			BTFSS	FLAG,isHighLow
-			GOTO	$-3
-			BTFSC	FLAG,bLearnEnd
-			GOTO	Learn_OUT
-			BTFSC	FLAG,isHighLow
-			GOTO	$-3
-SampleNCompare_0:
-			MOVFW	Sample0_nHighLevel_L
-			SUBWF	nHighLevel_L,w
-			MOVWF	DELTA_ABS_L
-			MOVFW	Sample0_nHighLevel_H
-			SUBWFC	nHighLevel_H,w
-			MOVWF	DELTA_ABS_H
-			CALL	Neg
-			MOVLW	_DELTA_HighLevel_L_
-			SUBWF	DELTA_ABS_L,w
-			MOVLW	_DELTA_HighLevel_H_
-			SUBWFC	DELTA_ABS_H,w
-			BTFSC	status,c
-			GOTO	SampleNCompare_1
-			MOVFW	Sample0_nLowLevel_L
-			SUBWF	nLowLevel_L,w
-			MOVWF	DELTA_ABS_L
-			MOVFW	Sample0_nLowLevel_H
-			SUBWFC	nLowLevel_H,w
-			MOVWF	DELTA_ABS_H
-			CALL	Neg
-			MOVLW	_DELTA_LowLevel_L_
-			SUBWF	DELTA_ABS_L,w
-			MOVLW	_DELTA_LowLevel_H_
-			SUBWFC	DELTA_ABS_H,w
-			BTFSC	status,c
-			GOTO	SampleNCompare_1
-			;;;;;;;Index移位存放程序;;;;;;;;;;;;;;
-			BCF		status,c
-			RRF		Index_Bit,f
-			BTFSS	status,c
-			GOTO	$+3
-			BSF		Index_Bit,7
-			INCF	p_Index,f
-			;MOVFW	p_Index
-			;MOVWF	FRS1
-			;MOVFW	Index_Bit
-			;IORWF	IND1,f
-			INCFSZ	nIndexCount_l,f
-			GOTO	$+2
-			INCF	nIndexCount_h,f
-			INCFSZ	nPartIndexCount,f
-			GOTO	SampleNCompare_loop
-			DECF	nPartIndexCount,f
-			GOTO	StoreNewSample
-			;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-SampleNCompare_1:
-			MOVFW	Sample1_nHighLevel_L
-			SUBWF	nHighLevel_L,w
-			MOVWF	DELTA_ABS_L
-			MOVFW	Sample1_nHighLevel_H
-			SUBWFC	nHighLevel_H,w
-			MOVWF	DELTA_ABS_H
-			CALL	Neg
-			MOVLW	_DELTA_HighLevel_L_
-			SUBWF	DELTA_ABS_L,w
-			MOVLW	_DELTA_HighLevel_H_
-			SUBWFC	DELTA_ABS_H,w
-			BTFSC	status,c
-			GOTO	StoreNewSample
-			MOVFW	Sample1_nLowLevel_L
-			SUBWF	nLowLevel_L,w
-			MOVWF	DELTA_ABS_L
-			MOVFW	Sample1_nLowLevel_H
-			SUBWFC	nLowLevel_H,w
-			MOVWF	DELTA_ABS_H
-			CALL	Neg
-			MOVLW	_DELTA_LowLevel_L_
-			SUBWF	DELTA_ABS_L,w
-			MOVLW	_DELTA_LowLevel_H_
-			SUBWFC	DELTA_ABS_H,w
-			BTFSC	status,c
-			GOTO	StoreNewSample
-			;;;;;;;Index移位存放程序;;;;;;;;;;;;;;
-			BCF		status,c
-			RRF		Index_Bit,f
-			BTFSS	status,c
-			GOTO	$+3
-			BSF		Index_Bit,7
-			INCF	p_Index,f
-			MOVFW	p_Index
-			MOVWF	FRS0
-			MOVFW	Index_Bit
-			IORWF	IND0,f
-			INCFSZ	nIndexCount_l,f
-			GOTO	$+2
-			INCF	nIndexCount_h,f
-			INCFSZ	nPartIndexCount,f
-			GOTO	SampleNCompare_loop
-			DECF	nPartIndexCount,f
 	
-;---------------------------------------------------
-StoreNNewSample:
-			MOVFW	p_PartIndexCount
-			MOVWF	FRS0
-			MOVFW	nPartIndexCount
+	
+	    	MOVFW	nHighLevel_H
 			MOVWF	IND0
-			INCF	p_PartIndexCount,f
-			CLRF	nPartIndexCount
-			INCF	nPartIndexCount,f
-			MOVLW	4
-			ADDWF	p_Sample,f
-			MOVFW	Sample1_nHighLevel_H
-			MOVWF	Sample0_nHighLevel_H
-			MOVFW	Sample1_nHighLevel_L
-			MOVWF	Sample0_nHighLevel_L
-			MOVFW	Sample1_nLowLevel_H
-			MOVWF	Sample0_nLowLevel_H
-			MOVFW	Sample1_nLowLevel_L
-			MOVWF	Sample0_nLowLevel_L
-			MOVFW	p_Sample
-			MOVWF	FRS1
-			MOVFW	nHighLevel_H
-			MOVWF	IND1
-			MOVWF	Sample1_nHighLevel_H
-			INCF	FRS1,f
+			INCF	_LENGTH_L_learn,F
+			INCF	FRS0,F
+	  	
 			MOVFW	nHighLevel_L
-			MOVWF	IND1
-			MOVWF	Sample1_nHighLevel_L
-			INCF	FRS1,f
-			MOVFW	nLowLevel_H
-			MOVWF	IND1
-			MOVWF	Sample1_nLowLevel_H
-			INCF	FRS1,f
-			MOVFW	nLowLevel_L
-			MOVWF	IND1
-			MOVWF	Sample1_nLowLevel_L
-			;;;;;;;Index移位存放程序;;;;;;;;;;;;;;
-			BCF		status,c
-			RRF		Index_Bit,f
-			BTFSS	status,c
-			GOTO	$+3
-			BSF		Index_Bit,7
-			INCF	p_Index,f
-			MOVFW	p_Index
-			MOVWF	FRS0
-			MOVFW	Index_Bit
-			IORWF	IND0,f
-			INCFSZ	nIndexCount_l,f
-			GOTO	$+2
-			INCF	nIndexCount_h,f
-			;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-			GOTO	SampleNCompare_loop
-
-
-			MOVFW	p_PartIndexCount
-			MOVWF	FRS0
-			MOVFW	nPartIndexCount
 			MOVWF	IND0
-			INCF	p_PartIndexCount,f
+			INCF	_LENGTH_L_learn,F
+			INCF	FRS0,F
+		
+			MOVFW	nLowLevel_H
+			MOVWF	IND0
+	    	INCF	_LENGTH_L_learn,F
+			INCF	FRS0,F
+			
+			MOVFW	nLowLevel_L
+			MOVWF	IND0
+			INCF	_LENGTH_L_learn,F
+			INCF	FRS0,F
+		
+			INCF	nIndexCount_l,f
+
+NWAIT_loop:
+			BTFSC	FLAG,bLearnEnd
+			GOTO	NLearn_end
+			BTFSS	FLAG,isHighLow
+			GOTO	$-1
+			BTFSC	FLAG,bLearnEnd
+			GOTO	N_PUSH
+			BTFSC	FLAG,isHighLow
+			GOTO	$-1
+N_PUSH:
+		
+			MOVFW	nHighLevel_H
+			MOVWF	IND0
+			INCF	_LENGTH_L_learn,F
+			INCFSZ	FRS0,F
+	  		GOTO	$+3
+			SETDP	01h
+			INCF	_LENGTH_H_learn,F
+			MOVFW	nHighLevel_L
+			MOVWF	IND0
+			INCF	_LENGTH_L_learn,F
+			INCFSZ	FRS0,F
+			GOTO	$+3
+			SETDP	01h
+			INCF	_LENGTH_H_learn,F
+			MOVFW	nLowLevel_H
+			MOVWF	IND0
+	    	INCF	_LENGTH_L_learn,F
+			INCFSZ	FRS0,F
+			GOTO	$+3
+			SETDP	01h
+			INCF	_LENGTH_H_learn,F
+			MOVFW	nLowLevel_L
+			MOVWF	IND0
+			INCF	_LENGTH_L_learn,F
+			INCFSZ	FRS0,F
+			GOTO	$+3
+			SETDP	01h
+			INCF	_LENGTH_H_learn,F
+
+			INCF	nIndexCount_l,f
+			MOVLW	106
+			SUBWF	nIndexCount_l,W
+			BTFSC	STATUS,C
+			GOTO	NLearn_len_end
+		
+			GOTO	NWAIT_loop
+NLearn_len_end:
+		   	BSF		_LEARN_FLAG,L_LEN	
+NLearn_end:
+		
 			BCF		INTE,GIE
 			BCF     INTE,TMAIE
 			BCF     INTE,CAPIE
@@ -338,29 +209,12 @@ StoreNNewSample:
 
 
 ;************************************************
-;      remoter learn restone         ;
+;      normal remoter learn restone         ;
 ;************************************************   				
 
-			MOVLW	ADDRESS_PartIndexCount
-			SUBWF	p_PartIndexCount,w
-			MOVWF	n_PartIndexCount
-	
-			MOVLW	4
-			ADDWF	p_Sample,f
-			MOVLW	ADDRESS_Sample
-			SUBWF	p_Sample,w
-			MOVWF	n_Sample
-	
-			INCF	p_Index,f
-			MOVLW	ADDRESS_Index
-			SUBWF	p_Index,w
-			MOVWF	n_Index
-	
-
-
-		
-			CLRF	_LENGTH_h_learn
-			CLRF	_LENGTH_l_learn
+			
+			MOVFW	nIndexCount_l
+			MOVWF	n_index
 
 			MOVFW	_LENGTH_h_learn
 			MOVWF	_CRC_LEN_H
@@ -372,6 +226,6 @@ StoreNNewSample:
 			CALL	ET_xCal_crc
 			MOVFW	_CRC_CODE
 			MOVWF	n_Crc
-			MOVLW	32H
+			MOVLW	30H
 			MOVWF	LEARN_TYPE
 			GOTO	Learn_OK	

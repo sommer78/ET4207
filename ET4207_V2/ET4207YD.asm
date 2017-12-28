@@ -29,6 +29,8 @@ include et4207_inc.inc
 	include interrupt.asm
 	include calculation.asm
 	include learn_send.asm
+	include learn_zip2_send.asm
+	include learn_rec.asm
 ;	include learn_new.asm
 ;	include data_match.asm
 
@@ -67,6 +69,9 @@ SleepMode:
 		BSF	I2CCON,I2C_PT15				;PT1.5 OD(开漏功能)打开
 		BSF	I2CCON,I2C_EN				;enable I2C port(PT1_4(SCL), PT1_3(SDA))
 		BCF	INTE,TMBIE
+		_GREEN_CLR
+		_RED_CLR
+		_BLUE_CLR
 ;SleepMode_1:		
 	
 		CLRF	FLAG
@@ -111,9 +116,13 @@ MainStart:
 		SUBLW	30H
 		BTFSC	STATUS,Z
 		GOTO	RMT_LEARN_START
+		MOVFW	_WRITE_CMD_DATA
+		SUBLW	40H
+		BTFSC	STATUS,Z
+		GOTO	REC_LEARN_START
 		BTFSS	FLAG,isSend
 		GOTO	SleepMode
-		BCF	FLAG,isSend	
+		BCF		FLAG,isSend	
 		MOVFW	_WRITE_CMD_DATA
 		SUBLW	054H
 		BTFSC	STATUS,Z
@@ -126,6 +135,10 @@ MainStart:
 		SUBLW	056H
 		BTFSC	STATUS,Z
 		CALL	LEARN_SEND
+		MOVFW	_WRITE_CMD_DATA
+		SUBLW	032H
+		BTFSC	STATUS,Z
+		CALL	LEARN_ZIP2_SEND
 		NOP
 		GOTO	SleepMode	
 RMT_LEARN_START:
@@ -135,8 +148,8 @@ RMT_LEARN_START:
 		MOVFW	LEARN_MODE
 		SUBLW	00H
 		BTFSC	STATUS,Z
-	;	GOTO	LEARN_RMT_NORMAL
-		GOTO	LEARN_RMT_ZIP2
+		GOTO	LEARN_RMT_NORMAL
+	;	GOTO	LEARN_RMT_ZIP2
 		MOVFW	LEARN_MODE
 		SUBLW	01H
 		BTFSC	STATUS,Z
@@ -147,9 +160,10 @@ RMT_LEARN_START:
 		GOTO	LEARN_RMT_ZIP2
 		
 		GOTO	SleepMode
-	
-
-
+REC_LEARN_START:
+		CALL	LEARN_RAM_CLR
+		GOTO	RECEIVER_START
+		GOTO	SleepMode
 ;===================================
 ; WATCHDOG OUT DEAL
 ;===================================

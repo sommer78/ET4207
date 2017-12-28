@@ -31,7 +31,8 @@ LEARN_RMT_ZIP2:
 		;	MOVWF	p_PartIndexCount
 			CLRF	nIndexCount_l
 			CLRF	nIndexCount_H
-			CLRF	total_index
+			CLRF	total_sample
+			_GREEN_SET
 		;	GOTO	LRNZ_Collection_Loop
 ;============================================
 ;获取载波频率，存放在Freq寄存器
@@ -72,8 +73,8 @@ LRNZ_INPUT_END_1:
 LEARNZ_CAP_WAIT:
 			_WDT_DIS
 
-			BTFSC	FLAG,bLearnEnd
-			GOTO	Learn_OUT
+			BTFSC		INTF,I2CIF
+			GOTO	LEARN_RMT_ZIP2_OUT
 			BTFSS	INTF,CAPIF			;等待第1个载波
 			GOTO	$-3
 
@@ -116,7 +117,7 @@ LEARNZ_CAP_WAIT:
 			
 			BTFSS	state_flag,isLearnP14
 			GOTO	LRNZ_INPUT_2
-	    		MOVLW	01010100b					;timera时钟源,内部时钟源mclk(111-5MHz)
+	    	MOVLW	01010100b					;timera时钟源,内部时钟源mclk(111-5MHz)
 			MOVWF	TCCONA
 			GOTO	LRNZ_INPUT_END_2
 LRNZ_INPUT_2:
@@ -222,13 +223,18 @@ PUSH_DATA_INDEX:
 			INCF	nIndexCount_H,F
 		
 			GOTO	LRNZ_Collection_Loop
-PUSH_DATA_INDEX_LOW:	
+PUSH_DATA_INDEX_LOW:
+			BCF		FLAG,isHalf	
 			MOVFW	p_Index
 			MOVWF	FRS1
 			MOVFW	Index_Bit
 			IORWF	IND1,F
 			INCF	p_Index,f
-			BCF		FLAG,isHalf
+		
+			MOVLW	248
+			SUBWF	p_Index,W
+			BTFSC	STATUS,C
+			GOTO	LRNZ_DATA_OUT
 			INCFSZ	nIndexCount_l,F
 			GOTO	$+2
 			INCF	nIndexCount_H,F
@@ -240,12 +246,12 @@ LRNZ_Compare_Next:
 			INCF	Index_Bit,F		
 			;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 LRNZ_Compare_ST1:
-		;	MOVFW	total_index
+		;	MOVFW	total_sample
 		;	SUBLW	0
 		;	BTFSC	STATUS,Z
 		;	GOTO	PushNewSample	
 			MOVFW	Index_Bit
-			SUBWF	total_index,W
+			SUBWF	total_sample,W
 			BTFSC	STATUS,Z
 			GOTO	PushNewSample		
 			MOVFW	Index_Bit
@@ -277,7 +283,7 @@ LRNZ_Compare_ST1:
 ;------------------------------------------------------
 PushNewSample:		
 			
-			MOVFW	total_index	
+			MOVFW	total_sample	
 			MOVWF	p_Sample	
 			BCF		STATUS,C
 			RLF		p_Sample,F
@@ -300,10 +306,20 @@ PushNewSample:
 			MOVFW	nLowLevel_L
 			MOVWF	IND0
 			MOVWF	Sample0_nLowLevel_L
-			INCF	total_index,F
-		
+			INCF	total_sample,F
+			MOVLW	16
+			SUBWF	total_sample,W
+			BTFSC	STATUS,C
+			GOTO	LRNZ_SAMPLE_OUT
 			GOTO	PUSH_DATA_INDEX
-		
+
+LRNZ_DATA_OUT:
+			BSF		_LEARN_FLAG,L_DATA
+			GOTO	LRNZ_END	
+
+LRNZ_SAMPLE_OUT:
+		   	BSF		_LEARN_FLAG,L_SAMPLE
+			GOTO	LRNZ_END		
 LRNZ_END:
 
 			BCF		INTE,GIE
@@ -315,26 +331,27 @@ LRNZ_END:
 			RRF		FreqL,F
 
 
-			MOVFW	FRS1	
-			MOVWF	p_Sample
-			INCF	p_Sample,F
-			MOVWF	_LENGTH_l_learn
-			INCF	_LENGTH_l_learn,F
-			MOVFW	total_index
+			;MOVFW	FRS1
+			INCF	FRS1,W
 			MOVWF	p_Index
-			MOVWF	n_Index
+			;INCF	p_Sample,F
+			MOVWF	_LENGTH_l_learn
+			;INCF	_LENGTH_l_learn,F
+			MOVFW	total_sample
+			MOVWF	p_Sample
+			MOVWF	n_Sample
 			
 			BCF		STATUS,C
-			RLF		p_Index,F
-			RLF		p_Index,F
+			RLF		p_Sample,F
+			RLF		p_Sample,F
 			
 			SETDP	02h
 			MOVLW	ADDRESS_PartIndexCount
-			ADDWF   p_Index,W
+			ADDWF   p_Sample,W
 
 			MOVWF	FRS0
-			MOVFW	n_Index
-			MOVWF	p_Index
+			MOVFW	n_Sample
+			MOVWF	p_Sample
 			MOVLW	ADDRESS_Sample
 			MOVWF	FRS1
 LRNZ_ZIPDATA_PUSH:
@@ -345,15 +362,15 @@ LRNZ_ZIPDATA_PUSH:
 			INCFSZ	FRS0,F
 			GOTO	$+2
 			SETDP	03h
-			DECFSZ  p_Sample,F
+			DECFSZ  p_Index,F
 			GOTO	LRNZ_ZIPDATA_PUSH
 			NOP	
 			CLRF	_LENGTH_h_learn
-			MOVFW	total_index
-			MOVWF	p_Index	
+			MOVFW	total_sample
+			MOVWF	p_Sample	
 			BCF		STATUS,C
-			RLF		p_Index,F
-			RLF		p_Index,W
+			RLF		p_Sample,F
+			RLF		p_Sample,W
 			ADDWF	_LENGTH_l_learn,F
 			BTFSS	STATUS,C
 			GOTO	$+2
@@ -371,101 +388,13 @@ LRNZ_ZIPDATA_PUSH:
 			MOVWF	n_Crc
 			MOVLW	32H
 			MOVWF	LEARN_TYPE
-/*
+			_GREEN_CLR
 
-			
-
-			MOVLW	ADDRESS_PartIndexCount
-			SUBWF	p_PartIndexCount,w
-			MOVWF	n_PartIndexCount
-	
-			MOVLW	4
-			ADDWF	p_Sample,f
-			MOVLW	ADDRESS_Sample
-			SUBWF	p_Sample,w
-			MOVWF	n_Sample
-	
-			INCF	p_Index,f
-			MOVLW	ADDRESS_Index
-			SUBWF	p_Index,w
-			MOVWF	n_Index
-	
-			MOVFW	total_index
-			MOVWF	p_Index
-			MOVWF	n_Index
-			
-			BCF	STATUS,C
-			RLF	p_Index
-			RLF	p_Index
-			
-			SETDP	02h
-			MOVLW	ADDRESS_PartIndexCount
-			ADDWF   p_Index,W
-			
-			MOVWF	FRS0
-			MOVFW	n_Index
-			MOVWF	p_Index
-			MOVLW	ADDRESS_Index
-			MOVWF	FRS0
-
-			MOVFW	IND0
-			MOVWF	IND0
-			INCF	FRS0,F
-			INCF	FRS0,F
-			DECFSZ  p_Index,F
-			GOTO	MOV_INDEX_TO_PART
-
-
-			MOVFW	n_Sample
-			MOVWF	p_Sample
-			MOVLW	ADDRESS_Index
-			SETDP	02h
-			MOVLW	ADDRESS_Sample
-			MOVWF	FRS0
-
-			MOVFW	IND0
-			MOVWF	IND0
-			INCF	FRS0,F
-			INCFSZ	FRS0,F
-			GOTO	$+2
-			SETDP	03h
-			DECFSZ  p_Sample,F
-			GOTO	MOV_SAMPLE_TO_PART
-		
-			CLRF	_LENGTH_h_learn
-			CLRF	_LENGTH_l_learn
-			MOVFW	n_PartIndexCount
-			ADDWF	_LENGTH_l_learn,F
-			BTFSS	STATUS,C
-			GOTO	$+2
-			INCF	_LENGTH_h_learn,F
-			MOVFW	n_Index
-			ADDWF	_LENGTH_l_learn,F
-			BTFSS	STATUS,C
-			GOTO	$+2
-			INCF	_LENGTH_h_learn,F
-			MOVFW	n_Sample
-			ADDWF	_LENGTH_l_learn,F
-			BTFSS	STATUS,C
-			GOTO	$+2
-			INCF	_LENGTH_h_learn,F
-			MOVFW	_LENGTH_h_learn
-			MOVWF	_CRC_LEN_H
-			MOVFW	_LENGTH_L_learn
-			MOVWF	_CRC_LEN_L
-			SETDP	00h
-			MOVLW	ADDRESS_PartIndexCount
-			MOVWF	FRS0
-			CALL	ET_xCal_crc
-			MOVFW	_CRC_CODE
-			MOVWF	n_Crc
-			MOVLW	32H
-			MOVWF	LEARN_TYPE
-
-*/
 			GOTO	Learn_OK	
 
-
-
+LEARN_RMT_ZIP2_OUT:
+		BSF		_LEARN_FLAG,L_OUT
+		SETDP	00h
+		GOTO	SleepMode
 
 

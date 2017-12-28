@@ -15,7 +15,7 @@ LEARN_RMT_NORMAL:
            	CLRF    TSETAH
 			BCF		FLAG,bLearnEnd
 			BSF		FLAG,isHighLow
-
+			_BLUE_SET
 			MOVLW	5
 			MOVWF	new_nHighLevel_L
 			MOVLW	ADDRESS_PartIndexCount
@@ -61,8 +61,8 @@ LRNN_INPUT_END_1:
 LEARNN_CAP_WAIT:
 			_WDT_DIS
 
-			BTFSC	FLAG,bLearnEnd
-			GOTO	Learn_OUT
+			BTFSC		INTF,I2CIF
+			GOTO	LEARN_OUT
 			BTFSS	INTF,CAPIF			;µÈ´ýµÚ1¸öÔØ²¨
 			GOTO	$-3
 
@@ -228,4 +228,5 @@ NLearn_end:
 			MOVWF	n_Crc
 			MOVLW	30H
 			MOVWF	LEARN_TYPE
+			_BLUE_CLR
 			GOTO	Learn_OK	

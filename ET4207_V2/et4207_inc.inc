@@ -4,7 +4,9 @@
 ;-------------------------------------------
 BUSY				equ		bPT15
 REC					equ		bPT14
-LED					EQU		bPT23
+LED_RED					EQU		bPT23
+LED_GREEN				EQU		bPT24
+LED_BLUE				EQU		bPT22
 ;-------------------------------------------
 ; macro  define for programing
 ;-------------------------------------------
@@ -56,12 +58,25 @@ _ET4207_NOT_BUSY_	macro
 					BSF		PT1,BUSY
 					endm
 
-_LED_CLR			macro
-					BSF		PT2,LED
+
+_RED_CLR			macro
+					BSF		PT2,LED_RED
 					endm
-_LED_SET			macro
-					BCF		PT2,LED
+_RED_SET			macro
+					BCF		PT2,LED_RED
 					endm
+_BLUE_CLR			macro
+					BSF		PT2,LED_BLUE
+					endm
+_BLUE_SET			macro
+					BCF		PT2,LED_BLUE
+					endm
+_GREEN_CLR			macro
+					BSF		PT2,LED_GREEN
+					endm
+_GREEN_SET			macro
+					BCF		PT2,LED_GREEN
+					endm					
 _WDT_EN				macro
 					BSF		WDTCTR,WDTEN
 					endm
@@ -193,12 +208,12 @@ Sample1_nHighLevel_L	equ	3Dh
 Sample1_nLowLevel_H		equ	3Eh
 Sample1_nLowLevel_L		equ	3Fh
 
-LEARN_RESULT			EQU 40H
-LEARN_TYPE				EQU 41H
+LEARN_RESULT			EQU 41H
+LEARN_TYPE				EQU 40H
 
 Index_Bit				equ	45h
 
-total_index				equ	46h
+total_sample				equ	46h
 
 _LENGTH_h_learn			equ	48h
 _LENGTH_l_learn			equ	49h

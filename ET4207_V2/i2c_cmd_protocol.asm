@@ -106,7 +106,7 @@ StartETLearn:
 StartRECLearn:
 		BSF		FLAG,isCmdEnd
 		BCF		FLAG,bLearnEnd
-		MOVLW	I2C_CMD
+		MOVFW	I2C_CMD
 		MOVWF	_WRITE_CMD_DATA
 		GOTO	I2cInterruptEnd			
 StopETLearn:

@@ -57,24 +57,6 @@ u8 nec6122[]= {0x54,0x00,0x5c,0x20,0x00,0x24,0x00,0x00,0x01,0xaf,0x01,0x5d,0x00,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x11,0x11,0x11,0x12,0x22,
 0x22,0x21,0x22,0x12,0x21,0x12,0x11,0x21,0x12,0x21,0x23,0x45};
 
-u8 zip_learn[] = {0x32,0x00,
-0x00,0x4e,0x00,0x05,0x06,0x00,0x00,0x3f,0x00,0x6c,0x00,0x00,0x06,0x2d,0x01,0x00,
-0x04,0xcf,0x00,0x1c,0x01,0x2c,0x00,0x1b,0x02,0x63,0x00,0x1c,0x09,0xb0,0x00,0xe3,
-0x04,0xd0,0x00,0x1c,0xff,0xff,0x01,0x22,0x21,0x12,0x22,0x12,0x12,0x11,0x12,0x21,
-0x11,0x21,0x23,0x41,0x22,0x21,0x12,0x22,0x12,0x12,0x11,0x12,0x21,0x11,0x21,0x23,
-0x41,0x22,0x21,0x12,0x22,0x12,0x12,0x11,0x12,0x21,0x11,0x21,0x25,0x00,0x00,0x00,
-0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x22,
-0x21,0x12,0x22,0x12,0x12,0x11,0x12,0x21,0x11,0x21,0x23,0x41,0x22,0x21,0x12,0x22,
-0x12,0x12,0x11,0x12,0x21,0x11,0x21,0x23,0x41,0x22,0x21,0x12,0x22,0x12,0x12,0x11,
-0x12,0x21,0x11,0x21,0x25,};
-
-
 Consumer_IR_T comsumer_ir;
 
 
@@ -615,7 +597,7 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
     n_Sample = datas[13];
     n_Index = datas[14]; 
     n_Freq = datas[15];
-	n_type = datas[0];
+	n_type = datas[1];
 	if(n_type!=0x31){
 		 printf("n_type  error \r\n" );
         return -1;
@@ -654,18 +636,18 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
 
     for(i=0;i<n_PartIndexCount;i++){
         learn_buffer[i] =datas[i+16];
-    //   printf("partIndex[%d] = 0x%02x \r\n", i,learn_buffer[i] );
+       printf("partIndex[%d] = 0x%02x \r\n", i,learn_buffer[i] );
     }
    
     for(i=0;i<n_Sample;i++){
         learn_buffer[n_PartIndexCount+i] =datas[i+16+n_PartIndexCount+n_Index];
-    //   printf("sample[%d] = 0x%02x \r\n", i,learn_buffer[n_PartIndexCount+i] );
+       printf("sample[%d] = 0x%02x \r\n", i,learn_buffer[n_PartIndexCount+i] );
     }
 
 	
 	for(i=0;i<n_Index;i++){
 		   learn_buffer[n_PartIndexCount+n_Sample+i] =datas[i+16+n_PartIndexCount];
-	//	 printf("n_Index[%d] = 0x%02x \r\n", i,learn_buffer[n_PartIndexCount+n_Sample+i] );
+		 printf("n_Index[%d] = 0x%02x \r\n", i,learn_buffer[n_PartIndexCount+n_Sample+i] );
 	   }
 	
    
@@ -826,9 +808,8 @@ int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
     n_Crc = datas[11];
   
     n_Index = datas[14]; 
-	n_Index++;
     n_Freq = datas[15];
-	n_type = datas[0];
+	n_type = datas[1];
 	if(n_type!=0x30){
 		 printf("n_type  error \r\n" );
         return -1;
@@ -885,8 +866,8 @@ int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
 			if (0x0000ffff == nLowLevel) {
 				return n;
 			}
-			if(index>(data_len+16)){
-			 printf("data_len  out \r\n" );
+			if(index>data_len){
+				 printf("data_len  out \r\n" );
 				return n;
 				}
 			
@@ -909,7 +890,7 @@ int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
 
 int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
     u8  n_Crc;
-    u8  n_Samle;
+    u8  n_Index;
     u8  n_Freq;
 //    u8 n_flag;
 
@@ -924,7 +905,7 @@ int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
   
 	int index;
     int  n;
-
+	int i;
 	int sIndex;
 	u8 dIndex;
 	u16 allDataIndex;
@@ -938,9 +919,9 @@ int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
 //    n_flag = datas[10];
     n_Crc = datas[11];
   
-    n_Samle = datas[13]; 
+    n_Index = datas[14]; 
     n_Freq = datas[15];
-	n_type = datas[0];
+	n_type = datas[1];
 	if(n_type!=0x32){
 		 printf("n_type  error \r\n" );
         return -1;
@@ -953,7 +934,7 @@ int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
 	 printf("type = %x \r\n  ",n_type );
 
 	 printf("state = %x \r\n  ",datas[10] );
-	 printf(" n_Samle = %d \r\n",n_Samle );
+	 printf(" n_Index = %d \r\n",n_Index );
 #endif
 		
     if((n_Freq>0x3e)&&(n_Freq<0x15)){
@@ -976,19 +957,19 @@ int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
 	   }
 	
 
-	if(n_Samle>16){
+	if(n_Index>16){
 		 printf("n_Index  error \r\n" );
         return -4;
 		}
 
-	for( sIndex=0; sIndex<n_Samle;sIndex++){
+	for( sIndex=0; sIndex<n_Index;sIndex++){
 		nHighLevel[sIndex] = (u16) datas[index++];
 		nHighLevel[sIndex] <<= 8;
 		nHighLevel[sIndex] |= (u16) datas[index++];
 		nLowLevel[sIndex] = (u16) datas[index++];
 		nLowLevel[sIndex] <<= 8;
 		nLowLevel[sIndex] |= (u16) datas[index++];
-	//	 printf("sample[%d] nHighLevel = %d nLowLevel = %d  \r\n",sIndex, nHighLevel[sIndex],nLowLevel[sIndex] );
+		 printf("sample[%d] nHighLevel = %d nLowLevel = %d  \r\n",sIndex, nHighLevel[sIndex],nLowLevel[sIndex] );
 	//	nLowLevel[sIndex] = (nLowLevel[sIndex] * 8 / n_Freq)  +1;
 		}
 	data_len += 16;
@@ -1105,7 +1086,7 @@ u8 ET4207SendTest(void){
 	u8 err=0;
 
 	//	err =	ET4207SendCode(send_etcode,sizeof(send_etcode));
-	err =	ET4207SendCode(zip_learn,sizeof(zip_learn));
+	err =	ET4207SendCode(normal_learn,sizeof(normal_learn));
 	return err;
 
 }
@@ -1168,23 +1149,6 @@ u8 ET4207StartLearn(u8 mode,u8 algorithm){
 
 }
 
-
-u8 ET4207StartLearnREC(){
-	
-	u8 err=0;
-	u8 cmd;
-	cmd = _ET4207_CONTROL_START_LEARND_REC_;
-	
-	err = Hard_IIC_WriteNByte(I2C1,ET4207_ADDRESS,cmd,0,NULL);
-	if(err!=0){
-		return err;
-		}
-	
-	return err;
-
-}
-
-
 void printIrFormat(u16 *irpulse,int len){
 	int i = 0;
 	for(i=0;i<len;i++){
@@ -1215,13 +1179,8 @@ u8 ET4207ReadCode(u8 *etcode){
 		}
 	
 #ifdef ET_DEBUG
-	for(i=0;i<440;i++){
-		//printf("	RETLW 0%02xH ; %d \r\n",etcode[i],i-16);
-		
-		printf("0x%02x,",etcode[i]);
-		if(i%16==1){
-			 printf("\r\n" );
-			}
+	for(i=16;i<304;i++){
+	//	printf("	RETLW 0%02xH ; %d \r\n",etcode[i],i-16);
 		}
 	
 #endif
@@ -1256,9 +1215,9 @@ u8 ET4207ReadCode(u8 *etcode){
 		for(i=0;i<len;i++){
 			 irpulse = (u32)ircode[i] *1000000/freq;
 			 if(i%2==1){
-			//	printf("L%d\r\n",irpulse);
+				printf("L%d\r\n",irpulse);
 				}else{
-			//	printf("H%d\r\n",irpulse);
+				printf("H%d\r\n",irpulse);
 				}
 			}
 		}else {

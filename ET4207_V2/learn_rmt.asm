@@ -15,7 +15,8 @@ LEARN_RMT_ZIP:
            	CLRF    TSETAH
 			BCF		FLAG,bLearnEnd
 			BSF		FLAG,isHighLow
-
+			_GREEN_SET
+			_BLUE_SET
 			MOVLW	5
 			ADDWF	new_nHighLevel_L,f
 			
@@ -66,8 +67,7 @@ LRN_INPUT_END_1:
 			MOVWF	TSETB
 LEARN_CAP_WAIT:
 			_WDT_DIS
-
-			BTFSC	FLAG,bLearnEnd
+			BTFSC		INTF,I2CIF
 			GOTO	Learn_OUT
 			BTFSS	INTF,CAPIF			;µÈ´ýµÚ1¸öÔØ²¨
 			GOTO	$-3

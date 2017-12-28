@@ -15,6 +15,29 @@
 
 //STM32F4工程模板-库函数版本
 
+//在AT24CXX指定地址写入一个数据
+//WriteAddr  :写入数据的目的地址    
+//DataToWrite:要写入的数据
+void I2C_WriteByteS(u8 WriteAddr,u8 *pBuffer,u16 NumToWrite)
+{	
+	u8 t;
+
+    IIC_Start();  
+	
+	IIC_Send_Byte(0XE0);	    //发送写命令 	 
+	IIC_Wait_Ack();	
+	 IIC_Send_Byte(WriteAddr);   //发送地址
+	IIC_Wait_Ack(); 	
+	for(t=0;t<NumToWrite;t++)
+	{
+	IIC_Send_Byte(*pBuffer);
+	IIC_Wait_Ack(); 
+	pBuffer++;
+	}	
+    										  		   		    	   
+    IIC_Stop();//产生一个停止条件 
+	delay_ms(10);	 
+}
 
 
 u32 FLASH_SIZE;
@@ -59,9 +82,8 @@ int main(void)
 				}
 
 		//ET4207SendCode(etcode,440);
-		//ET4207SendTest();
-		//ET4207StartLearn(0,0);
-		ET4207StartLearnREC();
+	//	ET4207SendTest();
+		ET4207StartLearn(1,0);
 		}   
 		if(key==KEY0_PRES)//KEY0按下了
 		{

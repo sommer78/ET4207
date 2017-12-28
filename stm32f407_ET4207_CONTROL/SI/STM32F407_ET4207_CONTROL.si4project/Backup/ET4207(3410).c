@@ -1168,23 +1168,6 @@ u8 ET4207StartLearn(u8 mode,u8 algorithm){
 
 }
 
-
-u8 ET4207StartLearnREC(){
-	
-	u8 err=0;
-	u8 cmd;
-	cmd = _ET4207_CONTROL_START_LEARND_REC_;
-	
-	err = Hard_IIC_WriteNByte(I2C1,ET4207_ADDRESS,cmd,0,NULL);
-	if(err!=0){
-		return err;
-		}
-	
-	return err;
-
-}
-
-
 void printIrFormat(u16 *irpulse,int len){
 	int i = 0;
 	for(i=0;i<len;i++){

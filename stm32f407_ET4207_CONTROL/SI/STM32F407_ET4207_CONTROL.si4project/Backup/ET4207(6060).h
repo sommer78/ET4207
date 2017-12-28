@@ -37,8 +37,6 @@ u8 ET4207ReadVersion(u8 *etcode);
 
 
 u8 ET4207StartLearn(u8 mode,u8 algorithm);
-u8 ET4207StartLearnREC(void);
-
 
 
 

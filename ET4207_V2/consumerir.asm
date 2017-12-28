@@ -315,7 +315,9 @@ Send_len_err:
 			GOTO	SleepMode
 
 Send_crc_err:
+			_BLUE_SET
 			BSF	_FORM_h,1
+			_BLUE_CLR
 			GOTO	SleepMode
 
 

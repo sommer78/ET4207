@@ -654,18 +654,18 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
 
     for(i=0;i<n_PartIndexCount;i++){
         learn_buffer[i] =datas[i+16];
-    //   printf("partIndex[%d] = 0x%02x \r\n", i,learn_buffer[i] );
+       printf("partIndex[%d] = 0x%02x \r\n", i,learn_buffer[i] );
     }
    
     for(i=0;i<n_Sample;i++){
         learn_buffer[n_PartIndexCount+i] =datas[i+16+n_PartIndexCount+n_Index];
-    //   printf("sample[%d] = 0x%02x \r\n", i,learn_buffer[n_PartIndexCount+i] );
+       printf("sample[%d] = 0x%02x \r\n", i,learn_buffer[n_PartIndexCount+i] );
     }
 
 	
 	for(i=0;i<n_Index;i++){
 		   learn_buffer[n_PartIndexCount+n_Sample+i] =datas[i+16+n_PartIndexCount];
-	//	 printf("n_Index[%d] = 0x%02x \r\n", i,learn_buffer[n_PartIndexCount+n_Sample+i] );
+		 printf("n_Index[%d] = 0x%02x \r\n", i,learn_buffer[n_PartIndexCount+n_Sample+i] );
 	   }
 	
    
@@ -826,7 +826,6 @@ int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
     n_Crc = datas[11];
   
     n_Index = datas[14]; 
-	n_Index++;
     n_Freq = datas[15];
 	n_type = datas[0];
 	if(n_type!=0x30){
@@ -885,8 +884,8 @@ int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
 			if (0x0000ffff == nLowLevel) {
 				return n;
 			}
-			if(index>(data_len+16)){
-			 printf("data_len  out \r\n" );
+			if(index>data_len){
+				 printf("data_len  out \r\n" );
 				return n;
 				}
 			
@@ -1167,23 +1166,6 @@ u8 ET4207StartLearn(u8 mode,u8 algorithm){
 	return err;
 
 }
-
-
-u8 ET4207StartLearnREC(){
-	
-	u8 err=0;
-	u8 cmd;
-	cmd = _ET4207_CONTROL_START_LEARND_REC_;
-	
-	err = Hard_IIC_WriteNByte(I2C1,ET4207_ADDRESS,cmd,0,NULL);
-	if(err!=0){
-		return err;
-		}
-	
-	return err;
-
-}
-
 
 void printIrFormat(u16 *irpulse,int len){
 	int i = 0;

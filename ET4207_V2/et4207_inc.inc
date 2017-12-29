@@ -18,7 +18,13 @@ _EN_InterruptEXT_	macro
 _DIS_InterruptEXT_	macro
 					BCF		INTE,E0IE
 					endm
+_EN_Interrupt_		macro
+					BSF		INTE,GIE
+					endm
 
+_DIS_Interrupt_		macro
+					BCF		INTE,GIE
+					endm
 
 _EN_InterruptTIMERA_	macro
 					BSF		INTE,TMAIE
@@ -65,6 +71,14 @@ _RED_CLR			macro
 _RED_SET			macro
 					BCF		PT2,LED_RED
 					endm
+
+_RED_TRIG			macro
+					BTFSC	PT2,LED_RED
+					GOTO	$+3
+					BSF		PT2,LED_RED
+					GOTO	$+2
+					BCF		PT2,LED_RED
+					endm
 _BLUE_CLR			macro
 					BSF		PT2,LED_BLUE
 					endm
@@ -92,14 +106,25 @@ _WDT_DIS			macro
 _DELTA_HighLevel_H_		equ		0
 _DELTA_HighLevel_L_		equ		3
 
+
+
 _DELTA_LowLevel_H_		equ		0
 _DELTA_LowLevel_L_		equ		50
+;
+;----- rec mode compare value
+
+_DELTA_REC_High_H_		equ		0
+_DELTA_REC_High_L_		equ		50
+
+_DELTA_REC_Low_H_		equ		0
+_DELTA_REC_Low_L_		equ		50
+;----- rec mode compare value end
 
 ADDRESS_PartIndexCount		equ		50h			;存放 某2个样本的index数目
-ADDRESS_Sample				equ		100h			;存放样本
-ADDRESS_Index				equ		0c0h			;存放索引值
+ADDRESS_Sample			equ		100h			;存放样本
+ADDRESS_Index			equ		0c0h			;存放索引值
 
-_index			equ		64
+_INDEX				equ		64
 
 ;-------------------------------------------
 ; Value define for programing
@@ -115,11 +140,15 @@ state_flag			equ		21h
 	isError		equ	0		
 	isLearnP14	equ	1
 	isSendEnd	equ 2
+	isLearnEnd	equ	3
+	stopPush	equ	4
 
 
-FLAG					equ		22h
-	bTIMERB_CALCULATE	equ	0
-	bRMTOUT_LEARN		equ	1
+FLAG				equ		22h
+	isRecMode		equ 	0
+	isPulseEnd		equ		1
+	;bTIMERB_CALCULATE	equ	0
+	;bRMTOUT_LEARN		equ	1
 	isHighLow			equ	2		;为1说明正处于高电平,为0处于低电平
 	bLearnEnd			equ	3
 	isCmdByte		equ 4

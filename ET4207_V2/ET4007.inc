@@ -135,11 +135,11 @@ PWM_SEL			equ		7
 cclkA_sel0		equ		0
 cclkA_sel1		equ		1
 cclkA_sel2		equ		2
-TCENA			equ		3
+TCENA			equ		3	;  1 ENABLE TIMEA 0 DISABLE TIMEA
 CAPPHA			equ		4 ;//RMT phase select
 CAPDEB			equ		5 ;//RMT debounce time select
 CAPSEL			EQU		6	; RMT INPUT PIN 0 RMT 1 P14
-TCRSTA			equ		7
+TCRSTA			equ		7	; SET 1 CLEAR TIMEA
 
 ;cclkA_sel0		equ		0
 ;cclkA_sel1		equ		1
@@ -158,8 +158,8 @@ TCRSTA			equ		7
 cclkB_sel0		equ		0
 cclkB_sel1		equ		1
 cclkB_sel2		equ		2
-TCENB			equ		3
-TCRSTB			equ		7
+TCENB			equ		3	;  1 ENABLE TIMEB 0 DISABLE TIMEB
+TCRSTB			equ		7	; SET 1 CLEAR TIMEB
 ;cclkB_sel0		equ		0
 ;cclkB_sel1		equ		1
 ;cclkB_sel2		equ		2

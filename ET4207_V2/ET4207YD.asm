@@ -20,7 +20,7 @@ include et4207_inc.inc
 	GOTO	Interrupt_EXT
 
 	include delay.asm
-	include	learn_rmt.asm
+	include	learn_rmt_zip.asm
 	include	learn_rmt_normal.asm
 	include	learn_rmt_zip2.asm
 	include consumerir.asm
@@ -113,6 +113,11 @@ I2cWatingForStop:
 	
 MainStart:
 		MOVFW	_WRITE_CMD_DATA
+		SUBLW	00H
+		BTFSC	STATUS,Z
+		GOTO	RECEIVER_START
+		
+		MOVFW	_WRITE_CMD_DATA
 		SUBLW	30H
 		BTFSC	STATUS,Z
 		GOTO	RMT_LEARN_START
@@ -139,6 +144,8 @@ MainStart:
 		SUBLW	032H
 		BTFSC	STATUS,Z
 		CALL	LEARN_ZIP2_SEND
+		MOVFW	_WRITE_CMD_DATA
+	
 		NOP
 		GOTO	SleepMode	
 RMT_LEARN_START:

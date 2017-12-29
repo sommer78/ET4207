@@ -12,7 +12,7 @@ LEARN_RMT_NORMAL:
 			BSF		PWMCON,PWM_SEL				;PWM OUT = 1为高电平，进入学习模式
 		;	BSF		state_flag,isLearnP14
 			CLRF    TSETAL
-           	CLRF    TSETAH
+           		CLRF    TSETAH
 			BCF		FLAG,bLearnEnd
 			BSF		FLAG,isHighLow
 			_BLUE_SET
@@ -27,7 +27,7 @@ LEARN_RMT_NORMAL:
 ;============================================
 			BCF		INTE,TMAIE
 			BCF		INTE,GIE
-	        BCF		PWMCON,TCOUTA_DIR			;TIMER UP 16bit型
+	     		BCF		PWMCON,TCOUTA_DIR			;TIMER UP 16bit型
 LRNN_INPUT_SELECT:
 			BTFSS	state_flag,isLearnP14
 			GOTO	LRNN_INPUT_1
@@ -61,7 +61,7 @@ LRNN_INPUT_END_1:
 LEARNN_CAP_WAIT:
 			_WDT_DIS
 
-			BTFSC		INTF,I2CIF
+			BTFSC	state_flag,isLearnEnd
 			GOTO	LEARN_OUT
 			BTFSS	INTF,CAPIF			;等待第1个载波
 			GOTO	$-3
@@ -75,7 +75,7 @@ LEARNN_CAP_WAIT:
 			MOVWF	FreqH
 			CLRF	INTF
 			BSF		TCCONB,TCENB
-			BSF		TCCONB,TCRSTB
+			BCF		TCCONB,TCRSTB
 
 			BTFSC	INTF,TMBIF
 			GOTO	LEARNN_CAP_WAIT
@@ -175,7 +175,7 @@ N_PUSH:
 			INCF	_LENGTH_H_learn,F
 			MOVFW	nLowLevel_H
 			MOVWF	IND0
-	    	INCF	_LENGTH_L_learn,F
+	    		INCF	_LENGTH_L_learn,F
 			INCFSZ	FRS0,F
 			GOTO	$+3
 			SETDP	01h

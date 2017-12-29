@@ -78,8 +78,9 @@ ERROR:
 		_DIS_TIMERA_
 		_DIS_InterruptTIMERA_
 		_DIS_InterruptI2C_
+		_DIS_Interrupt_
+		;BCF		INTE,GIE
 		
-		BCF		INTE,GIE
 		CLRF	INTF
 		BSF		state_flag,isError
 		RETFIE
@@ -90,16 +91,51 @@ I2cInterruptEnd:
 ;  TIMEB INTERRUPT
 ;=======================================================================     
 TIMBInterrupt:
-
+		BTFSC	FLAG,isRecMode
+		GOTO	TIMBInt_Rec
 		CLRF	INTF
-		BCF		TCCONA,TCRSTA
-		BSF		TCCONA,TCENA
-		BCF		TCCONB,TCENB
-		BCF		TCCONB,TCRSTB
-		BCF		FLAG,isHighLow
+		BCF	TCCONA,TCRSTA
+		BSF	TCCONA,TCENA
+		BCF	TCCONB,TCENB
+		BCF	TCCONB,TCRSTB
+		BCF	FLAG,isHighLow
 		RETFIE
-
-
+;-----------------------
+;TIMEB rec mode 
+;-----------------------
+TIMBInt_Rec:
+		_RED_TRIG
+		BTFSS	FLAG,isHighLow
+		GOTO	TIMBInt_Rec_WAIT_HIGH
+	
+		BTFSC	PT1,REC
+		GOTO	TIMBInt_Rec_END
+		MOVFW	TCOUTAH
+		MOVWF	nLowLevel_H
+		MOVFW	TCOUTAL
+		MOVWF	nLowLevel_L
+	
+		BCF		FLAG,isHighLow
+		BSF		FLAG,isPulseEnd
+		BCF		TCCONA,TCRSTA
+		GOTO	TIMBInt_Rec_END
+TIMBInt_Rec_WAIT_HIGH:
+	;-- LOW LEVEL LOOP
+		BTFSS	PT1,REC
+		GOTO	TIMBInt_Rec_END
+		MOVFW	TCOUTAH
+		MOVWF	new_nHighLevel_H
+		MOVWF	nHighLevel_H
+		MOVFW	TCOUTAL
+		MOVWF	nHighLevel_L
+		MOVWF	new_nHighLevel_L
+		BSF		FLAG,isHighLow
+		BCF		TCCONA,TCRSTA
+		GOTO	TIMBInt_Rec_END
+TIMBInt_Rec_END:			
+		CLRF	INTF
+		BCF		TCCONB,TCRSTB
+		RETFIE
 
 ;=======================================================================
 ; GPIO DOWN TRIG 
@@ -129,6 +165,7 @@ Interrupt_TimerA:
 		MOVWF	nHighLevel_H
 		BSF		FLAG,isHighLow
 		BSF		FLAG,bLearnEnd
+		BSF		FLAG,isPulseEnd
 		RETFIE
 Interrupt_Capture:
 		BTFSC	FLAG,isHighLow

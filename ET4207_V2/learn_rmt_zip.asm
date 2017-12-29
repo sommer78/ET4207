@@ -1,7 +1,7 @@
 ;==========================================
 ;采集输入rmt时间信号
 ;========================================== 
-LEARN_RMT_ZIP2:
+LEARN_RMT_ZIP:
 			
 			CLRF	_LEARN_FLAG
 			SETDP	02h
@@ -15,7 +15,8 @@ LEARN_RMT_ZIP2:
            	CLRF    TSETAH
 			BCF		FLAG,bLearnEnd
 			BSF		FLAG,isHighLow
-
+			_GREEN_SET
+			_BLUE_SET
 			MOVLW	5
 			ADDWF	new_nHighLevel_L,f
 			
@@ -34,16 +35,16 @@ LEARN_RMT_ZIP2:
 			BCF		INTE,TMAIE
 			BCF		INTE,GIE
 	        BCF		PWMCON,TCOUTA_DIR			;TIMER UP 16bit型
-LRNZ_INPUT_SELECT:
+LRN_INPUT_SELECT:
 			BTFSS	state_flag,isLearnP14
-			GOTO	LRNZ_INPUT_1
-	    		MOVLW	01110110b					;	INPUT RMT timera时钟源,内部时钟源mclk(111-5MHz)
+			GOTO	LRN_INPUT_1
+	    	MOVLW	01110110b					;	INPUT RMT timera时钟源,内部时钟源mclk(111-5MHz)
 			MOVWF	TCCONA
-			GOTO	LRNZ_INPUT_END_1
-LRNZ_INPUT_1:
+			GOTO	LRN_INPUT_END_1
+LRN_INPUT_1:
 			MOVLW	00100110B				; INPUT PT14
 			MOVWF	TCCONA
-LRNZ_INPUT_END_1:
+LRN_INPUT_END_1:
 			NOP
 			CLRF	TSETAL
 			CLRF	TSETAH
@@ -64,10 +65,9 @@ LRNZ_INPUT_END_1:
 
 			MOVLW	78H
 			MOVWF	TSETB
-LEARNZ_CAP_WAIT:
+LEARN_CAP_WAIT:
 			_WDT_DIS
-
-			BTFSC	FLAG,bLearnEnd
+			BTFSC	state_flag,isLearnEnd
 			GOTO	Learn_OUT
 			BTFSS	INTF,CAPIF			;等待第1个载波
 			GOTO	$-3
@@ -81,10 +81,10 @@ LEARNZ_CAP_WAIT:
 			MOVWF	FreqH
 			CLRF	INTF
 			BSF		TCCONB,TCENB
-			BSF		TCCONB,TCRSTB
+			BCF		TCCONB,TCRSTB
 
 			BTFSC	INTF,TMBIF
-			GOTO	LEARNZ_CAP_WAIT
+			GOTO	LEARN_CAP_WAIT
 			BTFSS	INTF,CAPIF			;等待第2个载波
 			GOTO	$-3
 						
@@ -110,14 +110,14 @@ LEARNZ_CAP_WAIT:
 			CLRF	INTF
 			
 			BTFSS	state_flag,isLearnP14
-			GOTO	LRNZ_INPUT_2
-	    		MOVLW	01010100b					;timera时钟源,内部时钟源mclk(111-5MHz)
+			GOTO	LRN_INPUT_2
+	    	MOVLW	01010100b					;timera时钟源,内部时钟源mclk(111-5MHz)
 			MOVWF	TCCONA
-			GOTO	LRNZ_INPUT_END_2
-LRNZ_INPUT_2:
+			GOTO	LRN_INPUT_END_2
+LRN_INPUT_2:
 			MOVLW	00000100B
 			MOVWF	TCCONA
-LRNZ_INPUT_END_2:
+LRN_INPUT_END_2:
 			BSF		TCCONB,TCENB
 			BSF     INTE,TMAIE
 			BSF		INTE,GIE
@@ -360,7 +360,7 @@ remoter_code_restone:
 			SUBWF	p_Index,w
 			MOVWF	n_Index
 	
-			CLRF	_crc_learn
+
 
 
 ;-----------------------------------------
@@ -431,11 +431,32 @@ MOV_SAMPLE_TO_PART:
 			CALL	ET_xCal_crc
 			MOVFW	_CRC_CODE
 			MOVWF	n_Crc
-			MOVLW	32H
+			MOVLW	31H
 			MOVWF	LEARN_TYPE
 			GOTO	Learn_OK	
 
 
+
+;-----------------------------------------
+; out info
+;-----------------------------------------
+
+Learn_Error:
+		
+		BSF		_LEARN_FLAG,L_DATA
+		SETDP	00h
+		GOTO	SleepMode
+LEARN_ERR_TIMEOUT:
+		BSF		_LEARN_FLAG,L_TIMEOUT
+		SETDP	00h
+		GOTO	SleepMode
+Learn_OUT:
+		BSF		_LEARN_FLAG,L_OUT
+		SETDP	00h
+		GOTO	SleepMode
+Learn_OK:
+		SETDP	00h
+		GOTO	SleepMode
 
 
 

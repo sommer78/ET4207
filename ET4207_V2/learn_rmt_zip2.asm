@@ -12,7 +12,7 @@ LEARN_RMT_ZIP2:
 			BSF		PWMCON,PWM_SEL				;PWM OUT = 1为高电平，进入学习模式
 		;	BSF		state_flag,isLearnP14
 			CLRF    TSETAL
-           	CLRF    TSETAH
+           		CLRF    TSETAH
 			BCF		FLAG,bLearnEnd
 			BSF		FLAG,isHighLow
 		
@@ -73,7 +73,7 @@ LRNZ_INPUT_END_1:
 LEARNZ_CAP_WAIT:
 			_WDT_DIS
 
-			BTFSC		INTF,I2CIF
+			BTFSC	state_flag,isLearnEnd
 			GOTO	LEARN_RMT_ZIP2_OUT
 			BTFSS	INTF,CAPIF			;等待第1个载波
 			GOTO	$-3
@@ -87,7 +87,7 @@ LEARNZ_CAP_WAIT:
 			MOVWF	FreqH
 			CLRF	INTF
 			BSF		TCCONB,TCENB
-			BSF		TCCONB,TCRSTB
+			BCF		TCCONB,TCRSTB
 
 			BTFSC	INTF,TMBIF
 			GOTO	LEARNZ_CAP_WAIT

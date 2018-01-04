@@ -66,7 +66,7 @@ LEARNN_CAP_WAIT:
 			BTFSS	INTF,CAPIF			;µÈ´ýµÚ1¸öÔØ²¨
 			GOTO	$-3
 
-			_WDT_DIS			;	_WDT_EN  sommer
+			_WDT_EN			;	_WDT_EN  sommer
 			CLRWDT
 
 			MOVFW	TCOUTAL

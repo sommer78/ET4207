@@ -507,6 +507,102 @@ int et_compress_original_data(Consumer_IR_T consumer_ir ,u8 *et_data) {
 
 
 
+char ET4003_Learndata_UnCompress(u8 *learn_buffer, u32 *IrBuffer, u16 *freq) {
+    u32 i, m, n;
+    u32 temp;
+    u8 stauts = 1;
+    u8 n_ADDRESS_INDEX_LIST;
+    u8 v_SAMPLING_VALUE_Tmp;
+    u8 v_INDEX_LIST_Tmp;
+    u8 count_total = 200;
+    u8 cycle = learn_buffer[120];
+    u8 ADDRESS_SAMPLING_VALUE[200];
+
+    //u8 FreqL = learn_buffer[121];
+    u8 *ADDRESS_INDEX_VALUE = &learn_buffer[0];
+    u8 *ADDRESS_INDEX_LIST = &learn_buffer[14];
+
+    memset(ADDRESS_SAMPLING_VALUE, 0, 200);
+    //memset(IrBuffer,0x00,sizeof(IrBuffer));
+    for (i = 0; i < 256; i++) {
+        IrBuffer[i] = 0x00;
+    }
+    cycle++;
+
+    temp = (u32) cycle * 4 * 10 / 5;
+    if (temp == 0) {
+//		LOGE("ET4003_Learndata_UnCompress temp equal zero \n");
+        return 0;
+    }
+    *freq = (1000000 * 5) / (cycle * 4);
+    if (*freq == 0) {
+        return 0;
+    }
+    if (count_total != 0xff) {
+        n_ADDRESS_INDEX_LIST = 0;
+        v_SAMPLING_VALUE_Tmp = 0;
+        v_INDEX_LIST_Tmp = 0;
+
+        for (n_ADDRESS_INDEX_LIST = 0; n_ADDRESS_INDEX_LIST != count_total;
+             n_ADDRESS_INDEX_LIST++) {
+            v_INDEX_LIST_Tmp = ADDRESS_INDEX_LIST[n_ADDRESS_INDEX_LIST / 2];
+            if ((n_ADDRESS_INDEX_LIST & 0x01) == 0) {
+                v_INDEX_LIST_Tmp >>= 4;
+            } else {
+                v_INDEX_LIST_Tmp &= 0x0f;
+            }
+
+            if (v_INDEX_LIST_Tmp == 0x0f) {
+                v_SAMPLING_VALUE_Tmp = 0xff;
+            } else {
+                if (v_INDEX_LIST_Tmp == 0x0e) {
+                    v_SAMPLING_VALUE_Tmp = 0x7f;
+                } else {
+                    v_SAMPLING_VALUE_Tmp =
+                            ADDRESS_INDEX_VALUE[v_INDEX_LIST_Tmp];
+                }
+            }
+
+            ADDRESS_SAMPLING_VALUE[n_ADDRESS_INDEX_LIST] = v_SAMPLING_VALUE_Tmp;
+        }
+
+    }
+
+    if ((ADDRESS_SAMPLING_VALUE[0] == 0xff)
+        && (ADDRESS_SAMPLING_VALUE[1] == 0xff)
+        && (ADDRESS_SAMPLING_VALUE[2] == 0xff)
+        && (ADDRESS_SAMPLING_VALUE[3] == 0xff)
+        && (ADDRESS_SAMPLING_VALUE[4] == 0xff)) {
+        return 0;
+    }
+
+    for (count_total = 200, i = 0, n = 0; count_total != 0;
+         count_total--, i++) {
+        if (0 == ADDRESS_SAMPLING_VALUE[i])
+            return 0;
+        m = ADDRESS_SAMPLING_VALUE[i] & 0x7f;
+        if (0x80 == (ADDRESS_SAMPLING_VALUE[i] & 0x80)) {
+            if (0 == stauts) {
+                n++;
+                stauts = 1;
+            }
+
+            IrBuffer[n] += m * 47 * 10 / temp;
+        } else {
+            if (1 == stauts) {
+                n++;
+                stauts = 0;
+            }
+
+            IrBuffer[n] += m * 45 * 10 / temp;
+        }
+    }
+
+    return n + 1;
+}
+
+
+
 /******************************************************/
 /*Funcation: et4207_UnCompress_zip                        	        */
 /*Input:  	u8 array datas			   */
@@ -555,7 +651,7 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
     n_Freq = datas[15];
 	n_type = datas[0];
 	if(n_type!=0x31){
-		 printf("n_type ZIP 1 error \r\n" );
+		 printf("n_type  error \r\n" );
         return -1;
 		}
 #ifdef ET_DEBUG
@@ -768,7 +864,7 @@ int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
     n_Freq = datas[15];
 	n_type = datas[0];
 	if(n_type!=0x30){
-		 printf("n_type RMT NORMAL error \r\n" );
+		 printf("n_type  error \r\n" );
         return -1;
 		}
 #ifdef ET_DEBUG
@@ -880,7 +976,7 @@ int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
     n_Freq = datas[15];
 	n_type = datas[0];
 	if(n_type!=0x32){
-		 printf("n_type RMP ZIP error \r\n" );
+		 printf("n_type  error \r\n" );
         return -1;
 		}
 #ifdef ET_DEBUG
@@ -982,117 +1078,6 @@ int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
 		
 	}
 	
-
-	return n;
-}
-
-/******************************************************/
-/*Funcation: et4207_UnCompress_REC_normal                        	        */
-/*Input:  	u8 array datas			   */
-/*Output: 	state < 0 error u16 freq u16 array irpluse	   */
-/*Desc: 	translate original consumerit data to ET compress data	   */
-
-/******************************************************/
-
-int et4207_UnCompress_REC(u8 *datas, u16 *irpluse, u16 *freq) {
-    u8  n_Crc;
-    u8  n_Index;
-    u8  n_Freq;
-//    u8 n_flag;
-
-	u8 n_type;
-	u16 data_len;
-
-    
-	u8	t_crc;
-
-
-    //u8 PartIndexCount;
-  
-	int index;
-    int  n;
-
-	u16 nHighLevel ;
-	u16 nLowLevel ;
-
-	data_len = (u16)(datas[8]*256+datas[9]);
-	
-//    u8 crc;
-//    n_flag = datas[10];
-    n_Crc = datas[11];
-  
-    n_Index = datas[3]; 
-	n_Index++;
-    n_Freq = 66;
-	n_type = datas[0];
-	if(n_type!=0x40){
-		 printf("n_type REC NORMAL error \r\n" );
-        return -1;
-		}
-#ifdef ET_DEBUG
-	 printf("len = %d \r\n  ",data_len );
-
-
-	 printf("state = %x \r\n  ",datas[10] );
-	 printf(" n_Index = %d \r\n",n_Index );
-#endif
-		
-    if((n_Freq>0x3e)&&(n_Freq<0x15)){
-        printf("n_Freq  error \r\n" );
-        return -2;
-    }
-
-	index = 16;
-
-    n_Freq--;
-    *freq = 2500000 / n_Freq;
-
-    printf("n_Freq = %d \r\n", 2500000 / n_Freq );
-	t_crc = xCal_crc(&datas[16], data_len );
-	printf("code crc  =%x \r\n",t_crc );
-
-	if( n_Crc != t_crc){
-		   printf("n_Crc  error \r\n" );
-		   return -3;
-	   }
-	
-
-
-
-	
-    n = 0;
-
-	
-	while (n_Index--) {
-		
-		if(index>=(data_len+16)){
-			 printf("data_len  out \r\n" );
-				return n;
-			}
-			
-			nHighLevel = (u16) datas[index++];
-			nHighLevel <<= 8;
-			nHighLevel |= (u16) datas[index++];
-			nLowLevel = (u16) datas[index++];
-			nLowLevel <<= 8;
-			nLowLevel |= (u16) datas[index++];
-		// printf("nHighLevel = %d  nLowLevel = %d\r\n",nHighLevel,nLowLevel );
-            irpluse[n] = (nHighLevel * 4 / n_Freq)  +1;
-		//	 printf("irpluse = %d \r\n",irpluse[n] );
-			n++;
-            irpluse[n] =(nLowLevel * 4 / n_Freq)  +1;
-		//	 printf("irpluse = %d \r\n",irpluse[n] );
-			n++;
-			
-			if (0xffff == nLowLevel) {
-				 printf("nLowLevel  end \r\n" );
-				return n;
-			}
-			
-		
-	}
-	
-	printf("n_Index  end \r\n" );
 
 	return n;
 }
@@ -1315,20 +1300,9 @@ u8 ET4207ReadCode(u8 *etcode){
 		 printf("learn err =  %d",len);
 			}
 		
-	len =  et4207_UnCompress_REC(etcode, ircode, &freq) ;
 	
-	if(len>0){
-		for(i=0;i<len;i++){
-			 irpulse = (u32)ircode[i] *1000000/freq;
-			 if(i%2==1){
-			//	printf("L%d\r\n",irpulse);
-				}else{
-			//	printf("H%d\r\n",irpulse);
-				}
-			}
-		}else {
-		 printf("learn err =  %d",len);
-			}
+
+
 
 		 
 	return len;

@@ -65,14 +65,15 @@ LRN_INPUT_END_1:
 
 			MOVLW	78H
 			MOVWF	TSETB
-LEARN_CAP_WAIT:
 			_WDT_DIS
+LEARN_CAP_WAIT:
+			CLRWDT
 			BTFSC	state_flag,isLearnEnd
 			GOTO	Learn_OUT
 			BTFSS	INTF,CAPIF			;µÈ´ýµÚ1¸öÔØ²¨
 			GOTO	$-3
 
-			_WDT_DIS			;	_WDT_EN  sommer
+			_WDT_EN	 ;sommer
 			CLRWDT
 
 			MOVFW	TCOUTAL

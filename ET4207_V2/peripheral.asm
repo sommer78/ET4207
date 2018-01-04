@@ -118,6 +118,7 @@ DLOOP1:
 ;CLR ALL RAM TO 00H
 ;======================================================================
 RamsClearALL:
+		SETDP       00h
 		MOVLW		20h
 		GOTO		ClearRams
 LEARN_RAM_CLR:

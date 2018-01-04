@@ -46,7 +46,7 @@ REC_WAIT_FIRST_DOWN_EDGE:
 		_WDT_DIS			;	_WDT_EN  sommer
 		BTFSC	PT1,REC
 		GOTO	REC_WAIT_FIRST_DOWN_EDGE
-
+		_WDT_EN			;	_WDT_EN  sommer
 		_GREEN_CLR
 
 		MOVLW	00000110b					;timerb时钟源,内部时钟源mclk(111-5MHz)
@@ -61,42 +61,44 @@ REC_WAIT_FIRST_DOWN_EDGE:
 		BSF		INTE,TMBIE
 		BSF		INTE,GIE
 REC_WAIT_Sub:
+		CLRWDT
 	;	BTFSC	FLAG,bLearnEnd	
 	;	GOTO	REC_LEARN_END
 		BTFSS	FLAG,isPulseEnd
 		GOTO	REC_WAIT_Sub
 		BCF		FLAG,isPulseEnd
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-
 		/*
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+*/
+	
 	;	BTFSC	state_flag,stopPush
 	;	GOTO	RECL_Compare_ST
 		SETDP	02h
@@ -128,12 +130,12 @@ REC_WAIT_Sub:
 		MOVLW	0E8H
 		MOVWF	p_PartIndexCount
 
-		MOVLW	0E8H
-		SUBWF	p_PartIndexCount,W
-		BTFSC	STATUS,C
-		BSF		state_flag,stopPush
+	;	MOVLW	0E8H
+	;	SUBWF	p_PartIndexCount,W
+;		BTFSC	STATUS,C
+	;	BSF		state_flag,stopPush
 	;	GOTO	RECL_DATA_OUT
-*/
+
 		GOTO	RECL_Compare_ST
 
 
@@ -307,7 +309,7 @@ RECL_END:
 		RLF		p_Sample,F
 		RLF		p_Sample,F
 		
-		SETDP	00h
+		SETDP	02h
 		MOVLW	ADDRESS_PartIndexCount
 		ADDWF   p_Sample,W
 
@@ -380,3 +382,138 @@ REC_LEARN_DATA_OUT:
 		INCF	nIndexCount_l,F
 		SETDP	00h
 		GOTO	SleepMode
+
+
+
+;==========================================
+;RECEIVER LEARN SUBROUTINE
+;OUTPUT 
+;========================================== 
+
+RECEIVER_START_NOZIP:
+		SETDP	02h
+		CLRF	state_flag
+		CLRF	FLAG
+		BCF		PT1EN,REC
+		BSF		FLAG,isRecMode
+REC_NZ_SET_REG:
+		MOVLW	ADDRESS_PartIndexCount
+	;	MOVWF	p_PartIndexCount
+	;	MOVLW	ADDRESS_Sample
+		MOVWF	FRS0
+		MOVWF	p_Sample
+
+		CLRF	nIndexCount_h
+		CLRF	nIndexCount_l
+
+		BCF		state_flag,isLearnEnd
+	   	MOVLW	00000011b					;timera时钟源,内部时钟源mclk(111-5MHz)
+		MOVWF	TCCONA
+		CLRF	TSETAL
+		CLRF	TSETAH
+		CLRF	nIndexCount_l
+		CLRF	nIndexCount_H
+		BCF	INTE,TMAIE
+		BSF	INTE,I2CIF
+		BSF	INTE,GIE
+	   	BCF	PWMCON,TCOUTA_DIR			;TIMER UP 16bit型
+		_GREEN_SET
+		_ET4207_BUSY_
+		
+REC_NZ_WAIT_FIRST_DOWN_EDGE:
+		BTFSC	state_flag,isLearnEnd
+		GOTO	REC_LEARN_OUT
+		_WDT_DIS			;	_WDT_EN  sommer
+		BTFSC	PT1,REC
+		GOTO	REC_NZ_WAIT_FIRST_DOWN_EDGE
+		_WDT_DIS			;	_WDT_EN  sommer
+		_GREEN_CLR
+
+		MOVLW	00000110b					;timerb时钟源,内部时钟源mclk(111-5MHz)
+		MOVWF	TCCONB
+		BSF		TCCONB,TCENB
+		BCF		TCCONB,TCRSTB
+		MOVLW	78H
+		MOVWF	TSETB
+		BCF		TCCONA,TCRSTA
+		BSF		TCCONA,TCENA
+		BSF		INTE,TMAIE
+		BSF		INTE,TMBIE
+		BSF		INTE,GIE
+REC_NZ_WAIT_Sub:
+		CLRWDT
+		BTFSC	FLAG,bLearnEnd	
+		GOTO	REC_NZ_LEARN_END
+		BTFSS	FLAG,isPulseEnd
+		GOTO	REC_NZ_WAIT_Sub
+		BCF		FLAG,isPulseEnd
+
+		MOVFW	nHighLevel_H
+		MOVWF	IND0
+		INCF	FRS0,F
+		MOVFW	nHighLevel_L
+		MOVWF	IND0
+		INCFSZ	FRS0,F
+		GOTO	$+2
+		SETDP	01h
+		MOVFW	nLowLevel_H
+		MOVWF	IND0
+		INCF	FRS0,F
+		MOVFW	nLowLevel_L
+		MOVWF	IND0
+		INCFSZ	FRS0,F
+		GOTO	$+2
+		SETDP	01h
+		INCF	nIndexCount_l,F
+		MOVLW	106
+		SUBWF	nIndexCount_l,W
+		BTFSC	STATUS,C
+		GOTO	RECL_NZ_DATA_OUT
+		GOTO	REC_NZ_WAIT_Sub
+
+
+
+		
+
+
+RECL_NZ_DATA_OUT:
+		BSF		_LEARN_FLAG,L_DATA
+		GOTO	REC_NZ_LEARN_END	
+	
+REC_NZ_LEARN_END:
+
+		BCF		INTE,GIE
+		BCF     INTE,TMAIE
+		BCF		INTE,TMBIE
+		BCF		TCCONA,TCENA
+		NOP
+		MOVFW	nIndexCount_l
+		MOVWF	_LENGTH_L_learn
+		BCF		STATUS,C
+		RLF		_LENGTH_L_learn,F
+		RLF		_LENGTH_h_learn,F
+		RLF		_LENGTH_L_learn,F
+		RLF		_LENGTH_h_learn,F
+
+	
+	    
+		MOVFW	_LENGTH_h_learn
+		MOVWF	_CRC_LEN_H
+		MOVFW	_LENGTH_L_learn
+		MOVWF	_CRC_LEN_L
+		SETDP	00h
+		MOVLW	ADDRESS_PartIndexCount
+		MOVWF	FRS0
+		CALL	ET_xCal_crc
+		MOVFW	_CRC_CODE
+		MOVWF	n_Crc
+		MOVLW	40H
+		MOVWF	LEARN_TYPE
+		_GREEN_CLR
+
+		GOTO	Learn_OK	
+
+
+		
+
+

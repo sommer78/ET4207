@@ -571,12 +571,13 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
 	 printf("n_PartIndexCount = %d  n_Sample = %d n_Index = %d \r\n",n_PartIndexCount,n_Sample,n_Index );
 #endif
 		
-	if((n_Freq>100)&&(n_Freq<41)){
-		   printf("n_Freq  error \r\n" );
-		   return -2;
-	   }
-	n_Freq++;
+    if((n_Freq>0x3e)&&(n_Freq<0x15)){
+        printf("n_Freq  error \r\n" );
+        return -2;
+    }
 
+
+    n_Freq--;
     *freq = 2500000 / n_Freq;
 
     printf("n_Freq = %d \r\n", 2500000 / n_Freq );
@@ -783,10 +784,11 @@ int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
 	 printf(" n_Index = %d \r\n",n_Index );
 #endif
 		
-	if((n_Freq>100)&&(n_Freq<41)){
-		   printf("n_Freq  error \r\n" );
-		   return -2;
-	   }
+    if((n_Freq>0x3e)&&(n_Freq<0x15)){
+        printf("n_Freq  error \r\n" );
+        return -2;
+    }
+
 	index = 16;
 
     n_Freq--;
@@ -896,10 +898,11 @@ int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
 	 printf(" n_Samle = %d \r\n",n_Samle );
 #endif
 		
-	if((n_Freq>100)&&(n_Freq<41)){
-		   printf("n_Freq  error \r\n" );
-		   return -2;
-	   }
+    if((n_Freq>0x3e)&&(n_Freq<0x15)){
+        printf("n_Freq  error \r\n" );
+        return -2;
+    }
+
 	index = 16;
 
     n_Freq--;
@@ -1149,154 +1152,6 @@ void ET4207_Init(void)
 
 }
 
-/*
-*	成功:返回code_buffer的长度
-*	失败:返回-1
-*/
-int et4007_Learndata_UnCompress(char *datas, int *code_buffer, int *freq) {
-
-	int temp;
-
-	
-	uint8_t  n_Crc;
-	uint8_t  n_PartIndexCount;
-	uint8_t  n_Sample;
-	uint8_t  n_Index;
-	uint8_t  n_Freq;
-	
-	uint8_t * learn_buffer;
-
-	uint8_t unzip_end = 1;
-	uint8_t dat_temp;
-
-	uint8_t PartIndexCount;
-	int Sample0_nHighLevel;
-	int Sample0_nLowLevel;
-	int Sample1_nHighLevel;
-	int Sample1_nLowLevel;
-
-	uint8_t n_PartIndexCount_p;
-	uint8_t n_Sample_p;
-	uint8_t n_Index_p;
-
-	int m, n;
-	uint8_t shift = 0x80;
-
-	n_Crc = datas[0];
-	n_PartIndexCount = datas[1];
-	n_Sample = datas[2];
-	n_Index = datas[3];
-	n_Freq = datas[4];
-	printf("\r\n n_freq is %d n_Index is %d n_Sample is %d n_PartIndexCount is %d \r\n",n_Freq,n_Index,n_Sample,n_PartIndexCount);
-	if((n_Freq>100)&&(n_Freq<41)){
-		   printf("n_Freq  error \r\n" );
-		   return -2;
-	   }
-
-		
-	n_Freq++;
-	*freq = 2500000 / n_Freq;
-	printf("freq = %d",*freq);
-
-	learn_buffer = datas + 5;
-
-	
-	printf("Sample1_nHighLevel=%d \r\n",Sample1_nHighLevel);
-	printf("Sample1_nLowLevel=%d \r\n",Sample1_nLowLevel);
-
-	if( n_Crc != xCal_crc(learn_buffer, n_PartIndexCount + n_Sample + n_Index )) return -2;
-
-	n = 0;
-	n_PartIndexCount_p = 0;
-	n_Sample_p = n_PartIndexCount;
-	n_Index_p = n_PartIndexCount + n_Sample;
-
-	PartIndexCount = learn_buffer[n_PartIndexCount_p];
-	Sample0_nHighLevel = 0x00000000;
-	Sample0_nLowLevel = 0x00000000;
-	Sample1_nHighLevel = (int) learn_buffer[n_Sample_p];
-	Sample1_nHighLevel <<= 8;
-	Sample1_nHighLevel |= (int) learn_buffer[n_Sample_p + 1];
-	Sample1_nLowLevel = (int) learn_buffer[n_Sample_p + 2];
-	Sample1_nLowLevel <<= 8;
-	Sample1_nLowLevel |= (int) learn_buffer[n_Sample_p + 3];
-
-	dat_temp = learn_buffer[n_Index_p];
-	while (PartIndexCount--) {
-
-		if (0x00 == shift) {
-			n_Index_p++;
-			dat_temp = learn_buffer[n_Index_p];
-			shift = 0x80;
-		}
-		if (dat_temp & shift) {
-			code_buffer[n] = Sample1_nHighLevel;
-			n++;
-		
-			code_buffer[n] = Sample1_nLowLevel * 8 / n_Freq;
-			code_buffer[n]++;
-			n++;
-			if (0x0000ffff == Sample1_nLowLevel) {
-				unzip_end = 0;
-				break;
-			}
-		} else {
-			code_buffer[n] = Sample0_nHighLevel;
-			n++;
-			code_buffer[n] = Sample0_nLowLevel * 8 / n_Freq;
-			code_buffer[n]++;
-			n++;
-		}
-		shift >>= 1;
-	}
-	n_PartIndexCount_p++;
-
-	while (unzip_end) {
-		PartIndexCount = learn_buffer[n_PartIndexCount_p];
-		Sample0_nHighLevel = (int) learn_buffer[n_Sample_p];
-		Sample0_nHighLevel <<= 8;
-		Sample0_nHighLevel |= (int) learn_buffer[n_Sample_p + 1];
-		Sample0_nLowLevel = (int) learn_buffer[n_Sample_p + 2];
-		Sample0_nLowLevel <<= 8;
-		Sample0_nLowLevel |= (int) learn_buffer[n_Sample_p + 3];
-		Sample1_nHighLevel = (int) learn_buffer[n_Sample_p + 4];
-		Sample1_nHighLevel <<= 8;
-		Sample1_nHighLevel |= (int) learn_buffer[n_Sample_p + 5];
-		Sample1_nLowLevel = (int) learn_buffer[n_Sample_p + 6];
-		Sample1_nLowLevel <<= 8;
-		Sample1_nLowLevel |= (int) learn_buffer[n_Sample_p + 7];
-		while (PartIndexCount--) {
-			if (0x00 == shift) {
-				n_Index_p++;
-				dat_temp = learn_buffer[n_Index_p];
-				shift = 0x80;
-			}
-			if (dat_temp & shift) {
-				code_buffer[n] = Sample1_nHighLevel;
-				n++;
-				code_buffer[n] = Sample1_nLowLevel * 8 / n_Freq;
-				code_buffer[n]++;
-				n++;
-					
-				if (0x0000ffff == Sample1_nLowLevel) {
-					unzip_end = 0;
-					break;
-				}
-			} else {
-				code_buffer[n] = Sample0_nHighLevel;
-				n++;
-				code_buffer[n] = Sample0_nLowLevel * 8 / n_Freq;
-				code_buffer[n]++;
-				n++;
-			}
-			shift >>= 1;
-		}
-		n_PartIndexCount_p++;
-		n_Sample_p += 4;
-	}
-	return n;
-}
-
 
 u8 ET4207SendTest(void){
 	
@@ -1307,36 +1162,6 @@ u8 ET4207SendTest(void){
 	err =	ET4207SendCode(rec_learn,sizeof(rec_learn));
 	return err;
 
-}
-
-void ET4007LearnTest(void){
-	
-	int err=0;
-	int i;
-	int freq;
-	int ircode[1024];
-  char orig[512];
-		for(i=0;i<sizeof(rec_learn1)/sizeof(int);i++){
-			if(i%16==0){
-			printf("\r\n");
-			}
-			orig[i] = rec_learn1[i];
-			printf("0x%02x,",orig[i]);
-	
-		}
-	//	err =	ET4207SendCode(send_etcode,sizeof(send_etcode));
-	//err =	ET4207SendCode(zip_learn,sizeof(zip_learn));
-	err =	et4007_Learndata_UnCompress(orig,ircode,&freq);
-	printf("err=%d \r\n",err);
-	printf("freq=%d \r\n",freq);
-	if(err<=0){
-			printf("err=%d \r\n",err);
-		return;
-		}
-	for(i=0;i<err;i++){
-		printf("ircode[%d]=%d \r\n",i,ircode[i]);
-		
-		}
 }
 
 
@@ -1529,6 +1354,141 @@ u8 ET4207ReadVersion(u8 *etcode){
 	
 	return err;
 
+}
+
+/*
+*	成功:返回code_buffer的长度
+*	失败:返回-1
+*/
+int et4007_Learndata_UnCompress(char *datas, int *code_buffer, int *freq) {
+
+	int temp;
+
+	
+	uint8_t  n_Crc;
+	uint8_t  n_PartIndexCount;
+	uint8_t  n_Sample;
+	uint8_t  n_Index;
+	uint8_t  n_Freq;
+	
+	uint8_t * learn_buffer;
+
+	uint8_t unzip_end = 1;
+	uint8_t dat_temp;
+
+	uint8_t PartIndexCount;
+	int Sample0_nHighLevel;
+	int Sample0_nLowLevel;
+	int Sample1_nHighLevel;
+	int Sample1_nLowLevel;
+
+	uint8_t n_PartIndexCount_p;
+	uint8_t n_Sample_p;
+	uint8_t n_Index_p;
+
+	int m, n;
+	uint8_t shift = 0x80;
+
+	n_Crc = datas[0];
+	n_PartIndexCount = datas[1];
+	n_Sample = datas[2];
+	n_Index = datas[3];
+	n_Freq = datas[4];
+	printf("n_freq is %d ",n_Freq);
+	if((n_Freq>0x3e)||(n_Freq<0x15))return -1;
+	n_Freq++;
+	*freq = 2500000 / n_Freq;
+
+	learn_buffer = datas + 5;
+
+	//	if( n_Crc != xCal_crc(learn_buffer, n_PartIndexCount + n_Sample + n_Index )) return false;
+
+	n = 0;
+	n_PartIndexCount_p = 0;
+	n_Sample_p = n_PartIndexCount;
+	n_Index_p = n_PartIndexCount + n_Sample;
+
+	PartIndexCount = learn_buffer[n_PartIndexCount_p];
+	Sample0_nHighLevel = 0x00000000;
+	Sample0_nLowLevel = 0x00000000;
+	Sample1_nHighLevel = (int) learn_buffer[n_Sample_p];
+	Sample1_nHighLevel <<= 8;
+	Sample1_nHighLevel |= (int) learn_buffer[n_Sample_p + 1];
+	Sample1_nLowLevel = (int) learn_buffer[n_Sample_p + 2];
+	Sample1_nLowLevel <<= 8;
+	Sample1_nLowLevel |= (int) learn_buffer[n_Sample_p + 3];
+
+	dat_temp = learn_buffer[n_Index_p];
+	while (PartIndexCount--) {
+		if (0x00 == shift) {
+			n_Index_p++;
+			dat_temp = learn_buffer[n_Index_p];
+			shift = 0x80;
+		}
+		if (dat_temp & shift) {
+			code_buffer[n] = Sample1_nHighLevel;
+			n++;
+			code_buffer[n] = Sample1_nLowLevel * 8 / n_Freq;
+			code_buffer[n]++;
+			n++;
+			if (0x0000ffff == Sample1_nLowLevel) {
+				unzip_end = 0;
+				break;
+			}
+		} else {
+			code_buffer[n] = Sample0_nHighLevel;
+			n++;
+			code_buffer[n] = Sample0_nLowLevel * 8 / n_Freq;
+			code_buffer[n]++;
+			n++;
+		}
+		shift >>= 1;
+	}
+	n_PartIndexCount_p++;
+
+	while (unzip_end) {
+		PartIndexCount = learn_buffer[n_PartIndexCount_p];
+		Sample0_nHighLevel = (int) learn_buffer[n_Sample_p];
+		Sample0_nHighLevel <<= 8;
+		Sample0_nHighLevel |= (int) learn_buffer[n_Sample_p + 1];
+		Sample0_nLowLevel = (int) learn_buffer[n_Sample_p + 2];
+		Sample0_nLowLevel <<= 8;
+		Sample0_nLowLevel |= (int) learn_buffer[n_Sample_p + 3];
+		Sample1_nHighLevel = (int) learn_buffer[n_Sample_p + 4];
+		Sample1_nHighLevel <<= 8;
+		Sample1_nHighLevel |= (int) learn_buffer[n_Sample_p + 5];
+		Sample1_nLowLevel = (int) learn_buffer[n_Sample_p + 6];
+		Sample1_nLowLevel <<= 8;
+		Sample1_nLowLevel |= (int) learn_buffer[n_Sample_p + 7];
+		while (PartIndexCount--) {
+			if (0x00 == shift) {
+				n_Index_p++;
+				dat_temp = learn_buffer[n_Index_p];
+				shift = 0x80;
+			}
+			if (dat_temp & shift) {
+				code_buffer[n] = Sample1_nHighLevel;
+				n++;
+				code_buffer[n] = Sample1_nLowLevel * 8 / n_Freq;
+				code_buffer[n]++;
+				n++;
+				if (0x0000ffff == Sample1_nLowLevel) {
+					unzip_end = 0;
+					break;
+				}
+			} else {
+				code_buffer[n] = Sample0_nHighLevel;
+				n++;
+				code_buffer[n] = Sample0_nLowLevel * 8 / n_Freq;
+				code_buffer[n]++;
+				n++;
+			}
+			shift >>= 1;
+		}
+		n_PartIndexCount_p++;
+		n_Sample_p += 4;
+	}
+	return n;
 }
 
 

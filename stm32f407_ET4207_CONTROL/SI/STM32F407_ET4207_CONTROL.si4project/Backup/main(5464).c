@@ -62,7 +62,6 @@ int main(void)
 		//ET4207SendTest();
 		//ET4207StartLearn(0,0);
 		ET4207StartLearnREC();
-		ET4007LearnTest();
 		}   
 		if(key==KEY0_PRES)//KEY0╟╢обак
 		{

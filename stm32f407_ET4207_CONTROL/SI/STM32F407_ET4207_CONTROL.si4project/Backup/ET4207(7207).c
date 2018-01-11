@@ -571,10 +571,10 @@ int et4207_UnCompress_zip(u8 *datas, u16 *irpluse, u16 *freq) {
 	 printf("n_PartIndexCount = %d  n_Sample = %d n_Index = %d \r\n",n_PartIndexCount,n_Sample,n_Index );
 #endif
 		
-	if((n_Freq>100)||(n_Freq<41)){
-			   printf("n_Freq  error \r\n" );
-			   return -2;
-		   }
+	if((n_Freq>100)&&(n_Freq<41)){
+		   printf("n_Freq  error \r\n" );
+		   return -2;
+	   }
 	n_Freq++;
 
     *freq = 2500000 / n_Freq;
@@ -783,10 +783,10 @@ int et4207_UnCompress_normal(u8 *datas, u16 *irpluse, u16 *freq) {
 	 printf(" n_Index = %d \r\n",n_Index );
 #endif
 		
-	if((n_Freq>100)||(n_Freq<41)){
-			   printf("n_Freq  error \r\n" );
-			   return -2;
-		   }
+	if((n_Freq>100)&&(n_Freq<41)){
+		   printf("n_Freq  error \r\n" );
+		   return -2;
+	   }
 	index = 16;
 
     n_Freq--;
@@ -896,11 +896,10 @@ int et4207_UnCompress_ZIP2(u8 *datas, u16 *irpluse, u16 *freq) {
 	 printf(" n_Samle = %d \r\n",n_Samle );
 #endif
 		
-	if((n_Freq>100)||(n_Freq<41)){
-			   printf("n_Freq  error \r\n" );
-			   return -2;
-		   }
-
+	if((n_Freq>100)&&(n_Freq<41)){
+		   printf("n_Freq  error \r\n" );
+		   return -2;
+	   }
 	index = 16;
 
     n_Freq--;
@@ -1039,7 +1038,10 @@ int et4207_UnCompress_REC(u8 *datas, u16 *irpluse, u16 *freq) {
 	 printf(" n_Index = %d \r\n",n_Index );
 #endif
 		
-
+    if((n_Freq>0x3e)&&(n_Freq<0x15)){
+        printf("n_Freq  error \r\n" );
+        return -2;
+    }
 
 	index = 16;
 
@@ -1151,34 +1153,34 @@ void ET4207_Init(void)
 *	成功:返回code_buffer的长度
 *	失败:返回-1
 */
-int et4007_Learndata_UnCompress(u8 *datas, int *code_buffer, int *freq) {
+int et4007_Learndata_UnCompress(char *datas, int *code_buffer, int *freq) {
 
-	//int temp;
+	int temp;
 
 	
-	u8  n_Crc;
-	u8  n_PartIndexCount;
-	u8  n_Sample;
-	u8  n_Index;
-	u8  n_Freq;
+	uint8_t  n_Crc;
+	uint8_t  n_PartIndexCount;
+	uint8_t  n_Sample;
+	uint8_t  n_Index;
+	uint8_t  n_Freq;
 	
-	u8 * learn_buffer;
+	uint8_t * learn_buffer;
 
-	u8 unzip_end = 1;
-	u8 dat_temp;
+	uint8_t unzip_end = 1;
+	uint8_t dat_temp;
 
-	u8 PartIndexCount;
+	uint8_t PartIndexCount;
 	int Sample0_nHighLevel;
 	int Sample0_nLowLevel;
 	int Sample1_nHighLevel;
 	int Sample1_nLowLevel;
 
-	u8 n_PartIndexCount_p;
-	u8 n_Sample_p;
-	u8 n_Index_p;
+	uint8_t n_PartIndexCount_p;
+	uint8_t n_Sample_p;
+	uint8_t n_Index_p;
 
-	int  n;
-	u8 shift = 0x80;
+	int m, n;
+	uint8_t shift = 0x80;
 
 	n_Crc = datas[0];
 	n_PartIndexCount = datas[1];
@@ -1186,7 +1188,7 @@ int et4007_Learndata_UnCompress(u8 *datas, int *code_buffer, int *freq) {
 	n_Index = datas[3];
 	n_Freq = datas[4];
 	printf("\r\n n_freq is %d n_Index is %d n_Sample is %d n_PartIndexCount is %d \r\n",n_Freq,n_Index,n_Sample,n_PartIndexCount);
-	if((n_Freq>100)||(n_Freq<41)){
+	if((n_Freq>100)&&(n_Freq<41)){
 		   printf("n_Freq  error \r\n" );
 		   return -2;
 	   }
@@ -1313,7 +1315,7 @@ void ET4007LearnTest(void){
 	int i;
 	int freq;
 	int ircode[1024];
-  u8 orig[512];
+  char orig[512];
 		for(i=0;i<sizeof(rec_learn2)/sizeof(int);i++){
 			if(i%16==0){
 			printf("\r\n");

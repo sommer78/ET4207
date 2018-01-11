@@ -40,7 +40,7 @@ u8 ET4207StartLearn(u8 mode,u8 algorithm);
 u8 ET4207StartLearnREC(void);
 
 
-void ET4007LearnTest();
+void ET4007LearnTest(void);
 
 
 u8  Hard_IIC_WriteNByte(I2C_TypeDef * IICx, u8 SlaveAdd, u8 WriteAdd, u16 NumToWrite, u8 * pBuffer);
